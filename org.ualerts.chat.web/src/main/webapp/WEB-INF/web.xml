@@ -7,6 +7,31 @@
   
   <display-name>ualerts-chat</display-name>
 
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      /WEB-INF/ualerts-chat-core.xml
+      classpath:/spring/ualerts-chat-data.xml
+      classpath:/spring/ualerts-chat-service.xml
+    </param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <servlet>
+    <servlet-name>ualerts-chat</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>ualerts-chat</servlet-name>
+    <url-pattern>/ui/*</url-pattern>
+  </servlet-mapping>
+  
+  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
