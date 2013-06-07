@@ -17,7 +17,7 @@
 		class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
 		<property name="location">
 			<jee:jndi-lookup jndi-name="config/service.properties"
-				default-value="classpath:spring/chat-service.properties" />
+				default-value="classpath:spring/ualerts-chat-service.properties" />
 		</property>
 	</bean>
   
