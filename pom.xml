@@ -789,5 +789,6 @@
   </profiles>
   <modules>
     <module>org.ualerts.chat.service</module>
+    <module>org.ualerts.chat.web</module>
   </modules>
 </project>
