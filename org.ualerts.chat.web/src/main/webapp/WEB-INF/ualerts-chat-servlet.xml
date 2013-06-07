@@ -22,7 +22,7 @@
   <bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
     <property name="location">
       <jee:jndi-lookup
-        jndi-name="ualerts/fixed/provisioning/config/servletProperties"
+        jndi-name="ualerts/fixed/provisioning/config/servlet.properties"
         default-value="/WEB-INF/ualerts-chat-servlet.properties" />
     </property>
   </bean>
