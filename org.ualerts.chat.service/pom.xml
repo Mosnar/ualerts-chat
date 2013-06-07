@@ -6,7 +6,6 @@
     <artifactId>ualerts-chat</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.ualerts.chat.service</groupId>
   <artifactId>org.ualerts.chat.service</artifactId>
   <name>Service Components</name>
   <description>Middle tier components for the chat application.</description>
