@@ -787,4 +787,7 @@
       </dependencies>
     </profile>
   </profiles>
+  <modules>
+    <module>org.ualerts.chat.service</module>
+  </modules>
 </project>
