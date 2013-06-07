@@ -704,7 +704,7 @@
     <clover.version>3.0.2</clover.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <springframework.version>3.2.1.RELEASE</springframework.version>
+    <springframework.version>4.0.0.M1</springframework.version>
     <site.deploy.baseUrl>scpexe://ualerts.org/home/ceharris/ualerts.org/product-site</site.deploy.baseUrl>
     <site.homepage.baseUrl>http://ualerts.org/product-site</site.homepage.baseUrl>
     <hsqldb.version>2.2.9</hsqldb.version>
