@@ -726,8 +726,8 @@
     <cobertura.version>2.5.2</cobertura.version>
     <jdepend.version>2.0-beta-2</jdepend.version>
     <hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
-    <persistence.unit>fixeddb</persistence.unit>
-    <persistence.dataSource>jdbc/fixedDS</persistence.dataSource>
+    <persistence.unit>chatdb</persistence.unit>
+    <persistence.dataSource>jdbc/chatDS</persistence.dataSource>
     <persistence.provider>org.hibernate.ejb.HibernatePersistence</persistence.provider>
   </properties>
   <distributionManagement>
