@@ -705,8 +705,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <springframework.version>4.0.0.M1</springframework.version>
-    <site.deploy.baseUrl>scpexe://ualerts.org/home/ceharris/ualerts.org/product-site</site.deploy.baseUrl>
-    <site.homepage.baseUrl>http://ualerts.org/product-site</site.homepage.baseUrl>
+    <site.deploy.baseUrl>scpexe://ualerts.org/home/ceharris/ualerts.org/product-site/${project.artifactId}</site.deploy.baseUrl>
+    <site.homepage.baseUrl>http://ualerts.org/product-site/${project.artifactId}</site.homepage.baseUrl>
     <hsqldb.version>2.2.9</hsqldb.version>
     <jersey.version>1.5</jersey.version>
     <slf4j.version>1.7.2</slf4j.version>
@@ -725,6 +725,10 @@
     <javadoc.version>2.9</javadoc.version>
     <cobertura.version>2.5.2</cobertura.version>
     <jdepend.version>2.0-beta-2</jdepend.version>
+    <hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
+    <persistence.unit>fixeddb</persistence.unit>
+    <persistence.dataSource>jdbc/fixedDS</persistence.dataSource>
+    <persistence.provider>org.hibernate.ejb.HibernatePersistence</persistence.provider>
   </properties>
   <distributionManagement>
     <site>
