@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Chat</title>
-    <link type="text/css" rel="stylesheet" href="css/chat.css" />
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
     <script type="text/javascript" src=""></script>
     <script type="text/javascript" src=""></script>
 </head>
