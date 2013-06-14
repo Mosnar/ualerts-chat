@@ -15,5 +15,5 @@ public interface ChatService {
 	 * @return the default Conversation
 	 * @throws ConversationNotFoundException
 	 */
-	Conversation findDefaultConversation() throws ConversationNotFoundException;
+	Conversation findDefaultConversation();
 }
