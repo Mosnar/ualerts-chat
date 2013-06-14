@@ -2,8 +2,6 @@ package org.ualerts.chat.service.api;
 
 import java.util.Set;
 
-import org.ualerts.chat.service.exceptions.FailedMessageDeliveryException;
-
 /**
  * Represents a conversation between chat participants
  * @author Billy Coleman
@@ -34,9 +32,8 @@ public interface Conversation {
 	 * Deliver a message to chat participants participating
 	 * in this conversation
 	 * @param the message to be delivered
-	 * @throws FailedMessageDeliveryException when....//TODO ?
 	 */
-	void deliverMessage(Message message) throws FailedMessageDeliveryException;
+	void deliverMessage(Message message);
 
 	
 }

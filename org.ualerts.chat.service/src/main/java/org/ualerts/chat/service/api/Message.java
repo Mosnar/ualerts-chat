@@ -1,30 +1,44 @@
 package org.ualerts.chat.service.api;
 
 import java.util.Calendar;
-
 /**
- * Represents a Message
+ * Abstract class representing a general chat message
  * @author Billy Coleman
  * @author Ransom Roberson
- *
+ * 
  */
-public interface Message {
+public abstract class Message {
 	
-	Object getMessageBody();
 	
-	void setMessageBody();
+	String from, to, type;
+	Calendar messageDate;
 	
-	String getFrom();
-	void setFrom(String from);
 	
-	String getTo();
-	void setTo(String to);
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
+	public String getTo() {
+		return to;
+	}
+	public void setTo(String to) {
+		this.to = to;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Calendar getMessageDate() {
+		return messageDate;
+	}
+	public void setMessageDate(Calendar messageDate) {
+		this.messageDate = messageDate;
+	}
 	
-	String getType();
-	void setType(String type);
-	
-	Calendar getMessageDate();
-	void setMessageDate(Calendar messageDate);
-	
+
 
 }

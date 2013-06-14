@@ -1,17 +1,18 @@
 package org.ualerts.chat.service.api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
-import org.hibernate.engine.internal.TwoPhaseLoad;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.ualerts.chat.service.api.concrete.ConcreteConversation;
 
-public class ConversationTest {
+public class ConcreteConversationTest {
 	
 	private Mockery context;
 	private Conversation conversation;
@@ -20,7 +21,7 @@ public class ConversationTest {
 	@Before
 	public void setUp() throws Exception {
 		context = new Mockery();
-		conversation = new DefaultConversation();
+		conversation = new ConcreteConversation();
 		
 		
 	}
@@ -44,14 +45,15 @@ public class ConversationTest {
 		Set<ChatClient> clients = conversation.getChatClients();
 		assertEquals(1, clients.size());
 		clients.remove(client);
-		assertEquals(0, clients.size());
+		assertFalse(clients.contains(client));
 	}
 
 	@Test
 	public void testDeliverMessage() throws Exception{
 		final ChatClient client1 = context.mock(ChatClient.class,"first");
 		final ChatClient client2 = context.mock(ChatClient.class,"second");
-		final Message message = context.mock(Message.class); 
+		final TextMessage message = new TextMessage();
+		message.setText("Hello");
 		conversation.addClient(client1);
 		conversation.addClient(client2);
 		

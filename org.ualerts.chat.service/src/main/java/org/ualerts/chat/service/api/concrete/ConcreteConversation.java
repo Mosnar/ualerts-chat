@@ -1,9 +1,11 @@
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.concrete;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.ualerts.chat.service.exceptions.FailedMessageDeliveryException;
+import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.Message;
 
 /**
  * The default conversation
@@ -11,7 +13,7 @@ import org.ualerts.chat.service.exceptions.FailedMessageDeliveryException;
  * @author Ransom Roberson
  *
  */
-public class DefaultConversation implements Conversation {
+public class ConcreteConversation implements Conversation {
 
 	private static final String BROADCAST = "ALL"; 
 	private Set<ChatClient> clients = new HashSet<ChatClient>();
@@ -30,8 +32,7 @@ public class DefaultConversation implements Conversation {
 	}
 
 	@Override
-	public void deliverMessage(Message message)
-			throws FailedMessageDeliveryException {
+	public void deliverMessage(Message message) {
 		
 			for(ChatClient client : clients)
 			{
