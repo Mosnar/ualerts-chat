@@ -56,7 +56,7 @@
 		chatService.sendMessage(clientMessage);
 		console.log("The send button was clicked"); // for checking purposes
 		$('#messageField').val('');
-	    })
+	    });
 	}
     });
     </script>
