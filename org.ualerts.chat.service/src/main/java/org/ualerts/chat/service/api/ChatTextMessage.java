@@ -19,7 +19,7 @@
 
 package org.ualerts.chat.service.api;
 
-public class TextMessage extends Message {
+public class ChatTextMessage extends Message {
 
 	private String text;
 

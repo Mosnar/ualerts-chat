@@ -19,13 +19,12 @@
 
 package org.ualerts.chat.service.api.concrete;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.websocket.Session;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
@@ -34,11 +33,11 @@ import org.ualerts.chat.service.api.Message;
 public class ConcreteChatClient implements ChatClient {
 
 	private Conversation conversation;
-  private Session session;
+  private WebSocketSession session;
   private ObjectMapper mapper = new ObjectMapper();
+	private List<Message> missedMessages = new ArrayList<Message>();
 	
-	
-  public ConcreteChatClient(Session session)
+  public ConcreteChatClient(WebSocketSession session)
   {
     this.session = session;
   }
@@ -47,15 +46,27 @@ public class ConcreteChatClient implements ChatClient {
 	public void deliverMessage(Message message) {
 	  
 	  try {
-      session.getAsyncRemote().sendText(mapper.writeValueAsString(message));
+	    session.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
     }
     catch (Exception e) {
-      throw new RuntimeException("Exception sending message");
+       missedMessages.add(message);
     }
 	}
 	
+  @Override
+  public Conversation getConversation() {
+    return this.conversation;
+  }
+  
 	@Override
 	public void setConversation(Conversation conversation) {
 		this.conversation = conversation;
 	}
+
+  @Override
+  public List<Message> getMissedMessages() {
+    return this.missedMessages;
+  }
+
+ 
 }

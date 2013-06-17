@@ -19,6 +19,8 @@
 
 package org.ualerts.chat.service.api;
 
+import java.util.List;
+
 
 /**
  * Representing a member of a Conversation
@@ -35,9 +37,24 @@ public interface ChatClient {
 	void setConversation(Conversation conversation);
 	
 	/**
+	 * Provide access to the Conversation
+	 * @return the conversation 
+	 */
+	Conversation getConversation();
+	
+	/**
 	 * Send a message
 	 * @param the message to be sent
 	 */
 	void deliverMessage(Message message);
 
+	/**
+	 * Provide access to a list of missed messages
+	 * 
+	 * This list will contain messages that were
+	 * sent to a chat client while their
+	 * web socket connection was not available
+	 * @return the list of Messages
+	 */
+	List<Message> getMissedMessages();
 }

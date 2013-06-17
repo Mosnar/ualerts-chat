@@ -71,7 +71,7 @@ public class ConcreteConversationTest {
 	public void testDeliverMessage() throws Exception{
 		final ChatClient client1 = context.mock(ChatClient.class,"first");
 		final ChatClient client2 = context.mock(ChatClient.class,"second");
-		final TextMessage message = new TextMessage();
+		final ChatTextMessage message = new ChatTextMessage();
 		message.setText("Hello");
 		conversation.addClient(client1);
 		conversation.addClient(client2);
