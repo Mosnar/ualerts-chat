@@ -1,6 +1,6 @@
 package org.ualerts.chat.service.api;
 
-import org.ualerts.chat.service.exceptions.FailedMessageDeliveryException;
+import java.util.Set;
 
 /**
  * Represents a conversation between chat participants
@@ -23,11 +23,17 @@ public interface Conversation {
 	void removeClient(ChatClient client);
 	
 	/**
+	 * Returns a Set of ChatClient associated with this Conversation
+	 * @return Set of ChatClient
+	 */
+	Set<ChatClient> getChatClients();
+	
+	/**
 	 * Deliver a message to chat participants participating
 	 * in this conversation
 	 * @param the message to be delivered
-	 * @throws FailedMessageDeliveryException
 	 */
-	void deliverMessage(Message message) throws FailedMessageDeliveryException;
+	void deliverMessage(Message message);
 
+	
 }

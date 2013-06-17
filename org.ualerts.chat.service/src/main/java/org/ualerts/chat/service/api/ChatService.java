@@ -1,6 +1,5 @@
 package org.ualerts.chat.service.api;
 
-import org.ualerts.chat.service.exceptions.ConversationNotFoundException;
 
 /**
  * Provides a chat conversation
@@ -15,5 +14,5 @@ public interface ChatService {
 	 * @return the default Conversation
 	 * @throws ConversationNotFoundException
 	 */
-	Conversation findDefaultConversation() throws ConversationNotFoundException;
+	Conversation findDefaultConversation();
 }

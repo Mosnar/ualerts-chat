@@ -2,15 +2,17 @@ package org.ualerts.chat.service.api;
 
 import java.util.Calendar;
 /**
- * Abstract class representing a genaral chat message
+ * Abstract class representing a general chat message
  * @author Billy Coleman
  * @author Ransom Roberson
  * 
  */
 public abstract class Message {
 	
+	
 	String from, to, type;
 	Calendar messageDate;
+	
 	
 	public String getFrom() {
 		return from;
@@ -37,6 +39,6 @@ public abstract class Message {
 		this.messageDate = messageDate;
 	}
 	
-	
+
 
 }

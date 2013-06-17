@@ -1,6 +1,5 @@
 package org.ualerts.chat.service.api;
 
-import org.ualerts.chat.service.exceptions.FailedMessageDeliveryException;
 
 /**
  * Representing a member of a Conversation
@@ -19,8 +18,7 @@ public interface ChatClient {
 	/**
 	 * Send a message
 	 * @param the message to be sent
-	 * @throws FailedMessageDeliveryException
 	 */
-	void deliverMessage(Message message) throws FailedMessageDeliveryException;
+	void deliverMessage(Message message);
 
 }
