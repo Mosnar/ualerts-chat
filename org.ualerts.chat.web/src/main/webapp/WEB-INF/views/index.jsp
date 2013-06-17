@@ -6,7 +6,6 @@
     <script type="text/javascript" src="js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="js/chat-service.js"></script>
     <script type="text/javascript" src="js/chat-controller.js"></script>
-    <script type="text/javascript" src="indexjs.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
 	$('form').submit(function() {
@@ -25,7 +24,7 @@
 	function handleNameSubmit() {
 	    $('#nameButton').click(function() {
 		if ($('#usernameField').val() != "") {
-		    chatController.userName = $('#usernameField').val();
+		    userName = $('#usernameField').val();
 		    chatController.acknowledgeUser();
 		    $('#messageField').removeAttr('disabled');
 		}
@@ -39,6 +38,7 @@
 	var chatController;
 	
 	function init() {
+	    var username = "";
 	    chatService = new ChatService();
 	    chatController = new ChatController(chatService);
 	    
