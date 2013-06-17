@@ -8,7 +8,7 @@ import org.ualerts.chat.service.api.Message;
 
 public class ConcreteChatClient implements ChatClient {
 
-//	public ChatClientImpl(WebSocketSession session)
+//	public ChatClientImpl(Session session)
 //	{
 //		
 //	}

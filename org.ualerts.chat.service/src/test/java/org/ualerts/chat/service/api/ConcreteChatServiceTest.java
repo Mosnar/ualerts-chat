@@ -24,7 +24,7 @@ public class ConcreteChatServiceTest {
 	public void testFindDefaultConversation() {
 		Conversation conversation = new ConcreteConversation();
 		ChatService chatService = new ConcreteChatService(conversation);
-		assertSame(conversation, chatService.findConcreteConversation());
+		assertSame(conversation, chatService.findDefaultConversation());
 		
 	}
 	

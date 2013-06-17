@@ -12,7 +12,7 @@ import org.ualerts.chat.service.api.Conversation;
  */
 public class ConcreteChatService implements ChatService {
 
-	public final Conversation defaultConversation;
+	private final Conversation defaultConversation;
 	
 	public ConcreteChatService() {
 		this(new ConcreteConversation());
@@ -23,7 +23,7 @@ public class ConcreteChatService implements ChatService {
 	}
 	
 	@Override
-	public Conversation findConcreteConversation() {
+	public Conversation findDefaultConversation() {
 		return defaultConversation;
 	}
 
