@@ -15,7 +15,7 @@
 	init();
 	messageDisable();
 	handleNameSubmit();
-	handleMessageData();
+	handleMessageSubmit();
 	
 	function messageDisable() {
 	    $('#messageField').attr('disabled', 'disabled');
@@ -49,12 +49,13 @@
 	    chatService.addListener(chatController.onMessage);
 	}
 	
-	function handleMessageData() {
+	function handleMessageSubmit() {
 	    $('#messageButton').click(function() {
 		var clientMessage = $('#messageField').val();
 		
 		chatService.sendMessage(clientMessage);
 		console.log("The send button was clicked"); // for checking purposes
+		$('#messageField').val('');
 	    })
 	}
     });
