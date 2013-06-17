@@ -8,28 +8,15 @@ import org.ualerts.chat.service.api.Message;
 
 public class ConcreteChatClient implements ChatClient {
 
-//	public ChatClientImpl(Session session)
-//	{
-//		
-//	}
-	
-	private ChatService chatService;
-	//private ObjectMapper objectMapper; 
 	private Conversation conversation;
 
 	@Override
 	public void deliverMessage(Message message) {
-		
-		
 
 	}
 	
 	@Override
 	public void setConversation(Conversation conversation) {
 		this.conversation = conversation;
-
 	}
-	
-
-
 }

@@ -60,9 +60,6 @@ public class ConcreteConversationTest {
 		
 		context.checking(new Expectations() { { 
 			oneOf(client1).deliverMessage(message);
-		} });
-		
-		context.checking(new Expectations() { { 
 			oneOf(client2).deliverMessage(message);
 		} });
 		
