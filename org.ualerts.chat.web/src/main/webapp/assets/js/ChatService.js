@@ -18,6 +18,8 @@ ChatService.prototype.addListener = function(callback) {
 
 /**
  * Remove an object's callback function from the array of callback functions.
+ *
+ * @param callback The callback function to remove from the listeners array
  */
 ChatService.prototype.removeListener = function(callback) {
     var position = this.listeners.indexOf(callback); // for checking purposes
@@ -29,8 +31,10 @@ ChatService.prototype.removeListener = function(callback) {
  * Loop through the array of callback functions and pass the message as an
  * argument to them
  *
- * @param message The message to pass into each of the listeners' callback
+ * @param payload The payload to pass into each of the listeners' callback
  *                functions.
+ *
+ * @param username The username of the message's author
  */
 ChatService.prototype.sendMessage = function(payload, username) {
     var message = {
