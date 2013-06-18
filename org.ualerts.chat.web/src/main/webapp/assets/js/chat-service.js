@@ -14,7 +14,6 @@ function ChatService() {
  */
 ChatService.prototype.addListener = function(callback) {
     this.listeners.push(callback);
-    console.log('you pushed a callback to position ' + (this.listeners.length - 1)); // for checking purposes
 };
 
 /**
@@ -24,7 +23,6 @@ ChatService.prototype.removeListener = function(callback) {
     var position = this.listeners.indexOf(callback); // for checking purposes
     
     this.listeners.splice(this.listeners.indexOf(callback), 1);
-    console.log('you removed a callback from position ' + position); // for checking purposes
 };
 
 /**
