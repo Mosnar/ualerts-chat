@@ -31,10 +31,11 @@ ChatService.prototype.removeListener = function(callback) {
  * Loop through the array of callback functions and pass the message as an
  * argument to them
  *
- * @param payload The payload to pass into each of the listeners' callback
- *                functions.
- *
- * @param username The username of the message's author
+ * @param from The username of the message's author
+ * @param to The person receiving the message
+ * @param type The type of the message
+ * @param messageDate The date of the message
+ * @param text The text of the message
  */
 ChatService.prototype.sendMessage = function(from, to, type, messageDate, text) {
     var message = {
