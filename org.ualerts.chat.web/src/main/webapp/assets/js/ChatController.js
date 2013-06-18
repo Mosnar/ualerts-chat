@@ -39,6 +39,7 @@ ChatController.prototype.messageDisable = function() {
  */
 ChatController.prototype.onMessage = function(message) {
     $('#chatbox').append('<p>' + /*ChatController.prototype.username*/ message.from + ': ' + message.text + '</p>');
+    $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 };
 
 /**
