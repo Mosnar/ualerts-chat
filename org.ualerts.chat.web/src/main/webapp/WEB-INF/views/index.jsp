@@ -7,15 +7,6 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/index.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-		
-    	var chatService = new ChatService();
-    	var chatController = new ChatController(chatService);
-    	
-    	chatController.init();
-        });
-        </script>
     </head>
     <body>
         <div id="wrapper">

@@ -5,4 +5,9 @@ $(document).ready(function() {
     $('form').submit(function() {
         return false;
     });
+            
+    var chatService = new ChatService();
+    var chatController = new ChatController(chatService);
+    
+    chatController.init();
 });
