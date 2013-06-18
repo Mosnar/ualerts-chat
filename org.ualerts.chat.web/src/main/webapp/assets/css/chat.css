@@ -1,5 +1,3 @@
-@CHARSET "US-ASCII";
-
 body {
     font: 12px sans-serif;
     color: #222;
@@ -36,7 +34,7 @@ input {
     overflow: auto;
 }
 
-#usermsg {
+#messageField {
     width: 395px;
     border: 1px solid #ACD8F0;
 }
