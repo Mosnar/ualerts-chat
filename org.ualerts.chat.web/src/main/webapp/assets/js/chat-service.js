@@ -25,7 +25,7 @@ ChatService.prototype.removeListener = function(callback) {
     
     this.listeners.splice(this.listeners.indexOf(callback), 1);
     console.log('you removed a callback from position ' + position); // for checking purposes
-}
+};
 
 /**
  * Loop through the array of callback functions and pass the message as an
@@ -34,16 +34,26 @@ ChatService.prototype.removeListener = function(callback) {
  * @param message The message to pass into each of the listeners' callback
  *                functions.
  */
-ChatService.prototype.sendMessage = function(message) {
+ChatService.prototype.sendMessage = function(payload, username) {
+    var message = {
+        payload : payload,
+        username : username
+    }
     for (var i = 0; i < this.listeners.length; i++) {
         this.listeners[i](message);
     }
 };
 
+/**
+ * Connect to the service
+ */
 ChatService.prototype.connect = function() {
     console.log("You have connected");
 };
 
+/**
+ * Disconnect from the service
+ */
 ChatService.prototype.disconnect = function() {
     console.log("You have disconnected");
-}
+};
