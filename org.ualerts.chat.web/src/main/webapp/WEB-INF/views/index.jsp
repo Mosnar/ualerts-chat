@@ -4,8 +4,8 @@
     <title>Chat</title>
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}css/chat.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}js/jquery-2.0.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/chat-service.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/chat-controller.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatService.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatController.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
     	
