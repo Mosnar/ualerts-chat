@@ -36,10 +36,13 @@ ChatService.prototype.removeListener = function(callback) {
  *
  * @param username The username of the message's author
  */
-ChatService.prototype.sendMessage = function(payload, username) {
+ChatService.prototype.sendMessage = function(from, to, type, messageDate, text) {
     var message = {
-        payload : payload,
-        username : username
+        from : from,
+        to: to,
+        type: type,
+        messageDate: messageDate,
+        text: text
     }
     for (var i = 0; i < this.listeners.length; i++) {
         this.listeners[i](message);

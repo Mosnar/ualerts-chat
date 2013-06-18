@@ -5,7 +5,18 @@
  */
 function ChatController(chatService) {
     this.service = chatService;
+    this.username = "";
 }
+
+/**
+ * Set up the chat.
+ */
+ChatController.prototype.init = function() {
+    this.setUpListeners();
+    this.messageDisable();
+    this.handleNameSubmit();
+    this.handleMessageSubmit();
+};
 
 /**
  * Add listeners to the ChatService object.
@@ -27,8 +38,7 @@ ChatController.prototype.messageDisable = function() {
  * @param message The message object received
  */
 ChatController.prototype.onMessage = function(message) {
-    var chatC = this;
-    $('#chatbox').append('<p>' + ChatController.prototype.username + ': ' + message.payload + '</p>');
+    $('#chatbox').append('<p>' + /*ChatController.prototype.username*/ message.from + ': ' + message.text + '</p>');
 };
 
 /**
@@ -37,7 +47,8 @@ ChatController.prototype.onMessage = function(message) {
  * @param name The username
  */
 ChatController.prototype.updateUserName = function(name) {
-    ChatController.prototype.username = name;
+    //ChatController.prototype.username = name;
+    this.username = name;
 };
 
 /**
@@ -74,7 +85,7 @@ ChatController.prototype.handleMessageSubmit = function() {
     var chatC = this;
     $('#messageButton').click(function() {
         var clientMessage = $('#messageField').val();
-        chatC.service.sendMessage(clientMessage, chatC.username);
+        chatC.service.sendMessage(chatC.username, null, "chat", null, clientMessage);
         $('#messageField').val('');
     });
 };

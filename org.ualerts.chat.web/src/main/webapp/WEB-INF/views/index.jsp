@@ -6,30 +6,14 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatController.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}js/index.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
+		
+    	var chatService = new ChatService();
+    	var chatController = new ChatController(chatService);
     	
-    	/**
-    	 * Make sure forms don't submit GETs while in development.
-    	 */
-    	$('form').submit(function() {
-    	    return false;
-    	});
-    	
-    	init();
-    	
-    	/**
-    	 * Create references for a ChatService and a ChatController. Set up the
-    	 * chat.
-    	 */
-    	function init() {
-    	    var chatService = new ChatService();
-    	    var chatController = new ChatController(chatService);
-    	    chatController.setUpListeners();
-    	    chatController.messageDisable();
-    	    chatController.handleNameSubmit();
-    	    chatController.handleMessageSubmit();
-    	}
+    	chatController.init();
         });
         </script>
     </head>
