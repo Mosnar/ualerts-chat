@@ -74,6 +74,8 @@ ChatController.prototype.handleNameSubmit = function() {
             chatC.prepareMessageField();
         }
     });
+    
+    this.service.connect();
 };
 
 /**
@@ -104,8 +106,10 @@ ChatController.prototype.handleMessageSubmit = function() {
     var chatC = this;
     $messageField = $('#messageField');
     $('#messageButton').click(function() {
-        var clientMessage = $messageField.val();
-        chatC.service.sendMessage(chatC.username, "all", "chat", clientMessage); //from, to, type, messageDate, text
-        $messageField.val('');
+        if ($messageField.val() != "") {
+            var clientMessage = $messageField.val();
+            chatC.service.sendMessage(chatC.username, "all", "chat", clientMessage);
+            $messageField.val('');
+        }
     });
 };

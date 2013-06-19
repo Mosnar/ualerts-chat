@@ -2,12 +2,12 @@
 <html>
 <head>
     <title>Chat</title>
-    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}css/chat.css" />
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/jquery-2.0.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatService.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatController.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/sockjs-0.3.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}js/index.js"></script>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
     <body>
         <div id="wrapper">
