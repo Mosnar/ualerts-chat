@@ -22,16 +22,17 @@ package org.ualerts.chat.web.sockjs;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
-import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
-import org.ualerts.chat.service.api.concrete.ConcreteChatClient;
+import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
  * socksjs message handler
@@ -39,54 +40,61 @@ import org.ualerts.chat.service.api.concrete.ConcreteChatClient;
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class SockJsHandler extends TextWebSocketHandlerAdapter{
-
+public class SockJsHandler extends TextWebSocketHandlerAdapter {
+  
   private ChatService chatService;
   private ObjectMapper mapper = new ObjectMapper();
-  private ChatClient chatClient;
-  
+  private SockJsChatClient chatClient;
+  private ChatClientContext chatClientContext;
+
   @Override
   public void afterConnectionEstablished(final WebSocketSession session)
       throws Exception {
     super.afterConnectionEstablished(session);
-    //TODO need code from Michael on how to save chatClient into 'session'
-    ChatClient chatClient = new ConcreteChatClient(session);
-    this.chatClient = chatClient; 
+
+    chatClient = getChatClient();
+    chatClient.setSession(session);
     Conversation conversation = chatService.findDefaultConversation();
     conversation.addClient(chatClient);
     chatClient.setConversation(conversation);
-    
-    if(chatClient.getMissedMessages().size() > 0)
-    {
+
+    if (chatClient.getMissedMessages().size() > 0) {
       sendMissedMessages(chatClient.getMissedMessages());
     }
   }
   
- 
-  private void sendMissedMessages(List<Message> missedMessages)
-  {
-    for(Message missedMessage : missedMessages)
-    {
+  private SockJsChatClient getChatClient() {
+    if (chatClientContext.getChatClient() == null) {
+      chatClientContext.setChatClient(new ConcreteChatClient());
+    }
+    return (SockJsChatClient) chatClientContext.getChatClient();
+  }
+
+  private void sendMissedMessages(List<Message> missedMessages) {
+    for (Message missedMessage : missedMessages) {
       this.chatClient.getConversation().deliverMessage(missedMessage);
     }
   }
-  
+
   @Override
-  public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    this.chatClient.getConversation().deliverMessage(mapper.readValue(message.getPayload(), ChatTextMessage.class));
+  public void handleTextMessage(WebSocketSession session, TextMessage message)
+      throws Exception {
+    this.chatClient.getConversation().deliverMessage(
+        mapper.readValue(message.getPayload(), ChatTextMessage.class));
   }
 
-  public ChatClient getChatClient() {
-    return chatClient;
-  }
-
-  public void setChatClient(ChatClient chatClient) {
-    this.chatClient = chatClient;
-  }
-  
- @Autowired
+  @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
+  }
+
+  /**
+   * Sets the {@code chatClientContext} property.
+   * @param chatClientContext the value to set
+   */
+  @Autowired
+  public void setChatClientContext(ChatClientContext chatClientContext) {
+    this.chatClientContext = chatClientContext;
   }
 
 }
