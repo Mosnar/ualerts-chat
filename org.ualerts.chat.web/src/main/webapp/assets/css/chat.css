@@ -46,3 +46,8 @@ input {
 #menu {
     padding: 12.5px 25px 12.5px 25px;
 }
+
+input[readonly] {
+    background-color: #FAFAFA;
+    color: #8A8A8A;
+}

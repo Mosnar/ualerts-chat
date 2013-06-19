@@ -6,6 +6,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/ChatController.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}js/sockjs-0.3.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}js/index.js"></script>
     </head>
     <body>

@@ -29,7 +29,12 @@ ChatController.prototype.setUpListeners = function() {
  * Disable the message field.
  */
 ChatController.prototype.messageDisable = function() {
-    $('#messageField').attr('disabled', 'disabled');
+    var $field = $('#messageField');
+    var $button = $('#messageButton');
+    $field.attr('readonly', 'readonly');
+    $field.attr('value', 'Please enter a username');
+    $button.attr('disabled', 'disabled');
+    
 };
 
 /**
@@ -38,8 +43,10 @@ ChatController.prototype.messageDisable = function() {
  * @param message The message object received
  */
 ChatController.prototype.onMessage = function(message) {
-    $('#chatbox').append('<p>' + /*ChatController.prototype.username*/ message.from + ': ' + message.text + '</p>');
-    $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+    var $chatbox = $('#chatbox');
+    $chatbox.append('<p>' + '(' + message.messageDate + ')' + ' ' +
+        message.from + ': ' + message.text + '</p>');
+    $chatbox.scrollTop($chatbox[0].scrollHeight);
 };
 
 /**
@@ -48,7 +55,6 @@ ChatController.prototype.onMessage = function(message) {
  * @param name The username
  */
 ChatController.prototype.updateUserName = function(name) {
-    //ChatController.prototype.username = name;
     this.username = name;
 };
 
@@ -65,10 +71,22 @@ ChatController.prototype.handleNameSubmit = function() {
             var name = $('#usernameField').val();
             chatC.updateUserName(name);
             chatC.acknowledgeUser();
-            $('#messageField').removeAttr('disabled');
+            chatC.prepareMessageField();
         }
     });
 };
+
+/**
+ * Make the message field ready for typing.
+ */
+ChatController.prototype.prepareMessageField = function() {
+    var $field = $('#messageField');
+    var $button = $('#messageButton');
+    
+    $field.removeAttr('readonly');
+    $field.removeAttr('value');
+    $button.removeAttr('disabled');
+}
 
 /**
  * Display a welcome message on the view.
@@ -84,9 +102,10 @@ ChatController.prototype.acknowledgeUser = function() {
  */
 ChatController.prototype.handleMessageSubmit = function() {
     var chatC = this;
+    $messageField = $('#messageField');
     $('#messageButton').click(function() {
-        var clientMessage = $('#messageField').val();
-        chatC.service.sendMessage(chatC.username, null, "chat", null, clientMessage);
-        $('#messageField').val('');
+        var clientMessage = $messageField.val();
+        chatC.service.sendMessage(chatC.username, "all", "chat", clientMessage); //from, to, type, messageDate, text
+        $messageField.val('');
     });
 };
