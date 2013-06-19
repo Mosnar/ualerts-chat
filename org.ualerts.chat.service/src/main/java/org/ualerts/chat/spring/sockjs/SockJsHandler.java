@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.spring.socksjs;
+package org.ualerts.chat.spring.sockjs;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ import org.ualerts.chat.service.api.concrete.ConcreteChatClient;
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class SocksJsHandler extends TextWebSocketHandlerAdapter{
+public class SockJsHandler extends TextWebSocketHandlerAdapter{
 
   private ChatService chatService;
   private ObjectMapper mapper = new ObjectMapper();
@@ -85,7 +85,7 @@ public class SocksJsHandler extends TextWebSocketHandlerAdapter{
     this.chatClient = chatClient;
   }
   
-  @Autowired
+ 
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
   }

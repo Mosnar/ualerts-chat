@@ -49,7 +49,7 @@
 	<bean id="webSocketHandler"
 		class="org.springframework.web.socket.support.PerConnectionWebSocketHandler">
 		<constructor-arg
-			value="#{ T(org.ualerts.chat.spring.socksjs.SockJsHandler.class) }" />
+			value="#{ T(org.ualerts.chat.spring.sockjs.SockJsHandler.class) }" />
 	</bean>
 
 	<bean id="sockJsHttpRequestHandler"
@@ -67,6 +67,13 @@
 			</map>
 		</property>
 	</bean>
+	
+	<bean id="chatService" class="org.ualerts.chat.service.api.concrete.ConcreteChatService"/>
+	
+	<bean class="org.ualerts.chat.spring.sockjs.SockJsHandler" >
+		<property name="chatService" ref="chatService"/>
+	</bean>
+	
 
 	<!-- bean class="org.springframework.context.support.ResourceBundleMessageSource" 
 		id="messageSource"> <property name="basenames"> <list> <value>spring/error_codes</value> 
