@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.spring.sockjs;
+package org.ualerts.chat.web.sockjs;
 
 import java.util.List;
 
@@ -73,7 +73,9 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter{
   
   @Override
   public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    this.chatClient.getConversation().deliverMessage(mapper.readValue(message.toString(), ChatTextMessage.class));
+    String data = message.getPayload();
+    System.out.println("Got " + data);
+    this.chatClient.getConversation().deliverMessage(mapper.readValue(data, ChatTextMessage.class));
     
   }
 

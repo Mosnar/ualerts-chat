@@ -52,7 +52,7 @@
 		<constructor-arg>
 
 			<bean class="java.lang.Class" factory-method="forName">
-				<constructor-arg value="org.ualerts.chat.spring.sockjs.SockJsHandler" />
+				<constructor-arg value="org.ualerts.chat.web.sockjs.SockJsHandler" />
 			</bean>
 
 		</constructor-arg>
