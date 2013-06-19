@@ -39,6 +39,7 @@ public class ConcreteConversation implements Conversation {
   @Override
   public void addClient(ChatClient chatClient) {
     this.clients.add(chatClient);
+    chatClient.setConversation(this);
   }
 
   @Override
