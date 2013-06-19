@@ -46,10 +46,16 @@
 		<constructor-arg ref="taskScheduler" />
 	</bean>
 
+
 	<bean id="webSocketHandler"
 		class="org.springframework.web.socket.support.PerConnectionWebSocketHandler">
-		<constructor-arg
-			value="#{ T(org.ualerts.chat.spring.sockjs.SockJsHandler.class) }" />
+		<constructor-arg>
+
+			<bean class="java.lang.Class" factory-method="forName">
+				<constructor-arg value="org.ualerts.chat.spring.sockjs.SockJsHandler" />
+			</bean>
+
+		</constructor-arg>
 	</bean>
 
 	<bean id="sockJsHttpRequestHandler"
@@ -59,7 +65,7 @@
 	</bean>
 
 
-    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="order" value="2" />
 		<property name="urlMap">
 			<map>
@@ -67,13 +73,8 @@
 			</map>
 		</property>
 	</bean>
-	
-	<bean id="chatService" class="org.ualerts.chat.service.api.concrete.ConcreteChatService"/>
-	
-	<bean class="org.ualerts.chat.spring.sockjs.SockJsHandler" >
-		<property name="chatService" ref="chatService"/>
-	</bean>
-	
+
+
 
 	<!-- bean class="org.springframework.context.support.ResourceBundleMessageSource" 
 		id="messageSource"> <property name="basenames"> <list> <value>spring/error_codes</value> 
