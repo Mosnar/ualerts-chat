@@ -1,8 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
-  xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:oxm="http://www.springframework.org/schema/oxm"
-  xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="
   http://www.springframework.org/schema/mvc
   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
   http://www.springframework.org/schema/beans
@@ -16,31 +16,68 @@
   http://www.springframework.org/schema/util
   http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <context:component-scan base-package="org.ualerts.chat.web" />
-  <mvc:annotation-driven />
+	<context:component-scan base-package="org.ualerts.chat.web" />
+	<mvc:annotation-driven />
 
-  <bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
-    <property name="location">
-      <jee:jndi-lookup
-        jndi-name="ualerts/fixed/provisioning/config/servlet.properties"
-        default-value="/WEB-INF/ualerts-chat-servlet.properties" />
-    </property>
-  </bean>
+	<bean
+		class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+		<property name="location">
+			<jee:jndi-lookup
+				jndi-name="ualerts/fixed/provisioning/config/servlet.properties"
+				default-value="/WEB-INF/ualerts-chat-servlet.properties" />
+		</property>
+	</bean>
 
-  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-    <property name="prefix" value="/WEB-INF/views/" />
-    <property name="suffix" value=".jsp" />
-  </bean>
-  
-  <!-- bean class="org.springframework.context.support.ResourceBundleMessageSource"
-    id="messageSource">
-    <property name="basenames">
-      <list>
-        <value>spring/error_codes</value>
-        <value>messages/messages</value>
-      </list>
-    </property>
-  </bean -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="taskScheduler"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+		<property name="threadNamePrefix" value="SocksJS-" />
+	</bean>
+
+	<bean id="sockJsService"
+		class="org.springframework.web.socket.sockjs.support.DefaultSockJsService">
+		<constructor-arg ref="taskScheduler" />
+	</bean>
+
+
+	<bean id="webSocketHandler"
+		class="org.springframework.web.socket.support.PerConnectionWebSocketHandler">
+		<constructor-arg>
+
+			<bean class="java.lang.Class" factory-method="forName">
+				<constructor-arg value="org.ualerts.chat.spring.sockjs.SockJsHandler" />
+			</bean>
+
+		</constructor-arg>
+	</bean>
+
+	<bean id="sockJsHttpRequestHandler"
+		class="org.springframework.web.socket.sockjs.support.SockJsHttpRequestHandler">
+		<constructor-arg index="0" ref="sockJsService" />
+		<constructor-arg index="1" ref="webSocketHandler" />
+	</bean>
+
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order" value="2" />
+		<property name="urlMap">
+			<map>
+				<entry key="sockjs/connector/**" value-ref="sockJsHttpRequestHandler" />
+			</map>
+		</property>
+	</bean>
+
+
+
+	<!-- bean class="org.springframework.context.support.ResourceBundleMessageSource" 
+		id="messageSource"> <property name="basenames"> <list> <value>spring/error_codes</value> 
+		<value>messages/messages</value> </list> </property> </bean -->
 
 </beans>

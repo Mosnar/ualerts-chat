@@ -19,6 +19,7 @@
 
 package org.ualerts.chat.service.api.concrete;
 
+import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
 
@@ -29,6 +30,7 @@ import org.ualerts.chat.service.api.Conversation;
  * @author Ransom Roberson
  *
  */
+@Service
 public class ConcreteChatService implements ChatService {
 
 	private final Conversation defaultConversation;
