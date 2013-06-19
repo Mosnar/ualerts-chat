@@ -85,7 +85,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter{
     this.chatClient = chatClient;
   }
   
- 
+ @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
   }
