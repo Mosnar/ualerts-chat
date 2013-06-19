@@ -73,10 +73,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter{
   
   @Override
   public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    String data = message.getPayload();
-    System.out.println("Got " + data);
-    this.chatClient.getConversation().deliverMessage(mapper.readValue(data, ChatTextMessage.class));
-    
+    this.chatClient.getConversation().deliverMessage(mapper.readValue(message.getPayload(), ChatTextMessage.class));
   }
 
   public ChatClient getChatClient() {
