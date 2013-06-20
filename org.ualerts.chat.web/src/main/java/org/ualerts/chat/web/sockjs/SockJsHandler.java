@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
+import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
@@ -82,6 +83,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     ChatTextMessage chatMessage = 
         mapper.readValue(message.getPayload(), ChatTextMessage.class);
     chatMessage.setMessageDate(dateTimeService.getCurrentDate());
+    chatMessage.setText( HtmlUtils.htmlEscape(chatMessage.getText()) );
     this.chatClient.getConversation().deliverMessage(chatMessage);
   }
 
