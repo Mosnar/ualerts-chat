@@ -88,7 +88,7 @@ ChatController.prototype.prepareMessageField = function() {
     $field.removeAttr('readonly');
     $field.removeAttr('value');
     $button.removeAttr('disabled');
-}
+};
 
 /**
  * Display a welcome message on the view.
