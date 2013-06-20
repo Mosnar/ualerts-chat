@@ -56,7 +56,6 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     chatClient.setSession(session);
     Conversation conversation = chatService.findDefaultConversation();
     conversation.addClient(chatClient);
-    chatClient.setConversation(conversation);
 
     if (chatClient.getMissedMessages().size() > 0) {
       sendMissedMessages(chatClient.getMissedMessages());
