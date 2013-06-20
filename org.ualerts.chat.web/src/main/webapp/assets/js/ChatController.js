@@ -74,7 +74,6 @@ ChatController.prototype.handleNameSubmit = function() {
             chatC.updateUserName(name);
             chatC.acknowledgeUser();
             chatC.prepareMessageField();
-            chatC.service.sendMessage("<b>" + chatC.username + "</b>", "all", "chat", "<b>" + name + "</b>" + " has entered the chat.");
         }
     });
     
