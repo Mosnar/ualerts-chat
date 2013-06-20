@@ -3,6 +3,7 @@
  */
 function ChatService() {
     this.listeners = new Array();
+    this.ws = null;
 }
 
 /**
@@ -21,9 +22,7 @@ ChatService.prototype.addListener = function(callback) {
  *
  * @param callback The callback function to remove from the listeners array
  */
-ChatService.prototype.removeListener = function(callback) {
-    var position = this.listeners.indexOf(callback); // for checking purposes
-    
+ChatService.prototype.removeListener = function(callback) {    
     this.listeners.splice(this.listeners.indexOf(callback), 1);
 };
 
@@ -34,27 +33,31 @@ ChatService.prototype.removeListener = function(callback) {
  * @param from The username of the message's author
  * @param to The person receiving the message
  * @param type The type of the message
- * @param messageDate The date of the message
  * @param text The text of the message
  */
-ChatService.prototype.sendMessage = function(from, to, type, messageDate, text) {
+ChatService.prototype.sendMessage = function(from, to, type, text) {
     var message = {
         from : from,
         to: to,
         type: type,
-        messageDate: messageDate,
         text: text
-    }
-    for (var i = 0; i < this.listeners.length; i++) {
-        this.listeners[i](message);
-    }
+    };
+
+    this.ws.send( JSON.stringify(message) );
 };
 
 /**
  * Connect to the service
  */
 ChatService.prototype.connect = function() {
-    console.log("You have connected");
+	var chatS = this;
+    this.ws = new SockJS("sockjs/connector");
+    this.ws.onmessage = function(event) {
+    	var message = $.parseJSON(event.data);
+        for (var i = 0; i < chatS.listeners.length; i++) {
+        	chatS.listeners[i](message);
+        }
+    };
 };
 
 /**
