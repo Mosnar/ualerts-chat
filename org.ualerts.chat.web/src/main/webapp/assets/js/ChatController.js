@@ -44,7 +44,9 @@ ChatController.prototype.messageDisable = function() {
  */
 ChatController.prototype.onMessage = function(message) {
     var $chatbox = $('#chatbox');
-    $chatbox.append('<p>' + '(' + message.messageDate + ')' + ' ' +
+    var date = new Date(message.messageDate);
+    var dateString = date.getHours() + ":" + date.getMinutes();
+    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
         message.from + ': ' + message.text + '</p>');
     $chatbox.scrollTop($chatbox[0].scrollHeight);
 };
