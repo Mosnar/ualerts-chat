@@ -72,6 +72,7 @@ ChatController.prototype.handleNameSubmit = function() {
             chatC.updateUserName(name);
             chatC.acknowledgeUser();
             chatC.prepareMessageField();
+            chatC.service.sendMessage("<b>" + chatC.username + "</b>", "all", "chat", "<b>" + name + "</b>" + " has entered the chat.");
         }
     });
     
@@ -108,7 +109,7 @@ ChatController.prototype.handleMessageSubmit = function() {
     $('#messageButton').click(function() {
         if ($messageField.val() != "") {
             var clientMessage = $messageField.val();
-            chatC.service.sendMessage(chatC.username, "all", "chat", clientMessage);
+            chatC.service.sendMessage("<b>" + chatC.username + "</b>", "all", "chat", clientMessage);
             $messageField.val('');
         }
     });
