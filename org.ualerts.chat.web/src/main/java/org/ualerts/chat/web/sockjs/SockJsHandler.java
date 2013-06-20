@@ -19,7 +19,6 @@
 
 package org.ualerts.chat.web.sockjs;
 
-import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
