@@ -72,7 +72,14 @@
 				<entry key="sockjs/connector/**" value-ref="sockJsHttpRequestHandler" />
 			</map>
 		</property>
+    <property name="interceptors">
+        <list>
+            <ref bean="chatClientContext"/>
+        </list>
+    </property>
 	</bean>
+  
+  <bean id="chatClientContext" class="org.ualerts.chat.web.context.ChatClientContextInterceptor" />
 
 
 

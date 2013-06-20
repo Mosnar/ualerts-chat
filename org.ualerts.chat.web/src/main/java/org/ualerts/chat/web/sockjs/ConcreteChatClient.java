@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.service.api.concrete;
+package org.ualerts.chat.web.sockjs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,22 +25,16 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
 
 
-public class ConcreteChatClient implements ChatClient {
+class ConcreteChatClient implements SockJsChatClient {
 
 	private Conversation conversation;
   private WebSocketSession session;
   private ObjectMapper mapper = new ObjectMapper();
 	private List<Message> missedMessages = new ArrayList<Message>();
-	
-  public ConcreteChatClient(WebSocketSession session)
-  {
-    this.session = session;
-  }
   
 	@Override
 	public void deliverMessage(Message message) {
@@ -68,5 +62,12 @@ public class ConcreteChatClient implements ChatClient {
     return this.missedMessages;
   }
 
+  /**
+   * Sets the {@code session} property.
+   * @param session the value to set
+   */
+  public void setSession(WebSocketSession session) {
+    this.session = session;
+  }
  
 }
