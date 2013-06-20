@@ -21,6 +21,7 @@ package org.ualerts.chat.service.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
@@ -48,23 +49,30 @@ public class ConcreteConversationTest {
 	@Test
 	public void testAddClient()
 	{
-		ChatClient client = context.mock(ChatClient.class);
+		final ChatClient client = context.mock(ChatClient.class);	
+		context.checking(new Expectations() { { 
+      oneOf(client).setConversation(conversation);     
+    } });	
 		conversation.addClient(client);
 		Set<ChatClient> clients = conversation.getChatClients();
 		assertEquals(1, clients.size());
 		assertTrue(clients.contains(client));
-		
+		context.assertIsSatisfied();
 	}
 	
 	@Test
 	public void testRemoveClient()
 	{
-		ChatClient client = context.mock(ChatClient.class);
+		final ChatClient client = context.mock(ChatClient.class);
+		context.checking(new Expectations() { { 
+      oneOf(client).setConversation(conversation);     
+    } }); 
 		conversation.addClient(client);
 		Set<ChatClient> clients = conversation.getChatClients();
 		assertEquals(1, clients.size());
 		clients.remove(client);
 		assertFalse(clients.contains(client));
+		context.assertIsSatisfied();
 	}
 
 	@Test
@@ -72,6 +80,12 @@ public class ConcreteConversationTest {
 		final ChatClient client1 = context.mock(ChatClient.class,"first");
 		final ChatClient client2 = context.mock(ChatClient.class,"second");
 		final ChatTextMessage message = new ChatTextMessage();
+		
+		context.checking(new Expectations() { { 
+      oneOf(client1).setConversation(conversation); 
+      oneOf(client2).setConversation(conversation);  
+    } }); 
+		
 		message.setText("Hello");
 		conversation.addClient(client1);
 		conversation.addClient(client2);
