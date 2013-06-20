@@ -19,11 +19,10 @@
 
 package org.ualerts.chat.web.sockjs;
 
+import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -31,6 +30,7 @@ import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.web.context.ChatClientContext;
 
@@ -46,6 +46,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
   private ObjectMapper mapper = new ObjectMapper();
   private SockJsChatClient chatClient;
   private ChatClientContext chatClientContext;
+  private DateTimeService dateTimeService;
 
   @Override
   public void afterConnectionEstablished(final WebSocketSession session)
@@ -78,8 +79,10 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
   @Override
   public void handleTextMessage(WebSocketSession session, TextMessage message)
       throws Exception {
-    this.chatClient.getConversation().deliverMessage(
-        mapper.readValue(message.getPayload(), ChatTextMessage.class));
+    ChatTextMessage chatMessage = 
+        mapper.readValue(message.getPayload(), ChatTextMessage.class);
+    chatMessage.setMessageDate(dateTimeService.getCurrentDate());
+    this.chatClient.getConversation().deliverMessage(chatMessage);
   }
 
   @Autowired
@@ -96,4 +99,12 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     this.chatClientContext = chatClientContext;
   }
 
+  /**
+   * Sets the {@code dateTimeService} property.
+   * @param dateTimeService the value to set
+   */
+  @Autowired
+  public void setDateTimeService(DateTimeService dateTimeService) {
+    this.dateTimeService = dateTimeService;
+  }
 }
