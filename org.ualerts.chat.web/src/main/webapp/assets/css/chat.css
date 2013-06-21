@@ -1,6 +1,5 @@
 body {
-    text-align: center;
-    padding: 35px;
+    padding-top: 35px;
 }
 
 form, p, span {
@@ -9,37 +8,37 @@ form, p, span {
 }
 
 #wrapper {
-    margin: 0 auto;
     background: #EBF4FB;
-    width: 504px;
     border: 1px solid #ACD8F0;
+    padding: 10px;
 }
 
-#container {
-    /*background: #E0E0E0;*/
+#wrapper input {
+	margin-bottom: 0px;
 }
 
 #chatbox {
-    text-align: left;
-    margin: 0 auto;
     margin-bottom: 25px;
     padding: 10px;
     background: #fff;
     height: 270px;
-    width: 430px;
     border: 1px solid #ACD8F0;
     overflow: auto;
 }
 
 #messageField {
-    width: 375px;
+    width: 95%;
     border: 1px solid #ACD8F0;
 }
 
-input[type=submit] {
-    margin-top: -10px;
+#usernameField {
+	width: 95%;
 }
 
-#menu {
-    padding: 12.5px 25px 12.5px 25px;
-}
+/* input[type=submit] { */
+/*     margin-top: -10px; */
+/* } */
+
+/* #menu { */
+/*     padding: 12.5px 25px 12.5px 25px; */
+/* } */

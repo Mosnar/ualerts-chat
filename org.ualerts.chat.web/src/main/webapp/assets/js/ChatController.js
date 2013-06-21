@@ -16,6 +16,7 @@ ChatController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
+    $('#usernameField').focus();
 };
 
 /**
@@ -32,7 +33,7 @@ ChatController.prototype.messageDisable = function() {
     var $field = $('#messageField');
     var $button = $('#messageButton');
     $field.attr('readonly', 'readonly');
-    $field.attr('value', 'Please enter a username');
+    $field.attr('placeholder', 'Please enter a username');
     $button.attr('disabled', 'disabled');
 };
 
@@ -45,11 +46,13 @@ ChatController.prototype.handleNameSubmit = function() {
     var chatC = this;
     
     $('#nameButton').click(function() {        
-        if ($('#usernameField').val() != "") {
+        if ($.trim($('#usernameField').val()) != "") {
             var name = $('#usernameField').val();
             chatC.updateUserName(name);
             chatC.acknowledgeUser();
             chatC.prepareMessageField();
+            $('#messageField').attr('placeholder', 'Type a message...').focus();
+            $("#nameForm").hide();
         }
     });
     
