@@ -34,30 +34,6 @@ ChatController.prototype.messageDisable = function() {
     $field.attr('readonly', 'readonly');
     $field.attr('value', 'Please enter a username');
     $button.attr('disabled', 'disabled');
-    
-};
-
-/**
- * Perform an action when called by the ChatService object
- *
- * @param message The message object received
- */
-ChatController.prototype.onMessage = function(message) {
-    var $chatbox = $('#chatbox');
-    var date = new Date(message.messageDate);
-    var dateString = date.getHours() + ":" + date.getMinutes();
-    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-        message.from + ': ' + message.text + '</p>');
-    $chatbox.scrollTop($chatbox[0].scrollHeight);
-};
-
-/**
- * Create a username prototype property for the ChatController class
- *
- * @param name The username
- */
-ChatController.prototype.updateUserName = function(name) {
-    this.username = name;
 };
 
 /**
@@ -81,6 +57,23 @@ ChatController.prototype.handleNameSubmit = function() {
 };
 
 /**
+ * Create a username prototype property for the ChatController class
+ *
+ * @param name The username
+ */
+ChatController.prototype.updateUserName = function(name) {
+    this.username = name;
+};
+
+/**
+ * Display a welcome message on the view.
+ */
+ChatController.prototype.acknowledgeUser = function() {
+    var chatC = this;
+    $('#user-welcome').text('Welcome, ' + chatC.username + ".");
+};
+
+/**
  * Make the message field ready for typing.
  */
 ChatController.prototype.prepareMessageField = function() {
@@ -90,14 +83,6 @@ ChatController.prototype.prepareMessageField = function() {
     $field.removeAttr('readonly');
     $field.removeAttr('value');
     $button.removeAttr('disabled');
-};
-
-/**
- * Display a welcome message on the view.
- */
-ChatController.prototype.acknowledgeUser = function() {
-    var chatC = this;
-    $('#user-welcome').text('Welcome, ' + chatC.username + ".");
 };
 
 /**
@@ -114,4 +99,18 @@ ChatController.prototype.handleMessageSubmit = function() {
             $messageField.val('');
         }
     });
+};
+
+/**
+ * Perform an action when called by the ChatService object
+ *
+ * @param message The message object received
+ */
+ChatController.prototype.onMessage = function(message) {
+    var $chatbox = $('#chatbox');
+    var date = new Date(message.messageDate);
+    var dateString = date.getHours() + ":" + date.getMinutes();
+    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
+        message.from + ': ' + message.text + '</p>');
+    $chatbox.scrollTop($chatbox[0].scrollHeight);
 };
