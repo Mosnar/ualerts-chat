@@ -1,6 +1,4 @@
 body {
-    font: 12px sans-serif;
-    color: #222;
     text-align: center;
     padding: 35px;
 }
@@ -10,16 +8,15 @@ form, p, span {
     padding: 0;
 }
 
-input {
-    font: 12px arial;
-}
-
 #wrapper {
     margin: 0 auto;
-    padding-bottom: 25px;
     background: #EBF4FB;
     width: 504px;
     border: 1px solid #ACD8F0;
+}
+
+#container {
+    /*background: #E0E0E0;*/
 }
 
 #chatbox {
@@ -35,19 +32,14 @@ input {
 }
 
 #messageField {
-    width: 395px;
+    width: 375px;
     border: 1px solid #ACD8F0;
 }
 
-#submit {
-    width: 60px;
+input[type=submit] {
+    margin-top: -10px;
 }
 
 #menu {
     padding: 12.5px 25px 12.5px 25px;
-}
-
-input[readonly] {
-    background-color: #FAFAFA;
-    color: #8A8A8A;
 }

@@ -3,6 +3,8 @@
 <head>
     <title>Chat</title>
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.css" />
+    
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
