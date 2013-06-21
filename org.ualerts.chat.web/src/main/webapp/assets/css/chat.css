@@ -1,8 +1,5 @@
 body {
-    font: 12px sans-serif;
-    color: #222;
-    text-align: center;
-    padding: 35px;
+    padding-top: 35px;
 }
 
 form, p, span {
@@ -10,44 +7,38 @@ form, p, span {
     padding: 0;
 }
 
-input {
-    font: 12px arial;
+#wrapper {
+    background: #EBF4FB;
+    border: 1px solid #ACD8F0;
+    padding: 10px;
 }
 
-#wrapper {
-    margin: 0 auto;
-    padding-bottom: 25px;
-    background: #EBF4FB;
-    width: 504px;
-    border: 1px solid #ACD8F0;
+#wrapper input {
+	margin-bottom: 0px;
 }
 
 #chatbox {
-    text-align: left;
-    margin: 0 auto;
     margin-bottom: 25px;
     padding: 10px;
     background: #fff;
     height: 270px;
-    width: 430px;
     border: 1px solid #ACD8F0;
     overflow: auto;
 }
 
 #messageField {
-    width: 395px;
+    width: 95%;
     border: 1px solid #ACD8F0;
 }
 
-#submit {
-    width: 60px;
+#usernameField {
+	width: 95%;
 }
 
-#menu {
-    padding: 12.5px 25px 12.5px 25px;
-}
+/* input[type=submit] { */
+/*     margin-top: -10px; */
+/* } */
 
-input[readonly] {
-    background-color: #FAFAFA;
-    color: #8A8A8A;
-}
+/* #menu { */
+/*     padding: 12.5px 25px 12.5px 25px; */
+/* } */

@@ -16,6 +16,7 @@ ChatController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
+    $('#usernameField').focus();
 };
 
 /**
@@ -32,23 +33,30 @@ ChatController.prototype.messageDisable = function() {
     var $field = $('#messageField');
     var $button = $('#messageButton');
     $field.attr('readonly', 'readonly');
-    $field.attr('value', 'Please enter a username');
+    $field.attr('placeholder', 'Please enter a username');
     $button.attr('disabled', 'disabled');
-    
 };
 
 /**
- * Perform an action when called by the ChatService object
- *
- * @param message The message object received
+ * Call updateUserName, provided with the username field's value
+ * Call acknowledgeUser() to display a welcome message
+ * Enable the message input field
  */
-ChatController.prototype.onMessage = function(message) {
-    var $chatbox = $('#chatbox');
-    var date = new Date(message.messageDate);
-    var dateString = date.getHours() + ":" + date.getMinutes();
-    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-        message.from + ': ' + message.text + '</p>');
-    $chatbox.scrollTop($chatbox[0].scrollHeight);
+ChatController.prototype.handleNameSubmit = function() {
+    var chatC = this;
+    
+    $('#nameButton').click(function() {        
+        if ($.trim($('#usernameField').val()) != "") {
+            var name = $('#usernameField').val();
+            chatC.updateUserName(name);
+            chatC.acknowledgeUser();
+            chatC.prepareMessageField();
+            $('#messageField').attr('placeholder', 'Type a message...').focus();
+            $("#nameForm").hide();
+        }
+    });
+    
+    this.service.connect();
 };
 
 /**
@@ -61,23 +69,11 @@ ChatController.prototype.updateUserName = function(name) {
 };
 
 /**
- * Call updateUserName, provided with the username field's value
- * Call acknowledgeUser() to display a welcome message
- * Enable the message input field
+ * Display a welcome message on the view.
  */
-ChatController.prototype.handleNameSubmit = function() {
+ChatController.prototype.acknowledgeUser = function() {
     var chatC = this;
-    
-    $('#nameButton').click(function() {        
-        if ($('#usernameField').val() != "") {
-            var name = $('#usernameField').val();
-            chatC.updateUserName(name);
-            chatC.acknowledgeUser();
-            chatC.prepareMessageField();
-        }
-    });
-    
-    this.service.connect();
+    $('#user-welcome').text('Welcome, ' + chatC.username + ".");
 };
 
 /**
@@ -90,14 +86,6 @@ ChatController.prototype.prepareMessageField = function() {
     $field.removeAttr('readonly');
     $field.removeAttr('value');
     $button.removeAttr('disabled');
-};
-
-/**
- * Display a welcome message on the view.
- */
-ChatController.prototype.acknowledgeUser = function() {
-    var chatC = this;
-    $('#user-welcome').text('Welcome, ' + chatC.username + ".");
 };
 
 /**
@@ -114,4 +102,24 @@ ChatController.prototype.handleMessageSubmit = function() {
             $messageField.val('');
         }
     });
+};
+
+/**
+ * Perform an action when called by the ChatService object
+ *
+ * @param message The message object received
+ */
+ChatController.prototype.onMessage = function(message) {
+    var $chatbox = $('#chatbox');
+    var date = new Date(message.messageDate);
+    
+    var minutes = date.getMinutes();
+    if (minutes < 10) {
+    	minutes = "0" + minutes;
+    }
+
+    var dateString = date.getHours() + ":" + minutes;
+    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
+        message.from + ': ' + message.text + '</p>');
+    $chatbox.scrollTop($chatbox[0].scrollHeight);
 };
