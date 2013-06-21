@@ -96,7 +96,7 @@ ChatController.prototype.handleMessageSubmit = function() {
     var chatC = this;
     $messageField = $('#messageField');
     $('#messageButton').click(function() {
-        if ($messageField.val() != "") {
+        if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
             chatC.service.sendMessage("<b>" + chatC.username + "</b>", "all", "chat", clientMessage);
             $messageField.val('');
