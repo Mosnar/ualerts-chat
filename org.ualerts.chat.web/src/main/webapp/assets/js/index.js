@@ -18,6 +18,9 @@ $(document).ready(function() {
      */
     function doModal() {
         $('#login').modal();
+        $('#login').on('shown', function() {
+            $('#usernameField').focus();
+        });
     }
     
     doModal();
