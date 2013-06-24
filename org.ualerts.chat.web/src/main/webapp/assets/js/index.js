@@ -10,4 +10,15 @@ $(document).ready(function() {
     var chatController = new ChatController(chatService);
     
     chatController.init();
+    $('#usernameField').focus();
+    
+    
+    /**
+     * Launch modal
+     */
+    function doModal() {
+        $('#login').modal();
+    }
+    
+    doModal();
 });
