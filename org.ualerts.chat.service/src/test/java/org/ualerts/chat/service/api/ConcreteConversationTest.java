@@ -19,8 +19,9 @@
 
 package org.ualerts.chat.service.api;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
@@ -76,20 +77,8 @@ public class ConcreteConversationTest {
     final UserName userName1 = new UserName(USER_NAME1);
     final UserName userName2 = new UserName(USER_NAME2);
 
-    context.checking(new Expectations() {
-      {
-
-        atLeast(2).of(participant1).getUserName();
-        will(returnValue(userName1));
-
-        oneOf(participant2).getUserName();
-        will(returnValue(userName2));
-
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-
-      }
-    });
+    context.checking(createAddParticipantExpectations(participant1, participant2,
+            userName1, userName2));
 
     conversation.addParticipant(participant1);
     conversation.addParticipant(participant2);
@@ -149,20 +138,8 @@ public class ConcreteConversationTest {
     final UserName userName1 = new UserName(USER_NAME1);
     final UserName userName2 = new UserName(USER_NAME2);
 
-    context.checking(new Expectations() {
-      {
-
-        atLeast(2).of(participant1).getUserName();
-        will(returnValue(userName1));
-
-        oneOf(participant2).getUserName();
-        will(returnValue(userName2));
-
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-
-      }
-    });
+    context.checking(createAddParticipantExpectations(participant1, participant2,
+            userName1, userName2));
 
     conversation.addParticipant(participant1);
     conversation.addParticipant(participant2);
@@ -179,9 +156,29 @@ public class ConcreteConversationTest {
     final UserName userName1 = new UserName(USER_NAME1);
     final UserName userName2 = new UserName(USER_NAME2);
 
-    context.checking(new Expectations() {
-      {
+    context.checking(createAddParticipantExpectations(participant1, participant2,
+            userName1, userName2));
 
+      
+
+    conversation.addParticipant(participant1);
+    conversation.addParticipant(participant2);
+    
+    assertFalse(conversation.isValidUserName(USER_NAME1));
+  }
+
+  /**
+   * @param participant1
+   * @param participant2
+   * @param userName1
+   * @param userName2
+   */
+  private Expectations createAddParticipantExpectations(
+      final Participant participant1, final Participant participant2,
+      final UserName userName1, final UserName userName2) {
+    
+    return new Expectations() {
+      {
         atLeast(2).of(participant1).getUserName();
         will(returnValue(userName1));
 
@@ -189,14 +186,8 @@ public class ConcreteConversationTest {
         will(returnValue(userName2));
 
         oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-
-      }
-    });
-
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
+        oneOf(participant2).setConversation(conversation);   }
+    };
     
-    assertFalse(conversation.isValidUserName(USER_NAME1));
   }
 }
