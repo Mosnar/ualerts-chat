@@ -63,4 +63,10 @@ public interface Participant {
    * @return the ChatClient associated with a participant
    */
   ChatClient getChatClient();
+  
+  /**
+   * Provides facility to deliver a message
+   * @param message to deliver
+   */
+  void deliverMessage(Message message);
 }
