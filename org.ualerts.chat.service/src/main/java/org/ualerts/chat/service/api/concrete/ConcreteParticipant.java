@@ -83,6 +83,5 @@ public class ConcreteParticipant implements Participant {
     return chatClient;
   }
   
-  public boolean equals(String userName)
   
 }

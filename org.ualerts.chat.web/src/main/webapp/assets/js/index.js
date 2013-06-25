@@ -10,4 +10,17 @@ $(document).ready(function() {
     var chatController = new ChatController(chatService);
     
     chatController.init();
+    
+    /**
+     * Enable typeWatch on #usernameField 
+     */
+    function enableTypeWatch() {
+        $('#usernameField').typeWatch({
+        callback: function() { console.log('request sent'); },
+        wait: 400,
+        captureLength: 1
+        });
+    }
+    
+    enableTypeWatch();
 });
