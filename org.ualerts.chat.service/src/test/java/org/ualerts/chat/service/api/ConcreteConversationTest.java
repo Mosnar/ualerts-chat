@@ -159,8 +159,6 @@ public class ConcreteConversationTest {
     context.checking(createAddParticipantExpectations(participant1, participant2,
             userName1, userName2));
 
-      
-
     conversation.addParticipant(participant1);
     conversation.addParticipant(participant2);
     

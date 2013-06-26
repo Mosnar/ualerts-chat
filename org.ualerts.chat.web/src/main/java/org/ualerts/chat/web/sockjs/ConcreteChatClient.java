@@ -25,37 +25,27 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
-
+import org.ualerts.chat.service.api.Participant;
 
 class ConcreteChatClient implements SockJsChatClient {
 
-	private Conversation conversation;
+  private Participant participant;
   private WebSocketSession session;
   private ObjectMapper mapper = new ObjectMapper();
-	private List<Message> missedMessages = new ArrayList<Message>();
-  
-	@Override
-	public void deliverMessage(Message message) {
-	  
-	  try {
-	    session.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
+  private List<Message> missedMessages = new ArrayList<Message>();
+
+  @Override
+  public void deliverMessage(Message message) {
+
+    try {
+      session
+          .sendMessage(new TextMessage(mapper.writeValueAsString(message)));
     }
     catch (Exception e) {
-       missedMessages.add(message);
+      missedMessages.add(message);
     }
-	}
-	
-  @Override
-  public Conversation getConversation() {
-    return this.conversation;
   }
-  
-	@Override
-	public void setConversation(Conversation conversation) {
-		this.conversation = conversation;
-	}
 
   @Override
   public List<Message> getMissedMessages() {
@@ -69,5 +59,22 @@ class ConcreteChatClient implements SockJsChatClient {
   public void setSession(WebSocketSession session) {
     this.session = session;
   }
- 
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setParticipant(Participant participant) {
+    this.participant = participant;
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Participant getParticipant() {
+    return participant;
+  }
+
 }

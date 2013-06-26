@@ -56,7 +56,9 @@ public interface Conversation {
 	void deliverMessage(Message message);
 
 	/**
-	 * Indicates a valid user name
+	 * Indicates a valid user name.
+	 * A valid user name is one that has
+	 * not been assigned to a participant yet.
 	 * @return boolean indicator
 	 */
 	boolean isValidUserName(String userName);

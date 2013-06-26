@@ -30,7 +30,7 @@ import org.ualerts.chat.service.api.Participant;
 
 /**
  * The default conversation
- * @author Billy Coleman1
+ * @author Billy Coleman
  * @author Ransom Roberson
  * 
  */
