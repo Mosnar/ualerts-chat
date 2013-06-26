@@ -18,6 +18,14 @@
 
 	<context:component-scan base-package="org.ualerts.chat.web" />
 	<mvc:annotation-driven />
+	<mvc:interceptors>
+		<bean factory-bean="chatClientFactoryBean" factory-method="getInterceptor" />
+	</mvc:interceptors>
+
+	<bean id="chatClientFactoryBean" class="org.ualerts.chat.web.context.ChatClientContextInterceptorFactoryBean" />
+
+	<bean id="chatClientContext" 
+		factory-bean="chatClientFactoryBean" factory-method="getInterceptor" />
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
@@ -72,14 +80,8 @@
 				<entry key="sockjs/connector/**" value-ref="sockJsHttpRequestHandler" />
 			</map>
 		</property>
-    <property name="interceptors">
-        <list>
-            <ref bean="chatClientContext"/>
-        </list>
-    </property>
 	</bean>
   
-  <bean id="chatClientContext" class="org.ualerts.chat.web.context.ChatClientContextInterceptor" />
 
 
 

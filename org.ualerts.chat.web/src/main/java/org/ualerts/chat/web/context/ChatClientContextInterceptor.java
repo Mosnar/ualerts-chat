@@ -37,7 +37,7 @@ import org.ualerts.chat.service.api.ChatClient;
  */
 public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
     implements ChatClientContext, DisposableBean {
-
+  
   private static final ThreadLocal<ChatClient> chatClientContext =
       new ThreadLocal<ChatClient>() { };
       
