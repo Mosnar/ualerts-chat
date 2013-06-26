@@ -128,17 +128,20 @@ ChatController.prototype.onMessage = function(message) {
  * Perform a DOM operation if the username is valid or invalid, based on the boolean value
  * returned from the ChatService.checkUsername method
  *
- * @param bool The boolean value returned by the ChatService.checkUsername method
- * @param data The data returned by the 
+ * @param jsonObj The JSON object returned by the ChatService.checkUsername
+ * 		  method, which has a "result" property that is either "valid" or
+ * 		  "invalid"
  */
-ChatController.prototype.handleValidity = function(bool, data) {
-    if (bool === true) {
-        console.log("The username " + data + " is valid");
-        $('#username-validity').html('<img src="img/check.png" /><span> ' + data + ' </span>');
+ChatController.prototype.handleValidity = function(jsonObj) {
+    if (new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf()) {
+        console.log("The username " + $('#usernameField').val() + " is valid");
+        $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + $('#usernameField').val() + ' </span>');
+        $('#nameButton').removeAttr('disabled');
     }
-    else if (bool === false) {
-        console.log("The username " + data + "  is not valid");
-        $('#username-validity').html('<img src="img/cancel.png" /><span> ' + data + ' </span>');
+    else if (new String(JSON.parse(jsonObj).result).valueOf() == new String("invalid").valueOf()) {
+        console.log("The username " + $('#usernameField').val() + "  is not valid");
+        $('#username-validity').html('<div class="cancel"></div>&nbsp<span> ' + $('#usernameField').val() + ' </span>');
+        $('#nameButton').attr('disabled', 'disabled');
 
     }
-}
+};

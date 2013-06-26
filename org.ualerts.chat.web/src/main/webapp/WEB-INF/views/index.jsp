@@ -19,11 +19,11 @@
     		<div class="span3">&nbsp;</div>
 	        <div id="wrapper" class="span6">
 	        	<div id="menu">
-	                <form id="nameForm" action="" method="GET">
+	                <form id="nameForm" action="" method="GET" autocomplete="off">
                 		<div class="row">
                 			<div class="span4">
-							<div id="username-validity"></div>
 		                        <input placeholder="Username" name="username" type="text" id="usernameField"/>
+								<div id="username-validity"></div>
                 			</div>
                 			<div class="span2 text-center">
 		                        <input type="submit" class="btn btn-primary" id="nameButton" value="Submit"/>

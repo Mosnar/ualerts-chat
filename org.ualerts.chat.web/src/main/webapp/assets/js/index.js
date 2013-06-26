@@ -16,11 +16,20 @@ $(document).ready(function() {
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
-        callback: function() { console.log('request sent'); },
-        wait: 400,
+        callback: function() { sendUsername(); },
+        wait: 300,
         captureLength: 1
         });
     }
     
     enableTypeWatch();
+    
+    /**
+     * Call the ChatService's checkUsername method and pass in the
+     * ChatController's handleBoolean method as a callback.
+     */
+    function sendUsername() {
+        var $username = $('#usernameField').val();
+        chatService.checkUsername($username, chatController.handleValidity);
+    }
 });

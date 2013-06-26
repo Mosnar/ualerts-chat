@@ -76,9 +76,9 @@ ChatService.prototype.disconnect = function() {
 ChatService.prototype.checkUsername = function(username, callback) {
     $.ajax({
         type: "POST",
-        url: "",
+        url: window.location.href + "/checkName",
         data: { name: username }
-    }).done(function(result) {
-        callback(true, result);
+    }).done(function(jsonObj) {
+        callback(jsonObj);
     });
 };
