@@ -83,6 +83,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
       participant = new ConcreteParticipant();
       participant.setChatClient(chatClient);
       participant.setUserName(userName);
+      chatClient.setParticipant(participant);
     }
     else
     {
