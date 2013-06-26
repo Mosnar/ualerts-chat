@@ -20,9 +20,9 @@
 package org.ualerts.chat.web.context;
 
 /**
- * DESCRIBE THE TYPE HERE.
+ * Container for a ChatClientContextInterceptor
  *
- * @author billysc
+ * @author Michael Irwin
  */
 public class ChatClientContextInterceptorFactoryBean {
 
