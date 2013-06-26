@@ -7,6 +7,7 @@
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
     
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/typewatch.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>

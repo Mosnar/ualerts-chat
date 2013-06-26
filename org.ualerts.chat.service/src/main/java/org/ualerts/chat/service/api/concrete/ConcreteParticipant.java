@@ -91,5 +91,5 @@ public class ConcreteParticipant implements Participant {
   public void deliverMessage(Message message) {
     this.getChatClient().deliverMessage(message);
   }
-    
+  
 }
