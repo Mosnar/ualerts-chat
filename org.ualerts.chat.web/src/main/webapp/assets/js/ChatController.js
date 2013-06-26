@@ -131,7 +131,7 @@ ChatController.prototype.onMessage = function(message) {
  * @param bool The boolean value returned by the ChatService.checkUsername method
  * @param data The data returned by the 
  */
-ChatController.prototype.handleBoolean = function(bool, data) {
+ChatController.prototype.handleValidity = function(bool, data) {
     if (bool === true) {
         console.log("The username " + data + " is valid");
         $('#username-validity').html('<img src="img/check.png" /><span> ' + data + ' </span>');
