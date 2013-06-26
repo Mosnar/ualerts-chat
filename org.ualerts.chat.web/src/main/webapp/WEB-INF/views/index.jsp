@@ -22,6 +22,7 @@
 	                <form id="nameForm" action="" method="GET">
                 		<div class="row">
                 			<div class="span4">
+							<div id="username-validity"></div>
 		                        <input placeholder="Username" name="username" type="text" id="usernameField"/>
                 			</div>
                 			<div class="span2 text-center">

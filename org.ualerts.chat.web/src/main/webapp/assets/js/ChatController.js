@@ -123,3 +123,22 @@ ChatController.prototype.onMessage = function(message) {
         message.from + ': ' + message.text + '</p>');
     $chatbox.scrollTop($chatbox[0].scrollHeight);
 };
+
+/**
+ * Perform a DOM operation if the username is valid or invalid, based on the boolean value
+ * returned from the ChatService.checkUsername method
+ *
+ * @param bool The boolean value returned by the ChatService.checkUsername method
+ * @param data The data returned by the 
+ */
+ChatController.prototype.handleBoolean = function(bool, data) {
+    if (bool === true) {
+        console.log("The username " + data + " is valid");
+        $('#username-validity').html('<img src="img/check.png" /><span> ' + data + ' </span>');
+    }
+    else if (bool === false) {
+        console.log("The username " + data + "  is not valid");
+        $('#username-validity').html('<img src="img/cancel.png" /><span> ' + data + ' </span>');
+
+    }
+}
