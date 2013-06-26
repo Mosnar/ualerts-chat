@@ -42,8 +42,8 @@ import org.ualerts.chat.web.sockjs.SockJsChatClient;
 @Controller
 public class NameCheckController {
   
-  private final String VALID = "VALID";
-  private final String INVALID = "INVALID";
+  private final String VALID = "{\"result\":\"valid\"}";    
+  private final String INVALID = "{\"result\":\"invalid\"}";;
   
   private ChatClientContext chatClientContext;
   private SockJsChatClient chatClient;
