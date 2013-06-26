@@ -19,6 +19,7 @@
 
 package org.ualerts.chat.service.api;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,19 +34,19 @@ public interface Conversation {
 	 * Add a chat participant to a conversation
 	 * @param chatClient
 	 */
-	void addClient(ChatClient client);
+	void addParticipant(Participant participant);
 	
 	/**
 	 * Remove a chat participant from a conversation
 	 * @param chatClient
 	 */
-	void removeClient(ChatClient client);
+	void removeParticipant(Participant participant);
 	
 	/**
-	 * Returns a Set of ChatClient associated with this Conversation
-	 * @return Set of ChatClient
+	 * Returns a Set of Participants associated with this Conversation
+	 * @return Set of Participant
 	 */
-	Set<ChatClient> getChatClients();
+	Set<Participant> getParticipants();
 	
 	/**
 	 * Deliver a message to chat participants participating
@@ -54,5 +55,17 @@ public interface Conversation {
 	 */
 	void deliverMessage(Message message);
 
+	/**
+	 * Indicates a valid user name.
+	 * A valid user name is one that has
+	 * not been assigned to a participant yet.
+	 * @return boolean indicator
+	 */
+	boolean isValidUserName(String userName);
 	
+	/**
+	 * Provides a map of participants
+	 * @return the map of participants
+	 */
+	Map<String,Participant> getParticipantsMap();
 }

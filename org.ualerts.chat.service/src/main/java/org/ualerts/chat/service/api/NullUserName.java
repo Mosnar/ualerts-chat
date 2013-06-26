@@ -19,6 +19,8 @@
 
 package org.ualerts.chat.service.api;
 
+import java.util.UUID;
+
 /**
  * Represents a null user name
  *
@@ -33,6 +35,11 @@ public class NullUserName extends UserName {
    */
   public boolean isNull() {
     return true;
+  }
+  
+  public String getName()
+  {
+    return  UUID.randomUUID().toString();
   }
 
 }

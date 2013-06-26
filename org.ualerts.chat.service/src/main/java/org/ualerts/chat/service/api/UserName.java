@@ -27,16 +27,16 @@ package org.ualerts.chat.service.api;
  */
 public class UserName {
   
-  private String userName;
+  private String name;
   
   public UserName(String userName){
-    this.userName = userName;    
+    this.name = userName;    
   }
   
   protected UserName(){}
 
-  public String getUserName() {
-    return userName;
+  public String getName() {
+    return name;
   }
   
   /**
@@ -45,7 +45,7 @@ public class UserName {
    */
   public boolean isNull()
   {
-      if(this.userName.trim().isEmpty() || this.userName == null) {
+      if(this.name.trim().isEmpty() || this.name == null) {
         return true;
       }
       return false;

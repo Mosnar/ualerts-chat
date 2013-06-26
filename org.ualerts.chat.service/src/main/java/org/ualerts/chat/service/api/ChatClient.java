@@ -30,17 +30,17 @@ import java.util.List;
  */
 public interface ChatClient {
 	/**
-	 * Provide a reference to the conversation this participant
-	 * is a member of
-	 * @param conversation
+	 * Provide a reference to the participant this ChatClient
+	 * is associated with
+	 * @param participant the associated participant
 	 */
-	void setConversation(Conversation conversation);
+	void setParticipant(Participant participant);
 	
 	/**
-	 * Provide access to the Conversation
-	 * @return the conversation 
+	 * Provide access to the Participant
+	 * @return the participant 
 	 */
-	Conversation getConversation();
+	Participant getParticipant();
 	
 	/**
 	 * Send a message

@@ -21,6 +21,7 @@ package org.ualerts.chat.service.api.concrete;
 
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
 
@@ -82,6 +83,13 @@ public class ConcreteParticipant implements Participant {
   public ChatClient getChatClient() {
     return chatClient;
   }
-  
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void deliverMessage(Message message) {
+    this.getChatClient().deliverMessage(message);
+  }
   
 }

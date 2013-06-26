@@ -19,12 +19,16 @@
 
 package org.ualerts.chat.service.api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.web.socket.TextMessage;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
@@ -34,6 +38,7 @@ import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 public class ConcreteParticipantTest {
   private Participant participant;
   private Mockery context;
+
   /**
    * @throws java.lang.Exception
    */
@@ -49,33 +54,50 @@ public class ConcreteParticipantTest {
     participant.setConversation(conversation);
     assertNotNull(participant.getConversation());
   }
-  
+
   @Test
   public void testGetConversation() {
     final Conversation conversation = context.mock(Conversation.class);
     participant.setConversation(conversation);
     assertSame(conversation, participant.getConversation());
   }
-  
+
   @Test
   public void testSetAndGetUserNameNotNull() {
     UserName userName = new UserName("TestName");
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
+    assertFalse(userName.isNull());
   }
-  
+
   @Test
   public void testSetAndGetUserNameNull() {
     UserName userName = new NullUserName();
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
+    assertTrue(userName.isNull());
   }
-  
+
   @Test
-  public void testSetChatClient() {
+  public void testSetandGetChatClient() {
     final ChatClient chatClient = context.mock(ChatClient.class);
     participant.setChatClient(chatClient);
     assertSame(chatClient, participant.getChatClient());
+  }
+
+  @Test
+  public void testDeliverMessage() {
+    final ChatClient chatClient = context.mock(ChatClient.class);
+    participant.setChatClient(chatClient);
+    final Message message = new ChatTextMessage();
+
+    context.checking(new Expectations() {
+      {
+        oneOf(chatClient).deliverMessage(message);
+      }
+    });
+    participant.deliverMessage(message);
+    context.assertIsSatisfied();
   }
 
 }
