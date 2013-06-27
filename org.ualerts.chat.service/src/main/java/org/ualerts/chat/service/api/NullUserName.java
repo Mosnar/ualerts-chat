@@ -29,6 +29,9 @@ import java.util.UUID;
  */
 public class NullUserName extends UserName {
   
+  public NullUserName(){
+    super(UUID.randomUUID().toString());
+  }
   /**
    * Determine if the user name is populated
    * @return always returns true
@@ -37,9 +40,4 @@ public class NullUserName extends UserName {
     return true;
   }
   
-  public String getName()
-  {
-    return  UUID.randomUUID().toString();
-  }
-
 }

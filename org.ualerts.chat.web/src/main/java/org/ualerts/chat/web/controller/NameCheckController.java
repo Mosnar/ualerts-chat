@@ -51,7 +51,7 @@ public class NameCheckController {
   @RequestMapping(value="/checkName", method = RequestMethod.POST)
   @ResponseBody
   public String checkName(@RequestParam("name") String name) {
-    
+
       chatClient = (SockJsChatClient)chatClientContext.getChatClient();
       Participant participant = chatClient.getParticipant();
       Conversation conversation = participant.getConversation();
