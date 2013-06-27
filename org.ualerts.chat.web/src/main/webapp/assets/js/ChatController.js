@@ -153,7 +153,8 @@ ChatController.prototype.validateUsername = function() {
  * 		  "invalid"
  */
 ChatController.prototype.handleValidity = function(jsonObj, storedUsername) {	
-    if (new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf()) {
+    if ((new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf())
+    		&& $('#usernameField').val() === storedUsername) {
         console.log("The username " + storedUsername + " is valid");
         $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + storedUsername + ' </span>');
         $('#nameButton').removeAttr('disabled');

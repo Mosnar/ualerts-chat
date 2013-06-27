@@ -17,7 +17,7 @@ $(document).ready(function() {
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
         callback: function() { chatController.validateUsername(); },
-        wait: 0,
+        wait: 300,
         captureLength: 1
         });
     }
