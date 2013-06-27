@@ -45,7 +45,7 @@ public class UserName {
    */
   public boolean isNull()
   {
-      if(this.name.trim().isEmpty() || this.name == null) {
+      if(this.name == null ||this.name.trim().isEmpty()) {
         return true;
       }
       return false;

@@ -68,4 +68,18 @@ public interface Conversation {
 	 * @return the map of participants
 	 */
 	Map<String,Participant> getParticipantsMap();
+	
+	/**
+	 * Provides a RosterAddedMessage
+	 * @param user name of participant
+	 * @return Message indicating addition to conversation
+	 */
+	public Message getRosterAddedMessage(String userName);
+	
+	 /**
+   * Provides a RosterRemovedMessage
+   * @param user name of participant
+   * @return Message indicating removal from conversation
+   */
+  public Message getRosterRemovedMessage(String userName);
 }

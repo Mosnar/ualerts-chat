@@ -54,18 +54,7 @@ public class ConcreteConversation implements Conversation {
     this.participantsMap
         .put(participant.getUserName().getName(), participant);
     participant.setConversation(this);
-    this.deliverMessage(getRosterAddedMessage(participant));
-    
-  }
-  
-  private Message getRosterAddedMessage(Participant participant)
-  {
-    RosterAddedMessage message = new RosterAddedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(participant.getUserName().getName());
-    message.setFrom(participant.getUserName().getName());
- 
-    return message;
+
   }
 
   @Override
@@ -77,17 +66,9 @@ public class ConcreteConversation implements Conversation {
     if (participantsMap.containsKey(participant.getUserName().getName())) {
       participantsMap.remove(participant.getUserName().getName());
     }
-    
-    this.deliverMessage(getRosterRemovedMessagte(participant));
-  }
-  
-  private Message getRosterRemovedMessagte(Participant participant) {
-    RosterRemovedMessage message = new RosterRemovedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(participant.getUserName().getName());
-    message.setFrom(participant.getUserName().getName());
-    
-    return message;
+
+    this.deliverMessage(getRosterRemovedMessage(participant.getUserName()
+        .getName()));
   }
 
   @Override
@@ -98,7 +79,26 @@ public class ConcreteConversation implements Conversation {
         participant.deliverMessage(message);
       }
     }
+  }
 
+  @Override
+  public Message getRosterAddedMessage(String userName) {
+    RosterAddedMessage message = new RosterAddedMessage();
+    message.setMessageDate(dateTimeService.getCurrentDate());
+    message.setText(userName);
+    message.setFrom(userName);
+
+    return message;
+  }
+
+  @Override
+  public Message getRosterRemovedMessage(String userName) {
+    RosterRemovedMessage message = new RosterRemovedMessage();
+    message.setMessageDate(dateTimeService.getCurrentDate());
+    message.setText(userName);
+    message.setFrom(userName);
+
+    return message;
   }
 
   @Override
