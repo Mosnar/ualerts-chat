@@ -40,7 +40,6 @@ import org.ualerts.chat.service.api.UserName;
 
 public class ConcreteConversation implements Conversation {
 
-  private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private Set<Participant> participants = new HashSet<Participant>();
 
   @Override
@@ -66,50 +65,28 @@ public class ConcreteConversation implements Conversation {
       }
     }
   }
-  
+
   @Override
   public boolean isValidUserName(String userName) {
-   boolean valid = true;
-    
-    for(Participant participant : participants) {
-      if(participant.getUserName() == UserName.NULL_USER)
+    boolean valid = true;
+
+    for (Participant participant : participants) {
+      if (participant.getUserName() == UserName.NULL_USER)
         continue;
-      
-      if(participant.getUserName().getName().trim().equalsIgnoreCase(userName)) {
+
+      if (participant.getUserName().getName().trim()
+          .equalsIgnoreCase(userName)) {
         valid = false;
         break;
       }
-        
-      
+
     }
-    return valid;    
-  }
-
-  @Override
-  public Message getRosterAddedMessage(String userName) {
-    RosterAddedMessage message = new RosterAddedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(userName);
-    message.setFrom(userName);
-
-    return message;
-  }
-
-  @Override
-  public Message getRosterRemovedMessage(String userName) {
-    RosterRemovedMessage message = new RosterRemovedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(userName);
-    message.setFrom(userName);
-
-    return message;
+    return valid;
   }
 
   @Override
   public Set<Participant> getParticipants() {
     return participants;
   }
-
- 
 
 }

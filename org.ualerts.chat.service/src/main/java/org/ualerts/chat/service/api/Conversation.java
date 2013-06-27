@@ -63,17 +63,4 @@ public interface Conversation {
 	 */
 	boolean isValidUserName(String userName);
 	
-	/**
-	 * Provides a RosterAddedMessage
-	 * @param user name of participant
-	 * @return Message indicating addition to conversation
-	 */
-	public Message getRosterAddedMessage(String userName);
-	
-	 /**
-   * Provides a RosterRemovedMessage
-   * @param user name of participant
-   * @return Message indicating removal from conversation
-   */
-  public Message getRosterRemovedMessage(String userName);
 }
