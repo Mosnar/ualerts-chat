@@ -7,6 +7,7 @@
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
     
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/typewatch.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
@@ -18,10 +19,11 @@
     		<div class="span3">&nbsp;</div>
 	        <div id="wrapper" class="span6">
 	        	<div id="menu">
-	                <form id="nameForm" action="" method="GET">
+	                <form id="nameForm" action="" method="GET" autocomplete="off">
                 		<div class="row">
                 			<div class="span4">
 		                        <input placeholder="Username" name="username" type="text" id="usernameField"/>
+								<div id="username-validity"></div>
                 			</div>
                 			<div class="span2 text-center">
 		                        <input type="submit" class="btn btn-primary" id="nameButton" value="Submit"/>

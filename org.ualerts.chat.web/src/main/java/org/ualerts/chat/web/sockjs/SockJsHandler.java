@@ -32,6 +32,9 @@ import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
+import org.ualerts.chat.service.api.NullUserName;
+import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
@@ -47,6 +50,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
   private SockJsChatClient chatClient;
   private ChatClientContext chatClientContext;
   private DateTimeService dateTimeService;
+  private Participant participant;
 
   @Override
   public void afterConnectionEstablished(final WebSocketSession session)
@@ -56,7 +60,8 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     chatClient = getChatClient();
     chatClient.setSession(session);
     Conversation conversation = chatService.findDefaultConversation();
-    conversation.addClient(chatClient);
+    conversation.addParticipant(getParticipant());
+    participant.setConversation(conversation);
 
     if (chatClient.getMissedMessages().size() > 0) {
       sendMissedMessages(chatClient.getMissedMessages());
@@ -69,10 +74,28 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     }
     return (SockJsChatClient) chatClientContext.getChatClient();
   }
+  
+  private Participant getParticipant() {
+    
+    if(chatClient.getParticipant() == null)
+    {
+      NullUserName userName = new NullUserName();
+      participant = new ConcreteParticipant();
+      participant.setChatClient(chatClient);
+      participant.setUserName(userName);
+      chatClient.setParticipant(participant);
+    }
+    else
+    {
+      participant = chatClient.getParticipant();
+    }
+    
+    return participant;
+  }
 
   private void sendMissedMessages(List<Message> missedMessages) {
     for (Message missedMessage : missedMessages) {
-      this.chatClient.getConversation().deliverMessage(missedMessage);
+      this.participant.getConversation().deliverMessage(missedMessage);
     }
   }
 
@@ -83,7 +106,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
         mapper.readValue(message.getPayload(), ChatTextMessage.class);
     chatMessage.setMessageDate(dateTimeService.getCurrentDate());
     chatMessage.setText( HtmlUtils.htmlEscape(chatMessage.getText()) );
-    this.chatClient.getConversation().deliverMessage(chatMessage);
+    this.participant.getConversation().deliverMessage(chatMessage);
   }
 
   @Autowired

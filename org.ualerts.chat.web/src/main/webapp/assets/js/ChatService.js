@@ -66,3 +66,19 @@ ChatService.prototype.connect = function() {
 ChatService.prototype.disconnect = function() {
     console.log("You have disconnected");
 };
+
+/**
+ * Send a POST request to check if the username is valid
+ *
+ * @param username The username to check validity for
+ * @param callback The method to call when the Ajax call is done
+ */
+ChatService.prototype.checkUsername = function(username, callback) {
+    $.ajax({
+        type: "POST",
+        url: window.location.href + "/checkName",
+        data: { name: username }
+    }).done(function(jsonObj) {
+        callback(jsonObj);
+    });
+};

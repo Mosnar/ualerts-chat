@@ -35,10 +35,31 @@ form, p, span {
 	width: 95%;
 }
 
-/* input[type=submit] { */
-/*     margin-top: -10px; */
-/* } */
+#username-validity {
+	margin-top: 10px;
+	margin-bottom: -5px;
+}
 
-/* #menu { */
-/*     padding: 12.5px 25px 12.5px 25px; */
-/* } */
+.check {
+  background-image: url("../img/check.png");
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  *margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-repeat: no-repeat;
+}
+
+.cancel {
+  background-image: url("../img/cancel.png");
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  *margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-repeat: no-repeat;
+}

@@ -19,49 +19,72 @@
 
 package org.ualerts.chat.service.api.concrete;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
+import org.ualerts.chat.service.api.Participant;
 
 /**
  * The default conversation
- * @author Billy Coleman1
+ * @author Billy Coleman
  * @author Ransom Roberson
  * 
  */
 public class ConcreteConversation implements Conversation {
 
-  private Set<ChatClient> clients = new HashSet<ChatClient>();
+  private Set<Participant> participants = new HashSet<Participant>();
+  private Map<String, Participant> participantsMap =
+      new HashMap<String, Participant>();
 
   @Override
-  public void addClient(ChatClient chatClient) {
-    this.clients.add(chatClient);
-    chatClient.setConversation(this);
+  public void addParticipant(Participant participant) {
+    this.participants.add(participant);
+    this.participantsMap
+        .put(participant.getUserName().getName(), participant);
+    participant.setConversation(this);
   }
 
   @Override
-  public void removeClient(ChatClient chatClient) {
+  public void removeParticipant(Participant participant) {
 
-    if (clients.contains(chatClient)) {
-      clients.remove(chatClient);
+    if (participants.contains(participant)) {
+      participants.remove(participant);
+    }
+    if (participantsMap.containsKey(participant.getUserName().getName())) {
+      participantsMap.remove(participant.getUserName().getName());
     }
   }
 
   @Override
   public void deliverMessage(Message message) {
 
-    for (ChatClient client : clients) {
-      client.deliverMessage(message);
+    for (Participant participant : participants) {
+      if (!participant.getUserName().isNull()) {
+        participant.deliverMessage(message);
+      }
     }
 
   }
 
   @Override
-  public Set<ChatClient> getChatClients() {
-    return clients;
+  public Set<Participant> getParticipants() {
+    return participants;
+  }
+
+  public Map<String, Participant> getParticipantsMap() {
+    return participantsMap;
+  }
+
+  @Override
+  public boolean isValidUserName(String userName) {
+    if (participantsMap.containsKey(userName)) {
+      return false;
+    }
+    return true;
   }
 
 }
