@@ -35,14 +35,14 @@ public class UserNameTest {
   @Test
   public void testUserNameNotNull() {
     UserName userName = new UserName("Test");
-    assertFalse(userName.isNull());
+    assertFalse(userName == UserName.NULL_USER);
   }
   
   @Test
   public void testUserNameNull()
   {
-    UserName userName = new NullUserName();
-    assertTrue(userName.isNull());
+    UserName userName = UserName.NULL_USER;
+    assertTrue(userName == UserName.NULL_USER);
   }
 
 }

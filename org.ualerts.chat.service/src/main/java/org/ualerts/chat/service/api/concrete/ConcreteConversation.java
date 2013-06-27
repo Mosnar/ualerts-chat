@@ -33,6 +33,7 @@ import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.RosterRemovedMessage;
+import org.ualerts.chat.service.api.UserName;
 
 /**
  * The default conversation
@@ -75,7 +76,7 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
 
     for (Participant participant : participants) {
-      if (!participant.getUserName().isNull()) {
+      if (participant.getUserName() != UserName.NULL_USER) {
         participant.deliverMessage(message);
       }
     }

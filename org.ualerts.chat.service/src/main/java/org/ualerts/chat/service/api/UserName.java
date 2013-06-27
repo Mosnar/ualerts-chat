@@ -27,28 +27,20 @@ package org.ualerts.chat.service.api;
  */
 public class UserName {
   
+  public static final UserName NULL_USER = new UserName();
+  
   private String name;
   
   public UserName(String userName){
-    this.name = userName;    
+    this.name = userName;
   }
   
-  protected UserName(){}
+  protected UserName() {
+    
+  }
 
   public String getName() {
     return name;
   }
-  
-  /**
-   * Determine if the user name is populated
-   * @return boolean indicating isNull
-   */
-  public boolean isNull()
-  {
-      if(this.name == null ||this.name.trim().isEmpty()) {
-        return true;
-      }
-      return false;
-  }
-  
+    
 }
