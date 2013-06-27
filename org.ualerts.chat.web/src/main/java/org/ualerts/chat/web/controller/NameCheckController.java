@@ -56,8 +56,8 @@ public class NameCheckController {
       Participant participant = chatClient.getParticipant();
       Conversation conversation = participant.getConversation();
       
-      if(conversation.isValidUserName(name)) {
-        UserName userName = new UserName(name);
+      if(conversation.isValidUserName(name.trim())) {
+        UserName userName = new UserName(name.trim());
         participant.setUserName(userName);
         return VALID;
       }

@@ -49,7 +49,7 @@ public class RosterAddedController {
     chatClient = (SockJsChatClient)chatClientContext.getChatClient();
     Participant participant = chatClient.getParticipant();
     Conversation conversation = participant.getConversation();
-    
+ 
     conversation.deliverMessage(conversation.getRosterAddedMessage(participant.getUserName().getName()));
 
     return VALID;

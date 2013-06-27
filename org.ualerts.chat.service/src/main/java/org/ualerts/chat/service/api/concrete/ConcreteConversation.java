@@ -46,16 +46,11 @@ public class ConcreteConversation implements Conversation {
 
   private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private Set<Participant> participants = new HashSet<Participant>();
-  private Map<String, Participant> participantsMap =
-      new HashMap<String, Participant>();
 
   @Override
   public void addParticipant(Participant participant) {
     this.participants.add(participant);
-    this.participantsMap
-        .put(participant.getUserName().getName(), participant);
     participant.setConversation(this);
-
   }
 
   @Override
@@ -63,9 +58,6 @@ public class ConcreteConversation implements Conversation {
 
     if (participants.contains(participant)) {
       participants.remove(participant);
-    }
-    if (participantsMap.containsKey(participant.getUserName().getName())) {
-      participantsMap.remove(participant.getUserName().getName());
     }
   }
 
@@ -77,6 +69,20 @@ public class ConcreteConversation implements Conversation {
         participant.deliverMessage(message);
       }
     }
+  }
+  
+  @Override
+  public boolean isValidUserName(String userName) {
+   boolean valid = true;
+    
+    for(Participant participant : participants) {
+      if(participant.getUserName() == UserName.NULL_USER)
+        continue;
+      
+      if(participant.getUserName().getName().trim().equalsIgnoreCase(userName))
+        valid = false;
+    }
+    return valid;    
   }
 
   @Override
@@ -104,16 +110,6 @@ public class ConcreteConversation implements Conversation {
     return participants;
   }
 
-  public Map<String, Participant> getParticipantsMap() {
-    return participantsMap;
-  }
-
-  @Override
-  public boolean isValidUserName(String userName) {
-    if (participantsMap.containsKey(userName)) {
-      return false;
-    }
-    return true;
-  }
+ 
 
 }

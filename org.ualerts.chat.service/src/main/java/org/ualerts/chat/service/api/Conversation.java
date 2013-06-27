@@ -64,12 +64,6 @@ public interface Conversation {
 	boolean isValidUserName(String userName);
 	
 	/**
-	 * Provides a map of participants
-	 * @return the map of participants
-	 */
-	Map<String,Participant> getParticipantsMap();
-	
-	/**
 	 * Provides a RosterAddedMessage
 	 * @param user name of participant
 	 * @return Message indicating addition to conversation

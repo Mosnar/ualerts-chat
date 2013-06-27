@@ -42,7 +42,7 @@ public class UserName {
   }
   
   protected UserName() {
-    this.name = UUID.randomUUID().toString();
+
   }
 
   public String getName() {
