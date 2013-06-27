@@ -16,7 +16,11 @@
     <body>
     <div class="container">
     	<div class="row">
-    		<div class="span3">&nbsp;</div>
+    		<div class="span3">
+    			<div class="pull-right">
+    				
+    			</div>
+			</div>
 	        <div id="wrapper" class="span6">
 	        	<div id="menu">
 	                <form id="nameForm" action="" method="GET" autocomplete="off">

@@ -82,3 +82,16 @@ ChatService.prototype.checkUsername = function(username, callback) {
         callback(jsonObj);
     });
 };
+
+/**
+ * Send a POST request for the service to create a participant
+ */
+ChatService.prototype.submitName = function() {
+    $.ajax({
+        type: "POST",
+        url: window.location.href + "/submitname",
+        data: {}
+    }).done(function(jsonObj) {
+        callback(jsonObj);
+    });
+};

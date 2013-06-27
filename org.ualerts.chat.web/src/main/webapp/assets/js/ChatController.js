@@ -45,15 +45,17 @@ ChatController.prototype.messageDisable = function() {
 ChatController.prototype.handleNameSubmit = function() {
     var chatC = this;
     
-    $('#nameButton').click(function() {        
-        if ($.trim($('#usernameField').val()) != "") {
-            var name = $('#usernameField').val();
-            chatC.updateUserName(name);
+    $('#nameButton').click(function() {
+        var $username = $('#usernameField').val();
+    	
+        if ($.trim($username) != "") {
+            chatC.updateUserName($username);
             chatC.acknowledgeUser();
             chatC.prepareMessageField();
             $('#messageField').attr('placeholder', 'Type a message...').focus();
             $("#nameForm").hide();
         }
+        chatC.service.submitName();
     });
     
     this.service.connect();
@@ -122,6 +124,14 @@ ChatController.prototype.onMessage = function(message) {
     $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
         message.from + ': ' + message.text + '</p>');
     $chatbox.scrollTop($chatbox[0].scrollHeight);
+};
+
+/**
+ * 
+ */
+ChatController.prototype.validateUsername = function() {
+    var $username = $('#usernameField').val();
+    this.service.checkUsername($username, this.handleValidity);
 };
 
 /**
