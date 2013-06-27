@@ -32,6 +32,10 @@ public class UserName {
   private String name;
   
   public UserName(String userName){
+    if(userName == null || userName.trim().isEmpty())
+    {
+      throw new IllegalArgumentException();
+    }
     this.name = userName;
   }
   
