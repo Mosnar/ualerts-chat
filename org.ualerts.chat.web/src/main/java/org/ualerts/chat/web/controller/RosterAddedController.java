@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.web.context.ChatClientContext;
 import org.ualerts.chat.web.sockjs.SockJsChatClient;
 
@@ -39,6 +40,7 @@ import org.ualerts.chat.web.sockjs.SockJsChatClient;
 public class RosterAddedController {
 
   private final String VALID = "{\"result\":\"valid\"}";
+  private final String INVALID = "{\"result\":\"invalid\"}";
 
   private ChatClientContext chatClientContext;
   private SockJsChatClient chatClient;
@@ -48,8 +50,11 @@ public class RosterAddedController {
   public String sendRosterAddedMessage() {
     chatClient = (SockJsChatClient)chatClientContext.getChatClient();
     Participant participant = chatClient.getParticipant();
-    Conversation conversation = participant.getConversation();
- 
+    
+    if(participant.getUserName() == UserName.NULL_USER) {
+      return INVALID;
+    }
+    Conversation conversation = participant.getConversation();   
     conversation.deliverMessage(conversation.getRosterAddedMessage(participant.getUserName().getName()));
 
     return VALID;

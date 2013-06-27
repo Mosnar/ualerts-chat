@@ -19,13 +19,9 @@
 
 package org.ualerts.chat.service.api.concrete;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
@@ -79,8 +75,12 @@ public class ConcreteConversation implements Conversation {
       if(participant.getUserName() == UserName.NULL_USER)
         continue;
       
-      if(participant.getUserName().getName().trim().equalsIgnoreCase(userName))
+      if(participant.getUserName().getName().trim().equalsIgnoreCase(userName)) {
         valid = false;
+        break;
+      }
+        
+      
     }
     return valid;    
   }
