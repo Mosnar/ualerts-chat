@@ -17,9 +17,15 @@
     <div class="container">
     	<div class="row">
     		<div class="span3">
-    			<div class="pull-right">
-    				
-    			</div>
+				<table id="connected-users" class="table table-bordered table-hover table-condensed">
+				    <thead>
+					<tr class="table-header">
+					    <th>Online</th>
+					</tr>
+				    </thead>
+				    <tbody>
+				    </tbody>
+				</table>
 			</div>
 	        <div id="wrapper" class="span6">
 	        	<div id="menu">
