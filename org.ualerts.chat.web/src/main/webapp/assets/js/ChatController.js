@@ -114,12 +114,25 @@ ChatController.prototype.handleMessageSubmit = function() {
     });
 };
 
+// The console logs "Uncaught TypeError: Object [object Array] has not method 'addToRoster'" Line 147
+//
+///**
+// * Make HTML to append to the connected users table
+// * 
+// * @param user The user to be enrolled on the connected users table
+// */
+//ChatController.prototype.addToRoster = function(message) {
+//	var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+//	$('#connected-users tbody').append(htmlString);
+//};
+
 /**
  * Perform an action when called by the ChatService object
  *
  * @param message The message object received
  */
 ChatController.prototype.onMessage = function(message) {
+	var chatC = this;
     var $chatbox = $('#chatbox');
     var date = new Date(message.messageDate);
     
@@ -127,11 +140,21 @@ ChatController.prototype.onMessage = function(message) {
     if (minutes < 10) {
     	minutes = "0" + minutes;
     }
-
-    var dateString = date.getHours() + ":" + minutes;
-    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-        message.from + ': ' + message.text + '</p>');
-    $chatbox.scrollTop($chatbox[0].scrollHeight);
+    
+    if (message.type === "ROSTER_ADDED") {
+        var dateString = date.getHours() + ":" + minutes;
+        $chatbox.append('<p>' + '(' + dateString + ') ' + message.text + '</p>');
+        
+        // Add the user to the connected users table
+    	var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+    	$('#connected-users tbody').append(htmlString);
+    }
+    
+    if (message.type === "chat") {
+        var dateString = date.getHours() + ":" + minutes;
+        $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
+            message.from + ': ' + message.text + '</p>');
+    }
 };
 
 /**

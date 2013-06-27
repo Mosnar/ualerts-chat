@@ -25,7 +25,7 @@ $(document).ready(function() {
     enableTypeWatch();
     
     /**
-     * Make the HTML for the users list
+     * Make the HTML for the users table
      */
     function makeUsers(users) {
         string = "";
@@ -33,7 +33,7 @@ $(document).ready(function() {
             string += '<tr><td class="online">' + users[i] + '</td></tr>';
         }
         
-        $('#connected-users').append(string);
+        //$('#connected-users tbody').append(string);
     }
     
     /**
