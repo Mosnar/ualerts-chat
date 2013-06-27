@@ -24,9 +24,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.RosterAddedMessage;
+import org.ualerts.chat.service.api.RosterRemovedMessage;
 
 /**
  * The default conversation
@@ -34,8 +40,10 @@ import org.ualerts.chat.service.api.Participant;
  * @author Ransom Roberson
  * 
  */
+
 public class ConcreteConversation implements Conversation {
 
+  private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private Set<Participant> participants = new HashSet<Participant>();
   private Map<String, Participant> participantsMap =
       new HashMap<String, Participant>();
@@ -46,6 +54,18 @@ public class ConcreteConversation implements Conversation {
     this.participantsMap
         .put(participant.getUserName().getName(), participant);
     participant.setConversation(this);
+    this.deliverMessage(getRosterAddedMessage(participant));
+    
+  }
+  
+  private Message getRosterAddedMessage(Participant participant)
+  {
+    RosterAddedMessage message = new RosterAddedMessage();
+    message.setMessageDate(dateTimeService.getCurrentDate());
+    message.setText(participant.getUserName().getName());
+    message.setFrom(participant.getUserName().getName());
+ 
+    return message;
   }
 
   @Override
@@ -57,6 +77,17 @@ public class ConcreteConversation implements Conversation {
     if (participantsMap.containsKey(participant.getUserName().getName())) {
       participantsMap.remove(participant.getUserName().getName());
     }
+    
+    this.deliverMessage(getRosterRemovedMessagte(participant));
+  }
+  
+  private Message getRosterRemovedMessagte(Participant participant) {
+    RosterRemovedMessage message = new RosterRemovedMessage();
+    message.setMessageDate(dateTimeService.getCurrentDate());
+    message.setText(participant.getUserName().getName());
+    message.setFrom(participant.getUserName().getName());
+    
+    return message;
   }
 
   @Override
