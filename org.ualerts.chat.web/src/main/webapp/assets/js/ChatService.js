@@ -53,6 +53,7 @@ ChatService.prototype.connect = function() {
 	var chatS = this;
     this.ws = new SockJS("sockjs/connector");
     this.ws.onmessage = function(event) {
+    	console.log(event);
     	var message = $.parseJSON(event.data);
         for (var i = 0; i < chatS.listeners.length; i++) {
         	chatS.listeners[i](message);
@@ -74,12 +75,14 @@ ChatService.prototype.disconnect = function() {
  * @param callback The method to call when the Ajax call is done
  */
 ChatService.prototype.checkUsername = function(username, callback) {
+	var storedUsername = username;
+	
     $.ajax({
         type: "POST",
         url: window.location.href + "/checkName",
         data: { name: username }
     }).done(function(jsonObj) {
-        callback(jsonObj);
+        callback(jsonObj, storedUsername);
     });
 };
 

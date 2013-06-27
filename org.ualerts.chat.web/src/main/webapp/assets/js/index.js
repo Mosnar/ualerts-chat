@@ -17,7 +17,7 @@ $(document).ready(function() {
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
         callback: function() { chatController.validateUsername(); },
-        wait: 300,
+        wait: 0,
         captureLength: 1
         });
     }
@@ -41,8 +41,7 @@ $(document).ready(function() {
      */
     function sortUsers(users) {
         //var numUsers = $('#connected-users tbody tr td').length;
-        var temp;
-        
+
         for (var i = 0; i < users.length; i ++) {
             var $user = $('#connected-users tbody tr td:eq(' + i + ')');
             if ($user.hasClass('offline')) {
