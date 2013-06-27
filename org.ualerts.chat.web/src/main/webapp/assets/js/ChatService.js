@@ -89,9 +89,9 @@ ChatService.prototype.checkUsername = function(username, callback) {
 ChatService.prototype.submitName = function() {
     $.ajax({
         type: "POST",
-        url: window.location.href + "/submitname",
+        url: window.location.href + "/submitName",
         data: {}
-    }).done(function(jsonObj) {
-        callback(jsonObj);
+    }).done(function(data) {
+        console.log(data);
     });
 };
