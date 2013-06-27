@@ -67,9 +67,6 @@ public class ConcreteConversation implements Conversation {
     if (participantsMap.containsKey(participant.getUserName().getName())) {
       participantsMap.remove(participant.getUserName().getName());
     }
-
-    this.deliverMessage(getRosterRemovedMessage(participant.getUserName()
-        .getName()));
   }
 
   @Override

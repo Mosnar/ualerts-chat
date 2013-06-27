@@ -19,6 +19,8 @@
 
 package org.ualerts.chat.service.api;
 
+import java.util.UUID;
+
 /**
  * Represents a user name
  *
@@ -40,7 +42,7 @@ public class UserName {
   }
   
   protected UserName() {
-    
+    this.name = UUID.randomUUID().toString();
   }
 
   public String getName() {
