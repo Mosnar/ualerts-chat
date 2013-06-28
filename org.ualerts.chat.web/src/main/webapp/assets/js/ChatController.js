@@ -70,7 +70,7 @@ ChatController.prototype.handleNameSubmit = function() {
 };
 
 /**
- * Create a username prototype property for the ChatController class
+ * Set the username property for the ChatController class
  *
  * @param name The username
  */
@@ -106,7 +106,7 @@ ChatController.prototype.handleMessageSubmit = function() {
     var chatC = this;
     $messageField = $('#messageField');
     $('#messageButton').click(function() {
-        if ($messageField.val() != "") {
+        if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
             chatC.service.sendMessage("<b>" + chatC.username + "</b>", "all", "chat", clientMessage);
             $messageField.val('');
@@ -120,7 +120,7 @@ ChatController.prototype.handleMessageSubmit = function() {
  * @param user The user to be enrolled on the connected users table
  */
 ChatController.prototype.addToRoster = function(message) {
-    var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp' + message.from + '</td></tr>';
 	$('#connected-users tbody').append(htmlString);
 };
 
@@ -149,6 +149,7 @@ ChatController.prototype.onMessage = function(message) {
         var dateString = date.getHours() + ":" + minutes;
         $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
             message.from + ': ' + message.text + '</p>');
+        $chatbox.scrollTop($chatbox[0].scrollHeight);
     }
 };
 
