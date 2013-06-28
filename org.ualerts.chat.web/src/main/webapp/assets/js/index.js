@@ -61,9 +61,9 @@ $(document).ready(function() {
         $('.offline').prepend('<i class="icon-minus-sign"></i>&nbsp;');
     }
     
-    var users = new Array("Brandon", "Billy", "Michael", "Ransom", "Carl", "Mathew", "Brian", "Phil", "Joe");
+    //var users = new Array("Brandon", "Billy", "Michael", "Ransom", "Carl", "Mathew", "Brian", "Phil", "Joe");
     
-    makeUsers(users);
-    sortUsers(users);
+    //makeUsers(users);
+    //sortUsers(users);
     //placeUserIcons();
 });

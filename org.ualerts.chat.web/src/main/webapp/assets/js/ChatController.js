@@ -24,7 +24,8 @@ ChatController.prototype.init = function() {
  * Add listeners to the ChatService object.
  */
 ChatController.prototype.setUpListeners = function() {
-    this.service.addListener(this.onMessage);
+	var controller = this;
+	this.service.addListener(new Callback(controller.onMessage, controller));
 };
 
 /**
@@ -57,7 +58,6 @@ ChatController.prototype.handleNameSubmit = function() {
         var $username = $('#usernameField').val();
     	
         if ($.trim($username) != "") {
-            //chatC.updateUserName($username);
             chatC.acknowledgeUser();
             chatC.prepareMessageField();
             $('#messageField').attr('placeholder', 'Type a message...').focus();
@@ -114,17 +114,15 @@ ChatController.prototype.handleMessageSubmit = function() {
     });
 };
 
-// The console logs "Uncaught TypeError: Object [object Array] has not method 'addToRoster'"
-//
-///**
-// * Make HTML to append to the connected users table
-// * 
-// * @param user The user to be enrolled on the connected users table
-// */
-//ChatController.prototype.addToRoster = function(message) {
-//	var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
-//	$('#connected-users tbody').append(htmlString);
-//};
+/**
+ * Make HTML to append to the connected users table
+ * 
+ * @param user The user to be enrolled on the connected users table
+ */
+ChatController.prototype.addToRoster = function(message) {
+    var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+	$('#connected-users tbody').append(htmlString);
+};
 
 /**
  * Perform an action when called by the ChatService object
@@ -132,10 +130,8 @@ ChatController.prototype.handleMessageSubmit = function() {
  * @param message The message object received
  */
 ChatController.prototype.onMessage = function(message) {
-	//var chatC = this;
     var $chatbox = $('#chatbox');
     var date = new Date(message.messageDate);
-    var rosterAddedMessages = new Array();
     
     var minutes = date.getMinutes();
     if (minutes < 10) {
@@ -143,16 +139,10 @@ ChatController.prototype.onMessage = function(message) {
     }
     
     if (message.type === "ROSTER_ADDED") {
-    	rosterAddedMessages.push(message);
         var dateString = date.getHours() + ":" + minutes;
         $chatbox.append('<p>' + '(' + dateString + ') ' + message.text + '</p>');
         
-        // Add the user to the connected users table
-        var htmlString = "";
-        for (var i = 0; i < rosterAddedMessages.length; i++) {
-        	htmlString += '<tr><td class="online">' + rosterAddedMessages[i].from + '</td></tr>';
-        	$('#connected-users tbody').append(htmlString);
-        }
+        this.addToRoster(message);
     }
     
     if (message.type === "chat") {
