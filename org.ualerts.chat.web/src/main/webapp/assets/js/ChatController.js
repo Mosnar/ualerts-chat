@@ -114,7 +114,7 @@ ChatController.prototype.handleMessageSubmit = function() {
     });
 };
 
-// The console logs "Uncaught TypeError: Object [object Array] has not method 'addToRoster'" Line 147
+// The console logs "Uncaught TypeError: Object [object Array] has not method 'addToRoster'"
 //
 ///**
 // * Make HTML to append to the connected users table
@@ -132,9 +132,10 @@ ChatController.prototype.handleMessageSubmit = function() {
  * @param message The message object received
  */
 ChatController.prototype.onMessage = function(message) {
-	var chatC = this;
+	//var chatC = this;
     var $chatbox = $('#chatbox');
     var date = new Date(message.messageDate);
+    var rosterAddedMessages = new Array();
     
     var minutes = date.getMinutes();
     if (minutes < 10) {
@@ -142,12 +143,16 @@ ChatController.prototype.onMessage = function(message) {
     }
     
     if (message.type === "ROSTER_ADDED") {
+    	rosterAddedMessages.push(message);
         var dateString = date.getHours() + ":" + minutes;
         $chatbox.append('<p>' + '(' + dateString + ') ' + message.text + '</p>');
         
         // Add the user to the connected users table
-    	var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
-    	$('#connected-users tbody').append(htmlString);
+        var htmlString = "";
+        for (var i = 0; i < rosterAddedMessages.length; i++) {
+        	htmlString += '<tr><td class="online">' + rosterAddedMessages[i].from + '</td></tr>';
+        	$('#connected-users tbody').append(htmlString);
+        }
     }
     
     if (message.type === "chat") {
@@ -161,7 +166,6 @@ ChatController.prototype.onMessage = function(message) {
  * 
  */
 ChatController.prototype.validateUsername = function() {
-    //var $username = $('#usernameField').val();
 	var chatC = this;
 	this.updateUsername($.trim($('#usernameField').val()));
     this.service.checkUsername(chatC.username, this.handleValidity);
