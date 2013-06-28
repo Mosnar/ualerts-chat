@@ -17,23 +17,9 @@ $(document).ready(function() {
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
         callback: function() { chatController.validateUsername(); },
-        wait: 1,
+        wait: 0,
         captureLength: 1
         });
-    }
-    
-    enableTypeWatch();
-    
-    /**
-     * Make the HTML for the users table
-     */
-    function makeUsers(users) {
-        string = "";
-        for (var i = 0; i < users.length; i++) {
-            string += '<tr><td class="online">' + users[i] + '</td></tr>';
-        }
-        
-        //$('#connected-users tbody').append(string);
     }
     
     /**
@@ -61,8 +47,7 @@ $(document).ready(function() {
         $('.offline').prepend('<i class="icon-minus-sign"></i>&nbsp;');
     }
     
-    //var users = new Array("Brandon", "Billy", "Michael", "Ransom", "Carl", "Mathew", "Brian", "Phil", "Joe");
-    
+    enableTypeWatch();    
     //makeUsers(users);
     //sortUsers(users);
     //placeUserIcons();
