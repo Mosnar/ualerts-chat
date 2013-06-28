@@ -39,10 +39,20 @@ public class UserNameTest {
   }
   
   @Test
-  public void testUserNameNull()
-  {
+  public void testUserNameNull() {
     UserName userName = UserName.NULL_USER;
     assertTrue(userName == UserName.NULL_USER);
   }
 
+  @Test
+  public void testMatchesTrue() {
+    UserName userName = new UserName("TeSt");
+    assertTrue(userName.matches("test"));
+  }
+  
+  @Test
+  public void testMatchesFalse(){
+    UserName userName = new UserName("test");
+    assertFalse(userName.matches("testing"));
+  }
 }

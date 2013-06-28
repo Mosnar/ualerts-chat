@@ -47,5 +47,13 @@ public class UserName {
   public String getName() {
     return name;
   }
+  
+  public boolean matches(String name)
+  {
+    if(this.name.equalsIgnoreCase(name.trim()))
+      return true;
+    
+    return false;
+  }
     
 }
