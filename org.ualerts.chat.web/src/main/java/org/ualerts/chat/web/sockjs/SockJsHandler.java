@@ -103,7 +103,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     chatClient.setSession(session);
     participant = chatClient.getParticipant();
     Conversation conversation = participant.getConversation();
-    conversation.finalizeDetach(participant.getUserName().getName());
+    conversation.finalizeRemoveParticipant(participant.getUserName().getName());
   }
   
   @Autowired

@@ -66,11 +66,11 @@ public interface Conversation {
 	 * Complete registration tasks
 	 * @param userName
 	 */
-	void finalizeRegistration(String userName);
+	void finalizeRegisterParticipant(String userName);
 	
 	/**
 	 * Complete detachment tasks
 	 * @param userName
 	 */
-	void finalizeDetach(String userName);
+	void finalizeRemoveParticipant(String userName);
 }
