@@ -11,6 +11,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/Callback.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
     <body>

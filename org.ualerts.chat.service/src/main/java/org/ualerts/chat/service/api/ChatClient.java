@@ -48,13 +48,4 @@ public interface ChatClient {
 	 */
 	void deliverMessage(Message message);
 
-	/**
-	 * Provide access to a list of missed messages
-	 * 
-	 * This list will contain messages that were
-	 * sent to a chat client while their
-	 * web socket connection was not available
-	 * @return the list of Messages
-	 */
-	List<Message> getMissedMessages();
 }

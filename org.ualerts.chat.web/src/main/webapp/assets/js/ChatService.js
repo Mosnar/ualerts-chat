@@ -10,11 +10,20 @@ function ChatService() {
  * Add an object's callback function to the array of callback functions.
  *
  * @param callback A subscriber's callback function that the ChatService will
- *                 when it loops through the array in
- *                 ChatService.notifyListeners()
+ *                 when it loops through the array in 
+ *                 ChatService.notifyListeners(). It must be a Callback object,
+ *                 which has an execute method
  */
 ChatService.prototype.addListener = function(callback) {
-    this.listeners.push(callback);
+	if (typeof callback != "object" || typeof callback.execute != "function")
+	    alert("Tried adding a non-Callback object to the NotificationCenter");
+	  this.listeners.push(callback);
+	//	if (typeof callback != "object" || typeof callback.execute != "function") {
+//		console.log('The callback ' + callback + ' is not an object of the Callback class');
+//	}
+//	else {
+//		this.listeners.push(callback);
+//	}
 };
 
 /**
@@ -56,7 +65,7 @@ ChatService.prototype.connect = function() {
     	console.log(event);
     	var message = $.parseJSON(event.data);
         for (var i = 0; i < chatS.listeners.length; i++) {
-        	chatS.listeners[i](message);
+        	chatS.listeners[i].execute(message);
         }
     };
 };
