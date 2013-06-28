@@ -37,16 +37,6 @@ $(document).ready(function() {
         }
     }
     
-    /**
-     * Place the approprite icons for td elements of the class .online or .offline
-     */
-    function placeUserIcons () {
-        $('.online').append('<i class="icon-user"></i>&nbsp;');
-        $('.offline').prepend('<i class="icon-minus-sign"></i>&nbsp;');
-    }
-    
     enableTypeWatch();
-    //makeUsers(users);
     //sortUsers(users);
-    placeUserIcons();
 });

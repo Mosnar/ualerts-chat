@@ -120,8 +120,9 @@ ChatController.prototype.handleMessageSubmit = function() {
  * @param user The user to be enrolled on the connected users table
  */
 ChatController.prototype.addToRoster = function(message) {
-    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp' + message.from + '</td></tr>';
+    var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
 	$('#connected-users tbody').append(htmlString);
+	this.placeUserIcons();
 };
 
 /**
@@ -154,7 +155,7 @@ ChatController.prototype.onMessage = function(message) {
 };
 
 /**
- * 
+ * Have ChatService validate the username by calling checkUsername method on it
  */
 ChatController.prototype.validateUsername = function() {
 	var chatC = this;
@@ -183,4 +184,12 @@ ChatController.prototype.handleValidity = function(jsonObj, storedUsername) {
         $('#nameButton').attr('disabled', 'disabled');
 
     }
+};
+
+/**
+ * Place an icon in the td of the connected users table
+ */
+ChatController.prototype.placeUserIcons = function() {
+	$('.online').prepend('<i class="icon-user"></i>&nbsp;&nbsp;');
+	$('.offline').prepend('<i class="icon-minus"></i>&nbsp;&nbsp;');
 };
