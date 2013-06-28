@@ -26,25 +26,8 @@ package org.ualerts.chat.service.api;
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class RosterRemovedMessage extends Message {
+public class RosterMessage extends Message {
   
-  private final String ACTION_TEXT = " has left the chat!";
-  private final String TYPE = "ROSTER_REMOVED";
-  private String text;
-
-  public String getText() {
-    return text;
-  }
-
-  public void setText(String name) {
-    this.text = name + ACTION_TEXT;
-  }
-  
-  public String getType()
-  {
-    return TYPE;
-  }
-  
-  
+ 
 
 }

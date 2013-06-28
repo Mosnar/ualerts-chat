@@ -91,6 +91,7 @@ public class ConcreteConversationTest {
     final UserName userName = new UserName(USER_NAME1);
 
     final ChatTextMessage message = new ChatTextMessage();
+    message.setTo("all");
 
     context.checking(new Expectations() {
       {

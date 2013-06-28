@@ -1,5 +1,5 @@
 /*
- * File created on Jun 27, 2013
+ * File created on Jun 28, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -20,31 +20,23 @@
 package org.ualerts.chat.service.api;
 
 /**
- * Message describing a participant 
- * added to a conversation
+ * Message indicating a participant's presence
+ * in a conversation
  *
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class RosterAddedMessage extends Message {
+public class PresenceMessage extends Message {
   
-  private final String ACTION_TEXT = " has joined the chat!";
-  private final String TYPE = "ROSTER_ADDED";
   private String text;
 
   public String getText() {
     return text;
   }
 
-  public void setText(String name) {
-    this.text = name + ACTION_TEXT;
+  public void setText(String text) {
+    this.text = text;
   }
-  
-  public String getType()
-  {
-    return TYPE;
-  }
-  
   
 
 }

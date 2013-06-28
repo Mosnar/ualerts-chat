@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
@@ -57,7 +58,7 @@ public class NameCheckController {
       Conversation conversation = participant.getConversation();
       
       if(conversation.isValidUserName(name.trim())) {
-        UserName userName = new UserName(name.trim());
+        UserName userName = new UserName(HtmlUtils.htmlEscape(name.trim()));
         participant.setUserName(userName);
         return VALID;
       }

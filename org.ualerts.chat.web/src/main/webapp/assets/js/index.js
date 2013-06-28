@@ -21,7 +21,7 @@ $(document).ready(function() {
         captureLength: 1
         });
     }
-       
+    
     /**
      * Sort the username list by online status
      */

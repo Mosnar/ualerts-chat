@@ -21,6 +21,7 @@ package org.ualerts.chat.web.sockjs;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
@@ -95,6 +96,16 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     this.participant.getConversation().deliverMessage(chatMessage);
   }
 
+  @Override
+  public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+       
+    chatClient = getChatClient();
+    chatClient.setSession(session);
+    participant = chatClient.getParticipant();
+    Conversation conversation = participant.getConversation();
+    conversation.finalizeDetach(participant.getUserName().getName());
+  }
+  
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
