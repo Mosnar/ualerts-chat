@@ -19,8 +19,7 @@
 
 package org.ualerts.chat.web.sockjs;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
@@ -33,7 +32,6 @@ class ConcreteChatClient implements SockJsChatClient {
   private Participant participant;
   private WebSocketSession session;
   private ObjectMapper mapper = new ObjectMapper();
-  private List<Message> missedMessages = new ArrayList<Message>();
 
   @Override
   public void deliverMessage(Message message) {
@@ -42,14 +40,9 @@ class ConcreteChatClient implements SockJsChatClient {
       session
           .sendMessage(new TextMessage(mapper.writeValueAsString(message)));
     }
-    catch (Exception e) {
-      missedMessages.add(message);
+    catch (IOException e) {
+      //TODO what can we do here?
     }
-  }
-
-  @Override
-  public List<Message> getMissedMessages() {
-    return this.missedMessages;
   }
 
   /**

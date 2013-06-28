@@ -19,8 +19,6 @@
 
 package org.ualerts.chat.web.sockjs;
 
-import java.util.List;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
@@ -31,7 +29,6 @@ import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
-import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
@@ -62,10 +59,6 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     Conversation conversation = chatService.findDefaultConversation();
     conversation.addParticipant(getParticipant());
     participant.setConversation(conversation);
-
-    if (chatClient.getMissedMessages().size() > 0) {
-      sendMissedMessages(chatClient.getMissedMessages());
-    }
   }
   
   private SockJsChatClient getChatClient() {
@@ -90,12 +83,6 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     }
     
     return participant;
-  }
-
-  private void sendMissedMessages(List<Message> missedMessages) {
-    for (Message missedMessage : missedMessages) {
-      this.participant.getConversation().deliverMessage(missedMessage);
-    }
   }
 
   @Override
