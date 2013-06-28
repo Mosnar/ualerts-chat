@@ -62,4 +62,15 @@ public interface Conversation {
 	 */
 	boolean isValidUserName(String userName);
 	
+	/**
+	 * Complete registration tasks
+	 * @param userName
+	 */
+	void finalizeRegistration(String userName);
+	
+	/**
+	 * Complete detachment tasks
+	 * @param userName
+	 */
+	void finalizeDetach(String userName);
 }

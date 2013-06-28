@@ -22,9 +22,12 @@ package org.ualerts.chat.service.api.concrete;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.PresenceMessage;
+import org.ualerts.chat.service.api.RosterMessage;
 import org.ualerts.chat.service.api.UserName;
 
 /**
@@ -35,6 +38,12 @@ import org.ualerts.chat.service.api.UserName;
  */
 
 public class ConcreteConversation implements Conversation {
+
+  private static final String BROADCAST_MESSAGE = "all";
+  private static final String ROSTER_ADDED = "ROSTER_ADDED";
+  private static final String ROSTER_REPLY = "ROSTER_REPLY";
+  private static final String ROSTER_REMOVE = "ROSTER_REMOVED";
+  
 
   private Set<Participant> participants = new HashSet<Participant>();
 
@@ -54,11 +63,19 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public void deliverMessage(Message message) {
-
     for (Participant participant : participants) {
-      if (participant.getUserName() != UserName.NULL_USER) {
+      if (participant.getUserName() == UserName.NULL_USER)
+        continue;
+
+      if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE)) {
         participant.deliverMessage(message);
       }
+      else {
+        Participant thisParticipant = findParticipant(message.getTo());
+        thisParticipant.deliverMessage(message);
+        break;
+      }
+
     }
   }
 
@@ -84,5 +101,79 @@ public class ConcreteConversation implements Conversation {
   public Set<Participant> getParticipants() {
     return participants;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void finalizeRegistration(String userName) {
+
+    // send a message to other participants that this user joined
+    for (Participant participant : participants) {
+      if (participant.getUserName() == UserName.NULL_USER)
+        continue;
+
+      if (!participant.getUserName().getName().equals(userName)) {
+        Message rosterMessage =
+            getRosterMessage(userName, participant.getUserName().getName(),ROSTER_ADDED);
+        deliverMessage(rosterMessage);
+      }
+    }
+    
+    // send a message to newly joined user announcing the presence of the other
+    // users
+    for (Participant participant : participants) {
+      if (participant.getUserName() == UserName.NULL_USER)
+        continue;
+
+      if (!participant.getUserName().getName().equals(userName)) {
+        Message presenceMessage = getRosterMessage(participant.getUserName().getName(), userName, ROSTER_REPLY);
+        this.deliverMessage(presenceMessage);
+      }
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void finalizeDetach(String userName) {
+    Participant participant = findParticipant(userName);
+    removeParticipant(participant);
+    Message message = getRosterMessage(userName, BROADCAST_MESSAGE, ROSTER_REMOVE);
+    deliverMessage(message);
+  }
+
+  /*
+   * Construct a roster message
+   */
+  public Message getRosterMessage(String from, String to, String type) {
+    RosterMessage message = new RosterMessage();
+    message.setFrom(from);
+    message.setTo(to);
+    message.setType(type);
+    message.setMessageDate(new ConcreteDateTimeService().getCurrentDate());
+ 
+    return message;
+  }
+
+  
+ /*
+  * Find a specific participant by name
+  */
+  private Participant findParticipant(String name) {
+    Participant thisParticipant = null;
+    for (Participant participant : participants) {
+      if (participant.getUserName() == UserName.NULL_USER)
+        continue;
+
+      if (participant.getUserName().getName().trim().equalsIgnoreCase(name)) {
+        thisParticipant = participant;
+      }
+    }
+    return thisParticipant;
+  }
+
+  
 
 }
