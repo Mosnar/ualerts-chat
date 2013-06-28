@@ -22,13 +22,9 @@ package org.ualerts.chat.service.api.concrete;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.RosterAddedMessage;
-import org.ualerts.chat.service.api.RosterRemovedMessage;
 import org.ualerts.chat.service.api.UserName;
 
 /**

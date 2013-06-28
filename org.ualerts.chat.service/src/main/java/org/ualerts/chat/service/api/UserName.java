@@ -19,7 +19,6 @@
 
 package org.ualerts.chat.service.api;
 
-import java.util.UUID;
 
 /**
  * Represents a user name

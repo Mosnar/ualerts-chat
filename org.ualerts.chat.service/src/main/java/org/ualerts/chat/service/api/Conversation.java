@@ -19,7 +19,6 @@
 
 package org.ualerts.chat.service.api;
 
-import java.util.Map;
 import java.util.Set;
 
 /**

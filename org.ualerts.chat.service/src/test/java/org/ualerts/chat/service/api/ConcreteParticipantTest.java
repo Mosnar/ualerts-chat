@@ -28,7 +28,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.socket.TextMessage;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
