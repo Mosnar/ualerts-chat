@@ -63,3 +63,12 @@ form, p, span {
   vertical-align: text-top;
   background-repeat: no-repeat;
 }
+
+.table-header {
+    /*background-color: #ACD8F0;*/
+    background-color: #EBF4FB;
+}
+
+.offline {
+    color: #777;
+}

@@ -19,7 +19,6 @@
 
 package org.ualerts.chat.service.api;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -63,9 +62,4 @@ public interface Conversation {
 	 */
 	boolean isValidUserName(String userName);
 	
-	/**
-	 * Provides a map of participants
-	 * @return the map of participants
-	 */
-	Map<String,Participant> getParticipantsMap();
 }

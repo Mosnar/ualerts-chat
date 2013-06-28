@@ -19,6 +19,7 @@
 
 package org.ualerts.chat.service.api;
 
+
 /**
  * Represents a user name
  *
@@ -27,28 +28,24 @@ package org.ualerts.chat.service.api;
  */
 public class UserName {
   
+  public static final UserName NULL_USER = new UserName();
+  
   private String name;
   
   public UserName(String userName){
-    this.name = userName;    
+    if(userName == null || userName.trim().isEmpty())
+    {
+      throw new IllegalArgumentException();
+    }
+    this.name = userName;
   }
   
-  protected UserName(){}
+  protected UserName() {
+
+  }
 
   public String getName() {
     return name;
   }
-  
-  /**
-   * Determine if the user name is populated
-   * @return boolean indicating isNull
-   */
-  public boolean isNull()
-  {
-      if(this.name.trim().isEmpty() || this.name == null) {
-        return true;
-      }
-      return false;
-  }
-  
+    
 }

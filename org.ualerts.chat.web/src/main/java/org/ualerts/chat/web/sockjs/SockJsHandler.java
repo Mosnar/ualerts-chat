@@ -32,8 +32,8 @@ import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
-import org.ualerts.chat.service.api.NullUserName;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 import org.ualerts.chat.web.context.ChatClientContext;
 
@@ -79,10 +79,9 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     
     if(chatClient.getParticipant() == null)
     {
-      NullUserName userName = new NullUserName();
       participant = new ConcreteParticipant();
       participant.setChatClient(chatClient);
-      participant.setUserName(userName);
+      participant.setUserName(UserName.NULL_USER);
       chatClient.setParticipant(participant);
     }
     else

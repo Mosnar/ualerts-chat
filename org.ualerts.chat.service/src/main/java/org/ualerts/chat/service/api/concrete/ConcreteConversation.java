@@ -19,20 +19,13 @@
 
 package org.ualerts.chat.service.api.concrete;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.RosterAddedMessage;
-import org.ualerts.chat.service.api.RosterRemovedMessage;
+import org.ualerts.chat.service.api.UserName;
 
 /**
  * The default conversation
@@ -43,29 +36,12 @@ import org.ualerts.chat.service.api.RosterRemovedMessage;
 
 public class ConcreteConversation implements Conversation {
 
-  private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private Set<Participant> participants = new HashSet<Participant>();
-  private Map<String, Participant> participantsMap =
-      new HashMap<String, Participant>();
 
   @Override
   public void addParticipant(Participant participant) {
     this.participants.add(participant);
-    this.participantsMap
-        .put(participant.getUserName().getName(), participant);
     participant.setConversation(this);
-    this.deliverMessage(getRosterAddedMessage(participant));
-    
-  }
-  
-  private Message getRosterAddedMessage(Participant participant)
-  {
-    RosterAddedMessage message = new RosterAddedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(participant.getUserName().getName());
-    message.setFrom(participant.getUserName().getName());
- 
-    return message;
   }
 
   @Override
@@ -74,48 +50,39 @@ public class ConcreteConversation implements Conversation {
     if (participants.contains(participant)) {
       participants.remove(participant);
     }
-    if (participantsMap.containsKey(participant.getUserName().getName())) {
-      participantsMap.remove(participant.getUserName().getName());
-    }
-    
-    this.deliverMessage(getRosterRemovedMessagte(participant));
-  }
-  
-  private Message getRosterRemovedMessagte(Participant participant) {
-    RosterRemovedMessage message = new RosterRemovedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(participant.getUserName().getName());
-    message.setFrom(participant.getUserName().getName());
-    
-    return message;
   }
 
   @Override
   public void deliverMessage(Message message) {
 
     for (Participant participant : participants) {
-      if (!participant.getUserName().isNull()) {
+      if (participant.getUserName() != UserName.NULL_USER) {
         participant.deliverMessage(message);
       }
     }
+  }
 
+  @Override
+  public boolean isValidUserName(String userName) {
+    boolean valid = true;
+
+    for (Participant participant : participants) {
+      if (participant.getUserName() == UserName.NULL_USER)
+        continue;
+
+      if (participant.getUserName().getName().trim()
+          .equalsIgnoreCase(userName)) {
+        valid = false;
+        break;
+      }
+
+    }
+    return valid;
   }
 
   @Override
   public Set<Participant> getParticipants() {
     return participants;
-  }
-
-  public Map<String, Participant> getParticipantsMap() {
-    return participantsMap;
-  }
-
-  @Override
-  public boolean isValidUserName(String userName) {
-    if (participantsMap.containsKey(userName)) {
-      return false;
-    }
-    return true;
   }
 
 }

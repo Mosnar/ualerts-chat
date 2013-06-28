@@ -28,7 +28,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.socket.TextMessage;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
@@ -67,15 +66,15 @@ public class ConcreteParticipantTest {
     UserName userName = new UserName("TestName");
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
-    assertFalse(userName.isNull());
+    assertFalse(userName == userName.NULL_USER);
   }
 
   @Test
   public void testSetAndGetUserNameNull() {
-    UserName userName = new NullUserName();
+    UserName userName = UserName.NULL_USER;
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
-    assertTrue(userName.isNull());
+    assertTrue(userName == UserName.NULL_USER);
   }
 
   @Test

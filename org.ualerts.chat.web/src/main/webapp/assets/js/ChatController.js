@@ -13,6 +13,7 @@ function ChatController(chatService) {
  */
 ChatController.prototype.init = function() {
     this.setUpListeners();
+    this.nameSubmitDisable();
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
@@ -38,6 +39,13 @@ ChatController.prototype.messageDisable = function() {
 };
 
 /**
+ * Disable the submit name button.
+ */
+ChatController.prototype.nameSubmitDisable = function() {
+	$('#nameButton').attr('disabled', 'disabled');
+};
+
+/**
  * Call updateUserName, provided with the username field's value
  * Call acknowledgeUser() to display a welcome message
  * Enable the message input field
@@ -45,15 +53,17 @@ ChatController.prototype.messageDisable = function() {
 ChatController.prototype.handleNameSubmit = function() {
     var chatC = this;
     
-    $('#nameButton').click(function() {        
-        if ($.trim($('#usernameField').val()) != "") {
-            var name = $('#usernameField').val();
-            chatC.updateUserName(name);
+    $('#nameButton').click(function() {
+        var $username = $('#usernameField').val();
+    	
+        if ($.trim($username) != "") {
+            //chatC.updateUserName($username);
             chatC.acknowledgeUser();
             chatC.prepareMessageField();
             $('#messageField').attr('placeholder', 'Type a message...').focus();
             $("#nameForm").hide();
         }
+        chatC.service.submitName();
     });
     
     this.service.connect();
@@ -64,7 +74,7 @@ ChatController.prototype.handleNameSubmit = function() {
  *
  * @param name The username
  */
-ChatController.prototype.updateUserName = function(name) {
+ChatController.prototype.updateUsername = function(name) {
     this.username = name;
 };
 
@@ -104,12 +114,25 @@ ChatController.prototype.handleMessageSubmit = function() {
     });
 };
 
+// The console logs "Uncaught TypeError: Object [object Array] has not method 'addToRoster'" Line 147
+//
+///**
+// * Make HTML to append to the connected users table
+// * 
+// * @param user The user to be enrolled on the connected users table
+// */
+//ChatController.prototype.addToRoster = function(message) {
+//	var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+//	$('#connected-users tbody').append(htmlString);
+//};
+
 /**
  * Perform an action when called by the ChatService object
  *
  * @param message The message object received
  */
 ChatController.prototype.onMessage = function(message) {
+	var chatC = this;
     var $chatbox = $('#chatbox');
     var date = new Date(message.messageDate);
     
@@ -117,11 +140,31 @@ ChatController.prototype.onMessage = function(message) {
     if (minutes < 10) {
     	minutes = "0" + minutes;
     }
+    
+    if (message.type === "ROSTER_ADDED") {
+        var dateString = date.getHours() + ":" + minutes;
+        $chatbox.append('<p>' + '(' + dateString + ') ' + message.text + '</p>');
+        
+        // Add the user to the connected users table
+    	var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+    	$('#connected-users tbody').append(htmlString);
+    }
+    
+    if (message.type === "chat") {
+        var dateString = date.getHours() + ":" + minutes;
+        $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
+            message.from + ': ' + message.text + '</p>');
+    }
+};
 
-    var dateString = date.getHours() + ":" + minutes;
-    $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-        message.from + ': ' + message.text + '</p>');
-    $chatbox.scrollTop($chatbox[0].scrollHeight);
+/**
+ * 
+ */
+ChatController.prototype.validateUsername = function() {
+    //var $username = $('#usernameField').val();
+	var chatC = this;
+	this.updateUsername($.trim($('#usernameField').val()));
+    this.service.checkUsername(chatC.username, this.handleValidity);
 };
 
 /**
@@ -132,15 +175,16 @@ ChatController.prototype.onMessage = function(message) {
  * 		  method, which has a "result" property that is either "valid" or
  * 		  "invalid"
  */
-ChatController.prototype.handleValidity = function(jsonObj) {
-    if (new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf()) {
-        console.log("The username " + $('#usernameField').val() + " is valid");
-        $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + $('#usernameField').val() + ' </span>');
+ChatController.prototype.handleValidity = function(jsonObj, storedUsername) {	
+    if ((new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf())
+    		&& $('#usernameField').val() === storedUsername) {
+        console.log("The username " + storedUsername + " is valid");
+        $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + storedUsername + ' </span>');
         $('#nameButton').removeAttr('disabled');
     }
     else if (new String(JSON.parse(jsonObj).result).valueOf() == new String("invalid").valueOf()) {
-        console.log("The username " + $('#usernameField').val() + "  is not valid");
-        $('#username-validity').html('<div class="cancel"></div>&nbsp<span> ' + $('#usernameField').val() + ' </span>');
+        console.log("The username " + storedUsername + "  is not valid");
+        $('#username-validity').html('<div class="cancel"></div>&nbsp<span> ' + storedUsername + ' </span>');
         $('#nameButton').attr('disabled', 'disabled');
 
     }

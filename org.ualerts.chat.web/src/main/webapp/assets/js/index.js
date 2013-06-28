@@ -16,7 +16,7 @@ $(document).ready(function() {
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
-        callback: function() { sendUsername(); },
+        callback: function() { chatController.validateUsername(); },
         wait: 300,
         captureLength: 1
         });
@@ -25,11 +25,45 @@ $(document).ready(function() {
     enableTypeWatch();
     
     /**
-     * Call the ChatService's checkUsername method and pass in the
-     * ChatController's handleBoolean method as a callback.
+     * Make the HTML for the users table
      */
-    function sendUsername() {
-        var $username = $('#usernameField').val();
-        chatService.checkUsername($username, chatController.handleValidity);
+    function makeUsers(users) {
+        string = "";
+        for (var i = 0; i < users.length; i++) {
+            string += '<tr><td class="online">' + users[i] + '</td></tr>';
+        }
+        
+        //$('#connected-users tbody').append(string);
     }
+    
+    /**
+     * Sort the username list by online status
+     */
+    function sortUsers(users) {
+        //var numUsers = $('#connected-users tbody tr td').length;
+
+        for (var i = 0; i < users.length; i ++) {
+            var $user = $('#connected-users tbody tr td:eq(' + i + ')');
+            if ($user.hasClass('offline')) {
+                console.log('The user ' + $user.text() + ' is offline');
+            }
+            else {
+                console.log('The user ' + $user.text() + ' is online');
+            }
+        }
+    }
+    
+    /**
+     * Place the approprite icons for td elements of the class .online or .offline
+     */
+    function placeUserIcons () {
+        $('.online').prepend('<i class="icon-user"></i>&nbsp;');
+        $('.offline').prepend('<i class="icon-minus-sign"></i>&nbsp;');
+    }
+    
+    var users = new Array("Brandon", "Billy", "Michael", "Ransom", "Carl", "Mathew", "Brian", "Phil", "Joe");
+    
+    makeUsers(users);
+    sortUsers(users);
+    //placeUserIcons();
 });

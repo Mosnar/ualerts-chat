@@ -1,5 +1,5 @@
 /*
- * File created on Jun 26, 2013
+ * File created on Jun 27, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -23,51 +23,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.DateTimeService;
+import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.web.context.ChatClientContext;
 import org.ualerts.chat.web.sockjs.SockJsChatClient;
 
 /**
- * Controller used to determine if a user name is available
- * for use
- *
+ * Controller for sending a RosterAddedMessage upon user name submission
+ * 
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-
 @Controller
-public class NameCheckController {
-  
-  private final String VALID = "{\"result\":\"valid\"}";    
-  private final String INVALID = "{\"result\":\"invalid\"}";;
-  
+public class RosterAddedController {
+
+  private final String VALID = "{\"result\":\"valid\"}";
+  private final String INVALID = "{\"result\":\"invalid\"}";
+
+  private DateTimeService dateTimeService;
   private ChatClientContext chatClientContext;
   private SockJsChatClient chatClient;
-  
-  @RequestMapping(value="/checkName", method = RequestMethod.POST)
+
+  @RequestMapping(value="/submitName", method = RequestMethod.POST)
   @ResponseBody
-  public String checkName(@RequestParam("name") String name) {
+  public String sendRosterAddedMessage() {
+    chatClient = (SockJsChatClient)chatClientContext.getChatClient();
+    Participant participant = chatClient.getParticipant();
+    
+    if(participant.getUserName() == UserName.NULL_USER) {
+      return INVALID;
+    }
+    Conversation conversation = participant.getConversation();   
+    conversation.deliverMessage(getRosterAddedMessage(participant.getUserName().getName()));
 
-      chatClient = (SockJsChatClient)chatClientContext.getChatClient();
-      Participant participant = chatClient.getParticipant();
-      Conversation conversation = participant.getConversation();
-      
-      if(conversation.isValidUserName(name.trim())) {
-        UserName userName = new UserName(name.trim());
-        participant.setUserName(userName);
-        return VALID;
-      }
-    return INVALID;
+    return VALID;
   }
-
+  
   @Autowired
   public void setChatClientContext(ChatClientContext chatClientContext) {
     this.chatClientContext = chatClientContext;
   }
   
+  @Autowired
+  public void setDateTimeService(DateTimeService dateTimeService)
+  {
+    this.dateTimeService = dateTimeService;
+  }
   
+  
+  public Message getRosterAddedMessage(String userName) {
+    RosterAddedMessage message = new RosterAddedMessage();
+    message.setMessageDate(dateTimeService.getCurrentDate());
+    message.setText(userName);
+    message.setFrom(userName);
+
+    return message;
+  }
 }
