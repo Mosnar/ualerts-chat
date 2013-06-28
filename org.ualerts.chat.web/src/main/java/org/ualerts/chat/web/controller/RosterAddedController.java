@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.DateTimeService;
-import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.web.context.ChatClientContext;
 import org.ualerts.chat.web.sockjs.SockJsChatClient;
@@ -45,7 +42,6 @@ public class RosterAddedController {
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";
 
-  private DateTimeService dateTimeService;
   private ChatClientContext chatClientContext;
   private SockJsChatClient chatClient;
 
@@ -59,8 +55,7 @@ public class RosterAddedController {
       return INVALID;
     }
     Conversation conversation = participant.getConversation();   
-    conversation.deliverMessage(getRosterAddedMessage(participant.getUserName().getName()));
-
+    conversation.finalizeRegistration(participant.getUserName().getName());
     return VALID;
   }
   
@@ -69,19 +64,4 @@ public class RosterAddedController {
     this.chatClientContext = chatClientContext;
   }
   
-  @Autowired
-  public void setDateTimeService(DateTimeService dateTimeService)
-  {
-    this.dateTimeService = dateTimeService;
-  }
-  
-  
-  public Message getRosterAddedMessage(String userName) {
-    RosterAddedMessage message = new RosterAddedMessage();
-    message.setMessageDate(dateTimeService.getCurrentDate());
-    message.setText(userName);
-    message.setFrom(userName);
-
-    return message;
-  }
 }
