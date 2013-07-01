@@ -41,7 +41,7 @@ public class ConcreteConversation implements Conversation {
 
   private static final String BROADCAST_MESSAGE = "all";
   private static final String ROSTER_ADDED = "ROSTER_ADDED";
-  private static final String ROSTER_CONTENTS = "ROSTER_CONTENTS";
+  private static final String ROSTER_CONTENTS = "ROSTER_CONTENT";
   private static final String ROSTER_REMOVE = "ROSTER_REMOVED";
 
   private Set<Participant> participants = new HashSet<Participant>();
@@ -64,21 +64,22 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE)) {
       for (Participant participant : participants) {
-        if (participant.getUserName() == UserName.NULL_USER
-            || participant.getStatus() != Status.ONLINE)
-          continue;
-        participant.deliverMessage(message);
+        deliverParticipantMessage(participant, message);
       }
     }
     else {
       Participant toParticipant = findParticipant(message.getTo());
       Participant fromParticipant = findParticipant(message.getFrom());
-      if (toParticipant != null && fromParticipant != null
-          && toParticipant.getUserName() != UserName.NULL_USER
-          && fromParticipant.getUserName() != UserName.NULL_USER
-          && toParticipant.getStatus() == Status.ONLINE
-          && fromParticipant.getStatus() == Status.ONLINE)
-        toParticipant.deliverMessage(message);
+      deliverParticipantMessage(toParticipant, message);
+      message.setTo(fromParticipant.getUserName().getName());
+      deliverParticipantMessage(fromParticipant, message);
+    }
+  }
+  
+  private void deliverParticipantMessage(Participant participant, Message message) {
+    if(participant != null && participant.getUserName() != UserName.NULL_USER
+        && participant.getStatus() == Status.ONLINE) {
+        participant.deliverMessage(message);
     }
   }
 
@@ -126,12 +127,13 @@ public class ConcreteConversation implements Conversation {
       Message replyMessage;
       for (Participant thisParticipant : participants) {
         if (thisParticipant.getUserName() != UserName.NULL_USER) {
+          if(!thisParticipant.getUserName().getName().matches(name)){
           replyMessage =
               getRosterMessage(thisParticipant.getUserName().getName(), name,
                   ROSTER_CONTENTS);
           deliverMessage(replyMessage);
         }
-      }
+      }}
     }
   }
 
