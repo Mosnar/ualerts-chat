@@ -16,14 +16,8 @@ function ChatService() {
  */
 ChatService.prototype.addListener = function(callback) {
 	if (typeof callback != "object" || typeof callback.execute != "function")
-	    alert("Tried adding a non-Callback object to the NotificationCenter");
+		console.log('The callback ' + callback + ' is not an object of the Callback class');
 	  this.listeners.push(callback);
-	//	if (typeof callback != "object" || typeof callback.execute != "function") {
-//		console.log('The callback ' + callback + ' is not an object of the Callback class');
-//	}
-//	else {
-//		this.listeners.push(callback);
-//	}
 };
 
 /**
@@ -104,6 +98,6 @@ ChatService.prototype.submitName = function() {
         url: window.location.href + "/submitName",
         data: {}
     }).done(function(data) {
-        console.log(data);
+        console.log('The data returned from the ChatService.submitname() POST: ' + data);
     });
 };

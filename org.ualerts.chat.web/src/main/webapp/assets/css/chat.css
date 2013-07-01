@@ -5,6 +5,7 @@ body {
 form, p, span {
     margin: 0;
     padding: 0;
+    word-wrap: break-word;
 }
 
 #wrapper {
@@ -65,10 +66,17 @@ form, p, span {
 }
 
 .table-header {
-    /*background-color: #ACD8F0;*/
     background-color: #EBF4FB;
+}
+
+.table-hover tbody tr:hover > td.online {
+	background-color: #d2eed2;
 }
 
 .offline {
     color: #777;
+}
+
+.table-hover tbody tr:hover > td.offline {
+	background-color: #f5e5f5;
 }

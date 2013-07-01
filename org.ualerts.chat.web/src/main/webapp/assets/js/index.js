@@ -26,8 +26,6 @@ $(document).ready(function() {
      * Sort the username list by online status
      */
     function sortUsers(users) {
-        //var numUsers = $('#connected-users tbody tr td').length;
-
         for (var i = 0; i < users.length; i ++) {
             var $user = $('#connected-users tbody tr td:eq(' + i + ')');
             if ($user.hasClass('offline')) {
@@ -39,16 +37,6 @@ $(document).ready(function() {
         }
     }
     
-    /**
-     * Place the approprite icons for td elements of the class .online or .offline
-     */
-    function placeUserIcons () {
-        $('.online').prepend('<i class="icon-user"></i>&nbsp;');
-        $('.offline').prepend('<i class="icon-minus-sign"></i>&nbsp;');
-    }
-    
-    enableTypeWatch();    
-    //makeUsers(users);
+    enableTypeWatch();
     //sortUsers(users);
-    //placeUserIcons();
 });
