@@ -6,6 +6,7 @@
 function ChatController(chatService) {
     this.service = chatService;
     this.username = "";
+    this.connectedUsers = new Array();
 }
 
 /**
@@ -115,14 +116,14 @@ ChatController.prototype.handleMessageSubmit = function() {
 };
 
 /**
- * Make HTML to append to the connected users table
+ * Make HTML to append the user to the connected users table
  * 
  * @param user The user to be enrolled on the connected users table
  */
-ChatController.prototype.addToRoster = function(message) {
-    var htmlString = '<tr><td class="online">' + message.from + '</td></tr>';
+ChatController.prototype.addToRoster = function(user) {
+	this.connectedUsers.push(user);
+    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td></tr>';
 	$('#connected-users tbody').append(htmlString);
-	this.placeUserIcons();
 };
 
 /**
@@ -141,9 +142,13 @@ ChatController.prototype.onMessage = function(message) {
     
     if (message.type === "ROSTER_ADDED") {
         var dateString = date.getHours() + ":" + minutes;
-        $chatbox.append('<p>' + '(' + dateString + ') ' + message.text + '</p>');
+        $chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.</p>');
         
-        this.addToRoster(message);
+        this.addToRoster(message.from);
+    }
+    
+    if (message.type === "ROSTER_REPLY") {	    
+	    this.addToRoster(message.from);
     }
     
     if (message.type === "chat") {
@@ -152,6 +157,12 @@ ChatController.prototype.onMessage = function(message) {
             message.from + ': ' + message.text + '</p>');
         $chatbox.scrollTop($chatbox[0].scrollHeight);
     }
+    
+	if (this.connectedUsers.length === 0)
+	{
+	    var htmlString = '<tr><td class="online">' + user + '</td></tr>';
+		$('#connected-users tbody').append(htmlString);
+	}
 };
 
 /**
@@ -184,12 +195,4 @@ ChatController.prototype.handleValidity = function(jsonObj, storedUsername) {
         $('#nameButton').attr('disabled', 'disabled');
 
     }
-};
-
-/**
- * Place an icon in the td of the connected users table
- */
-ChatController.prototype.placeUserIcons = function() {
-	$('.online').prepend('<i class="icon-user"></i>&nbsp;&nbsp;');
-	$('.offline').prepend('<i class="icon-minus"></i>&nbsp;&nbsp;');
 };

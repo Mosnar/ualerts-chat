@@ -98,6 +98,6 @@ ChatService.prototype.submitName = function() {
         url: window.location.href + "/submitName",
         data: {}
     }).done(function(data) {
-        console.log(data);
+        console.log('The data returned from the ChatService.submitname() POST: ' + data);
     });
 };
