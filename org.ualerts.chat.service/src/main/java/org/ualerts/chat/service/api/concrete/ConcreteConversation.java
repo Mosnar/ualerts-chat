@@ -41,7 +41,7 @@ public class ConcreteConversation implements Conversation {
 
   private static final String BROADCAST_MESSAGE = "all";
   private static final String ROSTER_ADDED = "ROSTER_ADDED";
-  private static final String ROSTER_CONTENTS = "ROSTER_REPLY";
+  private static final String ROSTER_CONTENTS = "ROSTER_CONTENTS";
   private static final String ROSTER_REMOVE = "ROSTER_REMOVED";
 
   private Set<Participant> participants = new HashSet<Participant>();
@@ -125,15 +125,17 @@ public class ConcreteConversation implements Conversation {
       // other users
       Message replyMessage;
       for (Participant thisParticipant : participants) {
+        
+          
+      
         if(thisParticipant.getUserName() != UserName.NULL_USER) {
+          if(!thisParticipant.getUserName().getName().equals(name)){
           replyMessage =
               getRosterMessage(thisParticipant.getUserName().getName(), name,
                   ROSTER_CONTENTS);
           deliverMessage(replyMessage);
-        }
-          
-       
-       
+        }       
+      }
       }
     }
   }
