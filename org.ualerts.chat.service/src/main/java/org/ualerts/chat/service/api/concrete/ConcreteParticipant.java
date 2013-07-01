@@ -19,6 +19,9 @@
 
 package org.ualerts.chat.service.api.concrete;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
@@ -32,10 +35,11 @@ import org.ualerts.chat.service.api.UserName;
  * @author Ransom Roberson
  */
 public class ConcreteParticipant implements Participant {
-
+  
   private Conversation conversation;
   private UserName userName;
   private ChatClient chatClient;
+  private Status status;
   /**
    * {@inheritDoc}
    */
@@ -90,6 +94,22 @@ public class ConcreteParticipant implements Participant {
   @Override
   public void deliverMessage(Message message) {
     this.getChatClient().deliverMessage(message);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setStatus(Status status) {
+    this.status = status;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Status getStatus() {
+    return status;
   }
   
 }

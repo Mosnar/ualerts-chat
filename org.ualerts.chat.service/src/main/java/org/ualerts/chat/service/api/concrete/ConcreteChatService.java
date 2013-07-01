@@ -35,16 +35,16 @@ import org.ualerts.chat.service.api.DateTimeService;
 @Service
 public class ConcreteChatService implements ChatService {
 
-	private final Conversation defaultConversation;
-	private DateTimeService dateTimeService;
+	private Conversation defaultConversation;
 	
-	public ConcreteChatService() {
-		this(new ConcreteConversation());
+	@Autowired
+	public ConcreteChatService(DateTimeService dateTimeService) {
+	  defaultConversation = new ConcreteConversation();
+	  defaultConversation.setDateTimeService(dateTimeService);
 	}
 	
 	public ConcreteChatService(Conversation conversation) {
 		this.defaultConversation = conversation;
-		this.defaultConversation.setDateTimeService(dateTimeService);
 	}
 	
 	@Override
@@ -52,10 +52,4 @@ public class ConcreteChatService implements ChatService {
 		return defaultConversation;
 	}
 	
-	@Autowired
-	public void setDateTimeService(DateTimeService dateTimeService)
-	{
-	  this.dateTimeService = dateTimeService;
-	}
-
 }

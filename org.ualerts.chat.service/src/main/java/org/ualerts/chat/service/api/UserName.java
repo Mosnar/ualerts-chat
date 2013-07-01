@@ -56,8 +56,11 @@ public class UserName {
    */
   public boolean matches(String name)
   {
-    if(this.name.trim().equalsIgnoreCase(name.trim()))
-      return true;
+    System.out.println("in name: " + name +  " this.name: " + this.name);
+    if(this != NULL_USER) {
+      if(this.name.trim().equalsIgnoreCase(name.trim()))
+        return true;
+    }   
     
     return false;
   }
