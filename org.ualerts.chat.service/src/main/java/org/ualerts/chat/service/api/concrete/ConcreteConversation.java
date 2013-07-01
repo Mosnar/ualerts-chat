@@ -22,8 +22,8 @@ package org.ualerts.chat.service.api.concrete;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.RosterMessage;
@@ -44,7 +44,8 @@ public class ConcreteConversation implements Conversation {
   private static final String ROSTER_REMOVE = "ROSTER_REMOVED";
   
   private Set<Participant> participants = new HashSet<Participant>();
-
+  private DateTimeService dateTimeService;
+  
   @Override
   public void addParticipant(Participant participant) {
     this.participants.add(participant);
@@ -139,7 +140,7 @@ public class ConcreteConversation implements Conversation {
     message.setFrom(from);
     message.setTo(to);
     message.setType(type);
-    message.setMessageDate(new ConcreteDateTimeService().getCurrentDate());
+    message.setMessageDate(dateTimeService.getCurrentDate());
  
     return message;
   }
@@ -147,6 +148,11 @@ public class ConcreteConversation implements Conversation {
   @Override
   public Set<Participant> getParticipants() {
     return participants;
+  }
+  
+  @Override
+  public void setDateTimeService(DateTimeService dateTimeService) {
+    this.dateTimeService = dateTimeService;
   }
 
 }

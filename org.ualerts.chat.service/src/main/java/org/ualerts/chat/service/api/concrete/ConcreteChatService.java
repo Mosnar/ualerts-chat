@@ -19,9 +19,11 @@
 
 package org.ualerts.chat.service.api.concrete;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.DateTimeService;
 
 
 /**
@@ -34,6 +36,7 @@ import org.ualerts.chat.service.api.Conversation;
 public class ConcreteChatService implements ChatService {
 
 	private final Conversation defaultConversation;
+	private DateTimeService dateTimeService;
 	
 	public ConcreteChatService() {
 		this(new ConcreteConversation());
@@ -41,11 +44,18 @@ public class ConcreteChatService implements ChatService {
 	
 	public ConcreteChatService(Conversation conversation) {
 		this.defaultConversation = conversation;
+		this.defaultConversation.setDateTimeService(dateTimeService);
 	}
 	
 	@Override
 	public Conversation findDefaultConversation() {
 		return defaultConversation;
+	}
+	
+	@Autowired
+	public void setDateTimeService(DateTimeService dateTimeService)
+	{
+	  this.dateTimeService = dateTimeService;
 	}
 
 }

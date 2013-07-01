@@ -73,4 +73,10 @@ public interface Conversation {
 	 * @param userName
 	 */
 	void finalizeRemoveParticipant(String userName);
+	
+	/**
+	 * Provide consistent DateTimeService
+	 * @param dateTimeService
+	 */
+	void setDateTimeService(DateTimeService dateTimeService);
 }
