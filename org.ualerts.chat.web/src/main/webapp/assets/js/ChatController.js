@@ -150,29 +150,23 @@ ChatController.prototype.onMessage = function(message) {
     	minutes = "0" + minutes;
     }
     
-    if (message.type === "ROSTER_ADDED") {
+    switch(message.type) {
+    case "ROSTER_ADDED":
         var dateString = date.getHours() + ":" + minutes;
         $chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.</p>');
         
         this.addToRoster(message.from);
-    }
-    
-    if (message.type === "ROSTER_REPLY") {	    
+    	break;
+    case "ROSTER_REPLY":
 	    this.addToRoster(message.from);
-    }
-    
-    if (message.type === "chat") {
+    	break;
+    case "chat":
         var dateString = date.getHours() + ":" + minutes;
         $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
             message.from + ': ' + message.text + '</p>');
         $chatbox.scrollTop($chatbox[0].scrollHeight);
+    	break;
     }
-    
-	if (this.connectedUsers.length === 0)
-	{
-	    var htmlString = '<tr><td class="online">' + user + '</td></tr>';
-		$('#connected-users tbody').append(htmlString);
-	}
 };
 
 /**
