@@ -1,10 +1,10 @@
 /**
- * The controller that subscribes listeners to the ChatService
+ * The controller that subscribes listeners to the RemoteService
  *
- * @param chatService The ChatService to work with
+ * @param remoteService The RemoteService to work with
  */
-function PageController(chatService) {
-    this.service = chatService;
+function PageController(remoteService) {
+    this.service = remoteService;
     this.username = "";
     this.connectedUsers = new Array();
 }
@@ -22,7 +22,7 @@ PageController.prototype.init = function() {
 };
 
 /**
- * Add listeners to the ChatService object.
+ * Add listeners to the RemoteService object.
  */
 PageController.prototype.setUpListeners = function() {
 	var controller = this;
@@ -110,7 +110,7 @@ PageController.prototype.prepareMessageField = function() {
 };
 
 /**
- * Pass the message field text and username to the ChatService object's
+ * Pass the message field text and username to the RemoteService object's
  * sendMessage method
  */
 PageController.prototype.handleMessageSubmit = function() {
@@ -137,7 +137,7 @@ PageController.prototype.addToRoster = function(user) {
 };
 
 /**
- * Perform an action when called by the ChatService object
+ * Perform an action when called by the RemoteService object
  *
  * @param message The message object received
  */
@@ -175,7 +175,7 @@ PageController.prototype.onMessage = function(message) {
 };
 
 /**
- * Have ChatService validate the username by calling checkUsername method on it
+ * Have RemoteService validate the username by calling checkUsername method on it
  */
 PageController.prototype.validateUsername = function() {
 	var pageC = this;
@@ -185,9 +185,9 @@ PageController.prototype.validateUsername = function() {
 
 /**
  * Perform a DOM operation if the username is valid or invalid, based on the boolean value
- * returned from the ChatService.checkUsername method
+ * returned from the RemoteService.checkUsername method
  *
- * @param jsonObj The JSON object returned by the ChatService.checkUsername
+ * @param jsonObj The JSON object returned by the RemoteService.checkUsername
  * 		  method, which has a "result" property that is either "valid" or
  * 		  "invalid"
  */

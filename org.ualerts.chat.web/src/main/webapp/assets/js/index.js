@@ -6,8 +6,8 @@ $(document).ready(function() {
         return false;
     });
             
-    var chatService = new ChatService();
-    var pageController = new PageController(chatService);
+    var remoteService = new RemoteService();
+    var pageController = new PageController(remoteService);
     
     pageController.init();
     
