@@ -1,0 +1,3 @@
+function ChatRoomService() {
+	// TODO
+}
