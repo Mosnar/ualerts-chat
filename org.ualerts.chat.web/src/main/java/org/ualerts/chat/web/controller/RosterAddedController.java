@@ -55,7 +55,7 @@ public class RosterAddedController {
       return INVALID;
     }
     Conversation conversation = participant.getConversation();   
-    conversation.finalizeRegistration(participant.getUserName().getName());
+    conversation.finalizeRegisterParticipant(participant.getUserName().getName());
     return VALID;
   }
   

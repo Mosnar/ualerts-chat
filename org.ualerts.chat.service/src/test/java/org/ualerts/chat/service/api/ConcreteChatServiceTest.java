@@ -22,12 +22,19 @@ package org.ualerts.chat.service.api;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
+import org.jmock.Mockery;
+import org.junit.Before;
 import org.junit.Test;
 import org.ualerts.chat.service.api.concrete.ConcreteChatService;
 import org.ualerts.chat.service.api.concrete.ConcreteConversation;
 
 public class ConcreteChatServiceTest {
 
+  private Mockery context;
+  @Before
+  public void setUp() throws Exception {
+    context = new Mockery();
+  }
 	
 	@Test
 	public void testArgConstructor() {
@@ -38,7 +45,8 @@ public class ConcreteChatServiceTest {
 	
 	@Test
 	public void testNoArgConstructor() {
-		ChatService chatService = new ConcreteChatService();
+	  final DateTimeService dateTimeService = context.mock(DateTimeService.class);
+		ChatService chatService = new ConcreteChatService(dateTimeService);
 		Conversation conversation = chatService.findDefaultConversation();
 		assertNotNull(conversation);
 	}

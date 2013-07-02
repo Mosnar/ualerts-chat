@@ -27,6 +27,10 @@ package org.ualerts.chat.service.api;
  */
 public interface Participant {
   
+  public enum Status {
+    SETUP, ONLINE;
+  }
+  
   /**
    * Provide a reference to the conversation this participant
    * is a member of
@@ -69,4 +73,18 @@ public interface Participant {
    * @param message to deliver
    */
   void deliverMessage(Message message);
+  
+  /**
+   * Retrieve a Particpant's status
+   * @param status
+   */
+  void setStatus(Status status);
+  
+  /**
+   * Provide access to a Particpant's status
+   * @return the particpant's Status
+   */
+  Status getStatus();
+  
+  
 }

@@ -29,6 +29,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.concrete.ConcreteConversation;
 
 public class ConcreteConversationTest {
@@ -97,6 +98,8 @@ public class ConcreteConversationTest {
       {
         oneOf(participant).setConversation(conversation);
         oneOf(participant).deliverMessage(message);
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
         oneOf(participant).getUserName();
         will(returnValue(userName));
       }

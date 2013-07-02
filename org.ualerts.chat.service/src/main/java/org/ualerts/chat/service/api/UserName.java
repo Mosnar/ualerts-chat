@@ -47,5 +47,21 @@ public class UserName {
   public String getName() {
     return name;
   }
+  
+  /**
+   * Determines if this name's value is the same as
+   * the argument's value (trims and ignores case)
+   * @param name the name to comapare to this
+   * @return boolean
+   */
+  public boolean matches(String name)
+  {
+    if(this != NULL_USER) {
+      if(this.name.trim().equalsIgnoreCase(name.trim()))
+        return true;
+    }   
+    
+    return false;
+  }
     
 }
