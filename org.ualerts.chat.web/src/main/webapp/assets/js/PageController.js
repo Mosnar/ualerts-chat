@@ -66,7 +66,7 @@ PageController.prototype.handleNameSubmit = function() {
     
     $('#nameButton').click(function() {
         var $username = $('#usernameField').val();
-        $username = pageC.htmlEncode($username);
+        //$username = pageC.htmlEncode($username);
     	
         if ($.trim($username) != "") {
         	pageC.acknowledgeUser();
@@ -132,8 +132,8 @@ PageController.prototype.handleMessageSubmit = function() {
  */
 PageController.prototype.addToRoster = function(user) {
 	this.connectedUsers.push(user);
-    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td><i class="icon-comment"></i></tr>';
-	$('#connected-users tbody').append(htmlString);
+    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td></tr>';
+	$('#connected-users > tbody').prepend(htmlString);
 };
 
 /**
@@ -157,12 +157,13 @@ PageController.prototype.onMessage = function(message) {
         
         this.addToRoster(message.from);
     	break;
-    case "ROSTER_REPLY":
-    	if (message.from === message.to) {
-    		console.log('Ignoring updating the DOM for receiving a ROSTER_CONTENT from myself.');
+    case "ROSTER_CONTENT":
+    	if (new String(message.from).valueOf() != new String(message.to).valueOf()) {
+    		this.addToRoster(message.from);
+    		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
     	}
     	else {
-    		this.addToRoster(message.from);
+    		console.log('Ignoring updating the DOM for receiving a ROSTER_CONTENT from myself.');
     	}
     	break;
     case "chat":

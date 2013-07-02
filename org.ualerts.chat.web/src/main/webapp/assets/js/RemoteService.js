@@ -53,13 +53,13 @@ RemoteService.prototype.sendMessage = function(from, to, type, text) {
  * Connect to the service
  */
 RemoteService.prototype.connect = function() {
-	var chatS = this;
+	var remoteS = this;
     this.ws = new SockJS("sockjs/connector");
     this.ws.onmessage = function(event) {
-    	console.log(event);
+    	console.log('The event passed to the SockJS onmessage(event) is: ' + event);
     	var message = $.parseJSON(event.data);
-        for (var i = 0; i < chatS.listeners.length; i++) {
-        	chatS.listeners[i].execute(message);
+        for (var i = 0; i < remoteS.listeners.length; i++) {
+        	remoteS.listeners[i].execute(message);
         }
     };
 };
