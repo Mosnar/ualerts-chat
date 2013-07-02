@@ -21,4 +21,6 @@ $(document).ready(function() {
         captureLength: 1
         });
     }
+    
+    enableTypeWatch();
 });
