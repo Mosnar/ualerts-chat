@@ -168,12 +168,6 @@ PageController.prototype.onMessage = function(message) {
   		console.log('The ROSTER_CONTENT message is sent from ' + message.from + ' and is sent to ' + message.to);
   		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
     	break;
-    case "chat":
-        var dateString = date.getHours() + ":" + minutes;
-        $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-            message.from + ': ' + message.text + '</p>');
-        $chatbox.scrollTop($chatbox[0].scrollHeight);
-    	break;
     }
 };
 
