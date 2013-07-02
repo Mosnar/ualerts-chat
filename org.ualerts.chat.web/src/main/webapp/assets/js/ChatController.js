@@ -3,7 +3,7 @@
  *
  * @param chatService The ChatService to work with
  */
-function ChatController(chatService) {
+function PageController(chatService) {
     this.service = chatService;
     this.username = "";
     this.connectedUsers = new Array();
@@ -12,7 +12,7 @@ function ChatController(chatService) {
 /**
  * Set up the chat.
  */
-ChatController.prototype.init = function() {
+PageController.prototype.init = function() {
     this.setUpListeners();
     this.nameSubmitDisable();
     this.messageDisable();
@@ -24,7 +24,7 @@ ChatController.prototype.init = function() {
 /**
  * Add listeners to the ChatService object.
  */
-ChatController.prototype.setUpListeners = function() {
+PageController.prototype.setUpListeners = function() {
 	var controller = this;
 	this.service.addListener(new Callback(controller.onMessage, controller));
 };
@@ -32,7 +32,7 @@ ChatController.prototype.setUpListeners = function() {
 /**
  * Disable the message field.
  */
-ChatController.prototype.messageDisable = function() {
+PageController.prototype.messageDisable = function() {
     var $field = $('#messageField');
     var $button = $('#messageButton');
     $field.attr('readonly', 'readonly');
@@ -43,7 +43,7 @@ ChatController.prototype.messageDisable = function() {
 /**
  * Disable the submit name button.
  */
-ChatController.prototype.nameSubmitDisable = function() {
+PageController.prototype.nameSubmitDisable = function() {
 	$('#nameButton').attr('disabled', 'disabled');
 };
 
@@ -52,7 +52,7 @@ ChatController.prototype.nameSubmitDisable = function() {
  * 
  * Create an in-memory div, set it's inner text, and return it.
  */
-ChatController.prototype.htmlEncode = function(string) {
+PageController.prototype.htmlEncode = function(string) {
 	return $('<div />').text(string).html();
 };
 
@@ -61,46 +61,46 @@ ChatController.prototype.htmlEncode = function(string) {
  * Call acknowledgeUser() to display a welcome message
  * Enable the message input field
  */
-ChatController.prototype.handleNameSubmit = function() {
-    var chatC = this;
+PageController.prototype.handleNameSubmit = function() {
+    var pageC = this;
     
     $('#nameButton').click(function() {
         var $username = $('#usernameField').val();
-        $username = chatC.htmlEncode($username);
+        $username = pageC.htmlEncode($username);
     	
         if ($.trim($username) != "") {
-            chatC.acknowledgeUser();
-            chatC.prepareMessageField();
+        	pageC.acknowledgeUser();
+        	pageC.prepareMessageField();
             $('#messageField').attr('placeholder', 'Type a message...').focus();
             $("#nameForm").hide();
         }
-        chatC.service.submitName();
+        pageC.service.submitName();
     });
     
     this.service.connect();
 };
 
 /**
- * Set the username property for the ChatController class
+ * Set the username property for the PageController class
  *
  * @param name The username
  */
-ChatController.prototype.updateUsername = function(name) {
+PageController.prototype.updateUsername = function(name) {
     this.username = name;
 };
 
 /**
  * Display a welcome message on the view.
  */
-ChatController.prototype.acknowledgeUser = function() {
-    var chatC = this;
-    $('#user-welcome').text('Welcome, ' + chatC.username + ".");
+PageController.prototype.acknowledgeUser = function() {
+    var pageC = this;
+    $('#user-welcome').text('Welcome, ' + pageC.username + ".");
 };
 
 /**
  * Make the message field ready for typing.
  */
-ChatController.prototype.prepareMessageField = function() {
+PageController.prototype.prepareMessageField = function() {
     var $field = $('#messageField');
     var $button = $('#messageButton');
     
@@ -113,13 +113,13 @@ ChatController.prototype.prepareMessageField = function() {
  * Pass the message field text and username to the ChatService object's
  * sendMessage method
  */
-ChatController.prototype.handleMessageSubmit = function() {
-    var chatC = this;
+PageController.prototype.handleMessageSubmit = function() {
+    var pageC = this;
     $messageField = $('#messageField');
     $('#messageButton').click(function() {
         if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
-            chatC.service.sendMessage("<b>" + chatC.username + "</b>", "all", "chat", clientMessage);
+            pageC.service.sendMessage("<b>" + pageC.username + "</b>", "all", "chat", clientMessage);
             $messageField.val('');
         }
     });
@@ -130,9 +130,9 @@ ChatController.prototype.handleMessageSubmit = function() {
  * 
  * @param user The user to be enrolled on the connected users table
  */
-ChatController.prototype.addToRoster = function(user) {
+PageController.prototype.addToRoster = function(user) {
 	this.connectedUsers.push(user);
-    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td></tr>';
+    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td><i class="icon-comment"></i></tr>';
 	$('#connected-users tbody').append(htmlString);
 };
 
@@ -141,7 +141,7 @@ ChatController.prototype.addToRoster = function(user) {
  *
  * @param message The message object received
  */
-ChatController.prototype.onMessage = function(message) {
+PageController.prototype.onMessage = function(message) {
     var $chatbox = $('#chatbox');
     var date = new Date(message.messageDate);
     
@@ -158,7 +158,12 @@ ChatController.prototype.onMessage = function(message) {
         this.addToRoster(message.from);
     	break;
     case "ROSTER_REPLY":
-	    this.addToRoster(message.from);
+    	if (message.from === message.to) {
+    		console.log('Ignoring updating the DOM for receiving a ROSTER_CONTENT from myself.');
+    	}
+    	else {
+    		this.addToRoster(message.from);
+    	}
     	break;
     case "chat":
         var dateString = date.getHours() + ":" + minutes;
@@ -172,10 +177,10 @@ ChatController.prototype.onMessage = function(message) {
 /**
  * Have ChatService validate the username by calling checkUsername method on it
  */
-ChatController.prototype.validateUsername = function() {
-	var chatC = this;
+PageController.prototype.validateUsername = function() {
+	var pageC = this;
 	this.updateUsername($.trim($('#usernameField').val()));
-    this.service.checkUsername(chatC.htmlEncode(chatC.username), this.handleValidity);
+    this.service.checkUsername(pageC.htmlEncode(pageC.username), this.handleValidity);
 };
 
 /**
@@ -186,7 +191,7 @@ ChatController.prototype.validateUsername = function() {
  * 		  method, which has a "result" property that is either "valid" or
  * 		  "invalid"
  */
-ChatController.prototype.handleValidity = function(jsonObj, storedUsername) {	
+PageController.prototype.handleValidity = function(jsonObj, storedUsername) {	
     if ((new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf())
     		&& $('#usernameField').val() === storedUsername) {
         console.log("The username " + storedUsername + " is valid");

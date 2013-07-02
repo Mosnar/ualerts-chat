@@ -41,6 +41,11 @@ form, p, span {
 	margin-bottom: -5px;
 }
 
+.container {
+	background-color: #fff;
+	margin-bottom: 1em;
+}
+
 .check {
   background-image: url("../img/check.png");
   display: inline-block;
@@ -79,4 +84,17 @@ form, p, span {
 
 .table-hover tbody tr:hover > td.offline {
 	background-color: #f5e5f5;
+}
+
+.footer {
+	background-color: #ACD8F0;
+	padding: 0.4em 0;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+
+.conversation-bar {
+	background-color: #ACD8F0;
+	padding: 0.4em 0.4em 0.4em 0;
 }
