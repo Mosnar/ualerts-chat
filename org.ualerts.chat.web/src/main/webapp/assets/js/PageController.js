@@ -3,10 +3,11 @@
  *
  * @param remoteService The RemoteService to work with
  */
-function PageController(remoteService) {
+function PageController(remoteService, chatRoomService) {
     this.service = remoteService;
     this.username = "";
     this.connectedUsers = new Array();
+    this.chatRoomService = chatRoomService;
 }
 
 /**
@@ -66,7 +67,7 @@ PageController.prototype.handleNameSubmit = function() {
     
     $('#nameButton').click(function() {
         var $username = $('#usernameField').val();
-        //$username = pageC.htmlEncode($username);
+        $username = pageC.htmlEncode($username);
     	
         if ($.trim($username) != "") {
         	pageC.acknowledgeUser();
@@ -75,6 +76,8 @@ PageController.prototype.handleNameSubmit = function() {
             $("#nameForm").hide();
         }
         pageC.service.submitName();
+        pageC.chatRoomService.setUsername($username);
+        pageC.chatRoomService.createChatRoom();
     });
     
     this.service.connect();

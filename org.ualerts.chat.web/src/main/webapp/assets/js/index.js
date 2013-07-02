@@ -7,8 +7,8 @@ $(document).ready(function() {
     });
             
     var remoteService = new RemoteService();
-    var pageController = new PageController(remoteService);
     var chatRoomService = new ChatRoomService();
+    var pageController = new PageController(remoteService, chatRoomService);
     
     pageController.init();
     remoteService.addListener(new Callback(chatRoomService.onMessage, chatRoomService));
