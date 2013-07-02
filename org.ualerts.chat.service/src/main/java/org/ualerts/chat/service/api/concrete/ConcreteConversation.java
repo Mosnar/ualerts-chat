@@ -126,14 +126,15 @@ public class ConcreteConversation implements Conversation {
       // other users
       Message replyMessage;
       for (Participant thisParticipant : participants) {
-        if (thisParticipant.getUserName() != UserName.NULL_USER) {
-          if(!thisParticipant.getUserName().getName().matches(name)){
-          replyMessage =
-              getRosterMessage(thisParticipant.getUserName().getName(), name,
-                  ROSTER_CONTENTS);
-          deliverMessage(replyMessage);
+       if (thisParticipant.getUserName() != UserName.NULL_USER) {
+          if (!thisParticipant.getUserName().getName().equals(name)) {
+            replyMessage =
+                getRosterMessage(thisParticipant.getUserName().getName(),
+                    name, ROSTER_CONTENTS);
+            deliverMessage(replyMessage);
+          }
         }
-      }}
+      }
     }
   }
 
