@@ -7,6 +7,7 @@
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
     
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/typewatch.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
@@ -62,6 +63,18 @@
 	        	</form>
 	        </div>
         </div>
+     </div>
+     <div class="footer">
+     	<div class="conversation-bar">
+		    <div class="btn-group dropup pull-right">
+			<button class="btn dropdown-toggle" data-toggle="dropdown">
+			    <span class="icon-plus-sign"></span>
+			</button>
+			<ul class="dropdown-menu">
+			    <li><a href="#">Link 1</a></li>
+			</ul>
+	    </div>
+	</div>
      </div>
     </body>
     </html>
