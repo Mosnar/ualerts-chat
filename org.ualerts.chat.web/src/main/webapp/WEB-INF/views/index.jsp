@@ -9,8 +9,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/typewatch.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatService.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatController.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/RemoteService.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/PageController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/Callback.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
