@@ -127,7 +127,7 @@ public class ConcreteConversation implements Conversation {
       Message replyMessage;
       for (Participant thisParticipant : participants) {
        if (thisParticipant.getUserName() != UserName.NULL_USER) {
-          if (!thisParticipant.getUserName().getName().equals(name)) {
+          if (!thisParticipant.getUserName().matches(name)) {
             replyMessage =
                 getRosterMessage(thisParticipant.getUserName().getName(),
                     name, ROSTER_CONTENTS);
