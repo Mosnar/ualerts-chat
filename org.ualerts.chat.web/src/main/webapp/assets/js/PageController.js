@@ -132,18 +132,15 @@ PageController.prototype.handleMessageSubmit = function() {
  */
 PageController.prototype.addToRoster = function(user) {
 	// Check to see if user is already a connected user
-	var count = 0;
 	for (var i = 0; i < this.connectedUsers.length; i++) {
-		if (new String(user).valueOf() == new String(connectedUsers[i]).valueOf()) {
-			count++;
+		if (user == this.connectedUsers[i]) {
+			return;
 		}
 	}
 	
-	if (count == 0) {
-		this.connectedUsers.push(user);
-	    var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td></tr>';
-		$('#connected-users > tbody').prepend(htmlString);
-	}
+	this.connectedUsers.push(user);
+  var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td></tr>';
+	$('#connected-users > tbody').prepend(htmlString);
 };
 
 /**
@@ -164,18 +161,12 @@ PageController.prototype.onMessage = function(message) {
     case "ROSTER_ADDED":
         var dateString = date.getHours() + ":" + minutes;
         $chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.</p>');
-        
         this.addToRoster(message.from);
     	break;
     case "ROSTER_CONTENT":
-    	if (new String(message.from).valueOf() != new String(message.to).valueOf()) {
-    		this.addToRoster(message.from);
-    		console.log('The ROSTER_CONTENT message is sent from ' + message.from + ' and is sent to ' + message.to);
-    		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
-    	}
-    	else {
-    		console.log('Ignoring updating the DOM for receiving a ROSTER_CONTENT from myself.');
-    	}
+  		this.addToRoster(message.from);
+  		console.log('The ROSTER_CONTENT message is sent from ' + message.from + ' and is sent to ' + message.to);
+  		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
     	break;
     case "chat":
         var dateString = date.getHours() + ":" + minutes;
