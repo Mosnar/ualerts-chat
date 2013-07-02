@@ -71,7 +71,6 @@ public class ConcreteConversation implements Conversation {
       Participant toParticipant = findParticipant(message.getTo());
       Participant fromParticipant = findParticipant(message.getFrom());
       deliverParticipantMessage(toParticipant, message);
-      message.setTo(fromParticipant.getUserName().getName());
       deliverParticipantMessage(fromParticipant, message);
     }
   }
