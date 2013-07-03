@@ -13,6 +13,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/Callback.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/RemoteService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/PageController.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomService.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoom.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
