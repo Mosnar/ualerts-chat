@@ -100,12 +100,13 @@ form, p, span {
 	overflow-x: hidden;
 	background-color: #EBF4FB;
     display: inline-block;
+    margin: 0 0.2em;
 }
 
 .chatroom-title {
 	position: absolute;
 	background-color: #EBF4FB;
-	padding: 0.1em 0.1em 0em 0.4em;
+	/* padding: 0.1em 0.1em 0em 0.4em; */
 	border-bottom: 1px solid #ACD8F0;
 	width: inherit;
 }
@@ -125,6 +126,14 @@ form, p, span {
 	border: 1px solid #ACD8F0;
 	height: 1em;
 	width: 93%;
+}
+
+.chatroom-title > .icon-minus {
+	margin-right: 1em;
+}
+
+.chatroom-title > .icon-user {
+	margin-left: 0.4em;
 }
 
 .footer {

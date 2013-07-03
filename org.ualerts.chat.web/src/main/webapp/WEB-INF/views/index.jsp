@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Chat</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap-responsive.min.css" />
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
@@ -72,22 +72,22 @@
    	</div>
    	<div class="chat-holder">
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title">Brandon0</p>
+		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon0<i class="icon-minus pull-right"></i></p>
 		   		<div class="chatroom-chat"></div>
 		   		<input class="chatroom-message-field" type="text">
 		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title">Brandon1</p>
+		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon1<i class="icon-minus pull-right"></i></p>
 		   		<div class="chatroom-chat"></div>
 		   		<input class="chatroom-message-field" type="text">
 		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title">Brandon2</p>
+		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon2<i class="icon-minus pull-right"></i></p>
 		   		<div class="chatroom-chat"></div>
 		   		<input class="chatroom-message-field" type="text">
 		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title">Brandon3</p>
+		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon3<i class="icon-minus pull-right"></i></p>
 				<div class="chatroom-chat">
 					<p>Brandon chat chat chat chat chat chat chat chat chat 
 					chat chat chat chat chat chat chat chat chat 
