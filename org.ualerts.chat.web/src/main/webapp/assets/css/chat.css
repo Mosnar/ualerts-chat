@@ -94,7 +94,12 @@ form, p, span {
 	width: 100%;
 }
 
-.conversation-bar {
-	background-color: #ACD8F0;
-	padding: 0.4em 0.4em 0.4em 0;
+.dropdown-toggle {
+	margin-right: 0.8em;
+}
+
+.chatroom {
+	width: 12em;
+	height: 12em;
+	background-color: orange;
 }

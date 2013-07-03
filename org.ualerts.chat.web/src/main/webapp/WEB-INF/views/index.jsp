@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap-responsive.min.css" />
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
@@ -16,7 +17,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
     <body>
-    <div class="container">
+    <div class="container-responsive">
     	<div class="row">
     		<div class="span3">
 				<table id="connected-users" class="table table-bordered table-hover table-condensed">
@@ -64,6 +65,9 @@
 	        </div>
         </div>
      </div>
+   	<div class="chatroom">
+   		&nbsp;
+   	</div>
      <div class="footer">
      	<div class="conversation-bar">
 		    <div class="btn-group dropup pull-right">
@@ -73,8 +77,8 @@
 			<ul class="dropdown-menu">
 			    <li><a href="#">Link 1</a></li>
 			</ul>
-	    </div>
+    	</div>
 	</div>
-     </div>
-    </body>
-    </html>
+    </div>
+	</body>
+</html>
