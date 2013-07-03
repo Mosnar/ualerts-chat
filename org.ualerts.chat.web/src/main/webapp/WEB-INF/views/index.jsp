@@ -70,6 +70,38 @@
    	<div class="chatroom">
    		&nbsp;
    	</div>
+   	<div class="chat-holder">
+		   	<div class="chatroom-container">
+		   		<p class="chatroom-title">Brandon0</p>
+		   		<div class="chatroom-chat"></div>
+		   		<input class="chatroom-message-field" type="text">
+		   	</div>
+		   	<div class="chatroom-container">
+		   		<p class="chatroom-title">Brandon1</p>
+		   		<div class="chatroom-chat"></div>
+		   		<input class="chatroom-message-field" type="text">
+		   	</div>
+		   	<div class="chatroom-container">
+		   		<p class="chatroom-title">Brandon2</p>
+		   		<div class="chatroom-chat"></div>
+		   		<input class="chatroom-message-field" type="text">
+		   	</div>
+		   	<div class="chatroom-container">
+		   		<p class="chatroom-title">Brandon3</p>
+				<div class="chatroom-chat">
+					<p>Brandon chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat 
+					chat chat chat chat chat chat chat chat chat </p>
+				</div>
+				<input class="chatroom-message-field" type="text" />
+		   	</div>
+	 </div>
      <div class="footer">
      	<div class="conversation-bar">
 		    <div class="btn-group dropup pull-right">
