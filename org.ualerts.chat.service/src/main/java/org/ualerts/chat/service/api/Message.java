@@ -29,7 +29,7 @@ import java.util.Date;
 public abstract class Message {
 	
 	
-	String from, to, type;
+	String from, to, type, subType;
 	Date messageDate;
 	
 	
@@ -45,10 +45,14 @@ public abstract class Message {
 	public void setTo(String to) {
 		this.to = to;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
+	public abstract String getType();
+	
+	public abstract String getSubType();
+	
+  public void setSubType(String subType) {
+    this.subType = subType;
+  }
+  public void setType(String type) {
 		this.type = type;
 	}
 	public Date getMessageDate() {

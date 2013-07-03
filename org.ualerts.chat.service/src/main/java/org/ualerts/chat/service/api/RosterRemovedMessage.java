@@ -1,5 +1,5 @@
 /*
- * File created on Jun 17, 2013
+ * File created on Jul 3, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -19,34 +19,21 @@
 
 package org.ualerts.chat.service.api;
 
-public class ChatTextMessage extends Message {
+/**
+ * Message describing a roster remove activity
+ *
+ * @author Ransom Roberson
+ * @author Billy Coleman
+ */
+public class RosterRemovedMessage extends RosterMessage {
 
-	private String text;
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String getType() {
-    return "chat";
-  }
-
+  private final String SUBTYPE = "REMOVED";
   /**
    * {@inheritDoc}
    */
   @Override
   public String getSubType() {
-    return "";
+    return SUBTYPE;
   }
-	
-	
 
 }
