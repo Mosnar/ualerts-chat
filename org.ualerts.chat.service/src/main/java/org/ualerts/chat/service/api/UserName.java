@@ -64,6 +64,12 @@ public class UserName {
     return false;
   }
   
+  /**
+   * Determines if an object is equal to the UserName object based on its
+   * name field.
+   * @param Object to compare against
+   * @return boolean
+   */
   public boolean equals(Object obj)
   {
     if (!obj.getClass().isAssignableFrom(UserName.class))
