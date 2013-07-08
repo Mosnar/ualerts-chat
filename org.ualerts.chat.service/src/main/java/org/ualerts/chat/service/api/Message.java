@@ -45,9 +45,13 @@ public abstract class Message {
 	public void setTo(String to) {
 		this.to = to;
 	}
-	public abstract String getType();
+	public  String getType() {
+	  return this.type;
+	}
 	
-	public abstract String getSubType();
+	public String getSubType() {
+	  return this.subType;
+	}
 	
   public void setSubType(String subType) {
     this.subType = subType;
