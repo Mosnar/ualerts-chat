@@ -24,12 +24,9 @@ ChatRoomService.prototype.onMessage = function(message) {
   var room = this.getChatRoom(chatRoomName);
   console.log('This is what this.getChatRoom("all") returned: ' + room);
   if (room == false) {
-	  room = this.createChatRoom(message.to);
+	  room = this.createChatRoom(chatRoomName);
 	  console.log('This is what the value of this.createChatRoom(message.to) is: ' + room);
 	  console.log('This is what the value of message.to is: ' + message.to);
-
-	  room.displayChatMessage(message);
-	  return;
   }
   room.displayChatMessage(message);
 };
@@ -42,6 +39,7 @@ ChatRoomService.prototype.createChatRoom = function(chatRoomName) {
 	var room = new ChatRoom(chatRoomName, this.username);
 	console.log('this is what the value of new ChatRoom(chatRoomName, this.username) is: ' + room);
 	this.chatRoomList.push(room);
+	return room;
 };
 
 ChatRoomService.prototype.getChatRoom = function(chatRoomName) {

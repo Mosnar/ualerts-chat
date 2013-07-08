@@ -1,17 +1,29 @@
 function ChatRoom(chatRoomName, username) {
 	this.name = chatRoomName;
 	this.username = username;
-	this.UIDom = '<div class="chatroom-container">' +
+	
+	this.$uiDom = $('<div class="chatroom-container">'
    		+ '<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + this.name + '<i class="icon-minus pull-right"></i></p></div>'
-   		+ '<div id="' + this.name + '" class="chatroom-chat"></div>'
+   		+ '<div class="chatroom-chat"></div>'
    		+ '<div><input class="chatroom-message-field" type="text"></div>'
-	+ '</div>';
+	+ '</div>');
+	
+	$(".chat-holder").append(this.$uiDom);
+	
+   /**
+   * Create a new chatroom for the user whose plus sign is clicked
+   */
+	var chatRoom = this;
+  $('table').on('click', '.add-chat', function() {
+    console.log('the add-chat was clicked');
+    console.log(chatRoom.UIDom);
+    $('.chat-holder').append(chatRoom.UIDom);
+  });
 }
 
 ChatRoom.prototype.displayChatMessage = function(message) {	
-  if (message.to == "all") {
 	  console.log("displayChatMessage was called");
-	  var $chatbox = $('#chatbox');
+	  var $chatbox = this.$uiDom.find(".chatroom-chat");
 	  var date = new Date(message.messageDate);
 	  
 	  var minutes = date.getMinutes();
@@ -23,7 +35,6 @@ ChatRoom.prototype.displayChatMessage = function(message) {
 	  $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
 	      message.from + ': ' + message.text + '</p>');
 	  $chatbox.scrollTop($chatbox[0].scrollHeight);
-  }
 };
 
 /**
@@ -31,16 +42,6 @@ ChatRoom.prototype.displayChatMessage = function(message) {
  */
 ChatRoom.prototype.bindChatroomActions = function() {
 	var chatRoom = this;
-	
-	/**
-	 * Create a new chatroom for the user whose plus sign is clicked
-	 */
-	$('table').on('click', '.add-chat', function() {
-		console.log('the add-chat was clicked');
-		console.log(chatRoom.UIDom);
-		$('.chat-holder').append(chatRoom.UIDom);
-	});
-
 	
     $('.chat-holder').on('click', '.icon-minus', function() {
     	console.log('icon minus was clicked');

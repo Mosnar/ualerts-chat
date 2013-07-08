@@ -77,7 +77,7 @@ PageController.prototype.handleNameSubmit = function() {
         }
         pageC.service.submitName();
         pageC.chatRoomService.setUsername($username);
-        pageC.chatRoomService.createChatRoom();
+        pageC.chatRoomService.createChatRoom("all");
     });
     
     this.service.connect();
