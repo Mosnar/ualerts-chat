@@ -88,7 +88,6 @@ public class RosterAddedControllerTest {
         context.mock(ChatClientContext.class);
     final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
     final Participant participant1 = context.mock(Participant.class);
-    final Conversation conversation = context.mock(Conversation.class);
 
     context.checking(new Expectations() {
       {
