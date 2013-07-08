@@ -37,6 +37,24 @@ public class PresenceMessage extends Message {
   public void setText(String text) {
     this.text = text;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getSubType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
   
 
 }

@@ -26,8 +26,10 @@ import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.RosterContentMessage;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.RosterMessage;
+import org.ualerts.chat.service.api.RosterAddedMessage;
+import org.ualerts.chat.service.api.RosterRemovedMessage;
 import org.ualerts.chat.service.api.UserName;
 
 /**
@@ -40,9 +42,6 @@ import org.ualerts.chat.service.api.UserName;
 public class ConcreteConversation implements Conversation {
 
   private static final String BROADCAST_MESSAGE = "all";
-  private static final String ROSTER_ADDED = "ROSTER_ADDED";
-  private static final String ROSTER_CONTENTS = "ROSTER_CONTENT";
-  private static final String ROSTER_REMOVE = "ROSTER_REMOVED";
 
   private Set<Participant> participants = new HashSet<Participant>();
   private DateTimeService dateTimeService;
@@ -75,7 +74,7 @@ public class ConcreteConversation implements Conversation {
     }
   }
   
-  private void deliverParticipantMessage(Participant participant, Message message) {
+  protected void deliverParticipantMessage(Participant participant, Message message) {
     if(participant != null && participant.getUserName() != UserName.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
         participant.deliverMessage(message);
@@ -96,7 +95,7 @@ public class ConcreteConversation implements Conversation {
   private Participant findParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
-      if (participant.getUserName() == UserName.NULL_USER)
+      if (participant.getUserName() == UserName.NULL_USER) 
         continue;
 
       if (participant.getUserName().matches(name)) {
@@ -118,7 +117,7 @@ public class ConcreteConversation implements Conversation {
       // send a message to all particpants announcing user joining
       participant.setStatus(Status.ONLINE);
       Message rosterMessage =
-          getRosterMessage(name, BROADCAST_MESSAGE, ROSTER_ADDED);
+          getRosterAddedMessage(name, BROADCAST_MESSAGE);
       deliverMessage(rosterMessage);
 
       // send a message to the newly joined user announcing the presence of the
@@ -128,8 +127,8 @@ public class ConcreteConversation implements Conversation {
        if (thisParticipant.getUserName() != UserName.NULL_USER) {
           if (!thisParticipant.getUserName().matches(name)) {
             replyMessage =
-                getRosterMessage(thisParticipant.getUserName().getName(),
-                    name, ROSTER_CONTENTS);
+                getRosterContentMessage(thisParticipant.getUserName().getName(),
+                    name);
             deliverMessage(replyMessage);
           }
         }
@@ -145,22 +144,43 @@ public class ConcreteConversation implements Conversation {
     Participant participant = findParticipant(userName);
     removeParticipant(participant);
     Message message =
-        getRosterMessage(userName, BROADCAST_MESSAGE, ROSTER_REMOVE);
+        getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
     deliverMessage(message);
   }
 
   /*
    * Construct a roster message
    */
-  public Message getRosterMessage(String from, String to, String type) {
-    RosterMessage message = new RosterMessage();
-    message.setFrom(from);
-    message.setTo(to);
-    message.setType(type);
-    message.setMessageDate(dateTimeService.getCurrentDate());
+  protected Message getRosterAddedMessage(String from, String to) {
+    RosterAddedMessage message = new RosterAddedMessage();
+    setRosterMessageAttributes(from, to, message);
 
     return message;
   }
+  
+  protected Message getRosterRemovedMessage(String from, String to) {
+    RosterRemovedMessage message = new RosterRemovedMessage();
+    setRosterMessageAttributes(from, to, message);
+    
+    return message;
+  }
+  
+  protected Message getRosterContentMessage(String from, String to) {
+    RosterContentMessage message = new RosterContentMessage();
+    setRosterMessageAttributes(from, to, message);
+    message.setUserName(from);
+   
+    return message;
+  }
+
+  protected void setRosterMessageAttributes(String from, String to,
+      Message message) {
+    message.setFrom(from);
+    message.setTo(to);
+    message.setMessageDate(dateTimeService.getCurrentDate());
+  }
+  
+  
 
   @Override
   public Set<Participant> getParticipants() {

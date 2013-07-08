@@ -29,35 +29,85 @@ import java.util.Date;
 public abstract class Message {
 	
 	
-	String from, to, type;
+	String from, to, type, subType;
 	Date messageDate;
 	
-	
+	/**
+	 * Get the from value
+	 * @return the value identifying who this Message is from
+	 */
 	public String getFrom() {
 		return from;
 	}
+	/**
+	 * Set the from value
+	 * @param the value identifying who this Message is from
+	 */
 	public void setFrom(String from) {
 		this.from = from;
 	}
+	
+	/**
+	 * Get the to value
+	 * @return the value identifying who this message is to
+	 */
 	public String getTo() {
 		return to;
 	}
+	
+	/**
+	 * Set the to value
+	 * @param the value identifying who this message is to
+	 */
 	public void setTo(String to) {
 		this.to = to;
 	}
-	public String getType() {
-		return type;
+	
+	/**
+	 * Get the type of message
+	 * @return the value representing the type of message
+	 */
+	public  String getType() {
+	  return this.type;
 	}
-	public void setType(String type) {
+	
+	/**
+	 * Get the subType of message 
+	 * @return the value representing the subType of message
+	 */
+	public String getSubType() {
+	  return this.subType;
+	}
+	
+	/**
+	 * Set the subType of message
+	 * @param the value representing the subType of message
+	 */
+  public void setSubType(String subType) {
+    this.subType = subType;
+  }
+  
+  /**
+   * Set the type of message
+   * @param the value representing the type of message
+   */
+  public void setType(String type) {
 		this.type = type;
 	}
+  
+  /**
+   * Get the date of this message
+   * @return message date
+   */
 	public Date getMessageDate() {
 		return messageDate;
 	}
+	
+	/**
+	 * Set the date of this message
+	 * @param messageDate
+	 */
 	public void setMessageDate(Date messageDate) {
 		this.messageDate = messageDate;
 	}
-	
-
-
 }
