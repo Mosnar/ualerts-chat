@@ -24,11 +24,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.web.context.ChatClientContext;
-import org.ualerts.chat.web.sockjs.SockJsChatClient;
 
 /**
  * Controller for sending a RosterAddedMessage upon user name submission
@@ -43,15 +43,15 @@ public class RosterAddedController {
   private final String INVALID = "{\"result\":\"invalid\"}";
 
   private ChatClientContext chatClientContext;
-  private SockJsChatClient chatClient;
+  private ChatClient chatClient;
 
   @RequestMapping(value="/submitName", method = RequestMethod.POST)
   @ResponseBody
   public String sendRosterAddedMessage() {
-    chatClient = (SockJsChatClient)chatClientContext.getChatClient();
+    chatClient = chatClientContext.getChatClient();
     Participant participant = chatClient.getParticipant();
     
-    if(participant.getUserName() == UserName.NULL_USER) {
+    if (participant.getUserName() == UserName.NULL_USER) {
       return INVALID;
     }
     Conversation conversation = participant.getConversation();   

@@ -25,90 +25,86 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.web.context.ChatClientContext;
 import org.ualerts.chat.web.sockjs.SockJsChatClient;
+
 /**
- * This test will validate the NameCheckController
+ * This test will validate the RosterAddedController functionality
  * 
  * @author Ransom Roberson
  */
-public class NameCheckControllerTest {
+public class RosterAddedControllerTest {
   private Mockery context;
-  private NameCheckController nameCheckController;
+  private RosterAddedController rosterAddedController;
 
   private final String USER_NAME1 = "Test1";
-  private final String VALID = "{\"result\":\"valid\"}";    
+  private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
+  private final UserName userName = new UserName(USER_NAME1);
 
   @Before
   public void setUp() throws Exception {
     context = new Mockery();
-    nameCheckController = new NameCheckController();
+    rosterAddedController = new RosterAddedController();
   }
 
   @Test
-  public void testCheckNameValid() throws Exception {
-     final ChatClientContext chatClientContext = context.mock(ChatClientContext.class);
-     final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
-     final Participant participant1 = context.mock(Participant.class);
-     final Conversation conversation = context.mock(Conversation.class);
+  public void testSendRosterAddedMessageValid() throws Exception {
+    final ChatClientContext chatClientContext =
+        context.mock(ChatClientContext.class);
+    final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
+    final Participant participant1 = context.mock(Participant.class);
+    final Conversation conversation = context.mock(Conversation.class);
 
-     context.checking(new Expectations() {
+    context.checking(new Expectations() {
       {
         oneOf(chatClientContext).getChatClient();
         will(returnValue(chatClient));
-        
+
         oneOf(chatClient).getParticipant();
         will(returnValue(participant1));
-        
+
+        exactly(2).of(participant1).getUserName();
+        will(returnValue(userName));
+
         oneOf(participant1).getConversation();
         will(returnValue(conversation));
-        
-        oneOf(conversation).isValidUserName(USER_NAME1);
-        will(returnValue(true));
-        
-        UserName userName = new UserName(HtmlUtils.htmlEscape(USER_NAME1.trim()));
-        oneOf(participant1).setUserName(with(equal(userName)));
+
+        oneOf(conversation).finalizeRegisterParticipant(userName.getName());
       }
     });
-    nameCheckController.setChatClientContext(chatClientContext);     
+    rosterAddedController.setChatClientContext(chatClientContext);
 
-    assertEquals(VALID,
-        nameCheckController.checkName(USER_NAME1));
+    assertEquals(VALID, rosterAddedController.sendRosterAddedMessage());
     context.assertIsSatisfied();
   }
- 
+
   @Test
-  public void testCheckNameInvalid() throws Exception {
-     final ChatClientContext chatClientContext = context.mock(ChatClientContext.class);
-     final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
-     final Participant participant1 = context.mock(Participant.class);
-     final Conversation conversation = context.mock(Conversation.class);
+  public void testSendRosterAddedMessageInvalid() throws Exception {
+    final ChatClientContext chatClientContext =
+        context.mock(ChatClientContext.class);
+    final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
+    final Participant participant1 = context.mock(Participant.class);
+    final Conversation conversation = context.mock(Conversation.class);
 
-     context.checking(new Expectations() {
+    context.checking(new Expectations() {
       {
         oneOf(chatClientContext).getChatClient();
         will(returnValue(chatClient));
-        
+
         oneOf(chatClient).getParticipant();
         will(returnValue(participant1));
-        
-        oneOf(participant1).getConversation();
-        will(returnValue(conversation));
-        
-        oneOf(conversation).isValidUserName(USER_NAME1);
-        will(returnValue(false));
+
+        oneOf(participant1).getUserName();
+        will(returnValue(UserName.NULL_USER));
       }
     });
-    nameCheckController.setChatClientContext(chatClientContext);     
+    rosterAddedController.setChatClientContext(chatClientContext);
 
-    assertEquals(INVALID,
-        nameCheckController.checkName(USER_NAME1));
+    assertEquals(INVALID, rosterAddedController.sendRosterAddedMessage());
     context.assertIsSatisfied();
   }
- 
 }
