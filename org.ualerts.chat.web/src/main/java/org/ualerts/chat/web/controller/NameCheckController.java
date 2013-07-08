@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
+import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.web.context.ChatClientContext;
-import org.ualerts.chat.web.sockjs.SockJsChatClient;
 
 /**
  * Controller used to determine if a user name is available
@@ -47,13 +47,13 @@ public class NameCheckController {
   private final String INVALID = "{\"result\":\"invalid\"}";;
   
   private ChatClientContext chatClientContext;
-  private SockJsChatClient chatClient;
+  private ChatClient chatClient;
   
   @RequestMapping(value="/checkName", method = RequestMethod.POST)
   @ResponseBody
   public String checkName(@RequestParam("name") String name) {
 
-      chatClient = (SockJsChatClient)chatClientContext.getChatClient();
+      chatClient = chatClientContext.getChatClient();
       Participant participant = chatClient.getParticipant();
       Conversation conversation = participant.getConversation();
       

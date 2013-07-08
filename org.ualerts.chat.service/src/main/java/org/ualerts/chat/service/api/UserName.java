@@ -63,5 +63,17 @@ public class UserName {
     
     return false;
   }
+  
+  public boolean equals(Object obj)
+  {
+    if (!obj.getClass().isAssignableFrom(UserName.class))
+      return false;
+    UserName username = (UserName) obj;
+    if (this.name.trim().equals(username.getName().trim()))
+    {
+      return true;
+    }
+    return false;
+  }
     
 }
