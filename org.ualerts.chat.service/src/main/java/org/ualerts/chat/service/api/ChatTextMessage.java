@@ -21,6 +21,8 @@ package org.ualerts.chat.service.api;
 
 public class ChatTextMessage extends Message {
 
+  private static final String TYPE = "chat";
+  
 	private String text;
 
 	public String getText() {
@@ -36,7 +38,7 @@ public class ChatTextMessage extends Message {
    */
   @Override
   public String getType() {
-    return "chat";
+    return TYPE;
   }
 
   /**

@@ -31,10 +31,18 @@ public abstract class RosterMessage extends Message {
   
   private String userName;
   
+  /**
+   * Access the user name associated with this RosterMessage
+   * @return the user name 
+   */
   public String getUserName() {
     return userName;
   }
 
+  /**
+   * Set the user name associated with this RosterMessage
+   * @param userName
+   */
   public void setUserName(String userName) {
     this.userName = userName;
   }
