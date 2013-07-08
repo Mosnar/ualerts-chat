@@ -151,21 +151,21 @@ public class ConcreteConversation implements Conversation {
   /*
    * Construct a roster message
    */
-  public Message getRosterAddedMessage(String from, String to) {
+  protected Message getRosterAddedMessage(String from, String to) {
     RosterAddedMessage message = new RosterAddedMessage();
     setRosterMessageAttributes(from, to, message);
 
     return message;
   }
   
-  public Message getRosterRemovedMessage(String from, String to) {
+  protected Message getRosterRemovedMessage(String from, String to) {
     RosterRemovedMessage message = new RosterRemovedMessage();
     setRosterMessageAttributes(from, to, message);
     
     return message;
   }
   
-  public Message getRosterContentMessage(String from, String to) {
+  protected Message getRosterContentMessage(String from, String to) {
     RosterContentMessage message = new RosterContentMessage();
     setRosterMessageAttributes(from, to, message);
     message.setUserName(from);

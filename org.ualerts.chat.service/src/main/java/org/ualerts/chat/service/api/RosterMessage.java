@@ -51,7 +51,7 @@ public abstract class RosterMessage extends Message {
    * {@inheritDoc}
    */
   @Override
-  public String getType() {
+  public final String getType() {
    return TYPE;
   }
 
