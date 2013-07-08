@@ -1,6 +1,10 @@
 function ChatRoom(chatRoomName, username) {
 	this.name = chatRoomName;
 	this.username = username;
+	if (chatRoomName == 'all') {
+		$('#chatbox').css('display', 'block');
+		return;
+	}
 	
 	this.$uiDom = $('<div class="chatroom-container">'
    		+ '<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + this.name + '<i class="icon-minus pull-right"></i></p></div>'
@@ -14,24 +18,31 @@ function ChatRoom(chatRoomName, username) {
    * Create a new chatroom for the user whose plus sign is clicked
    */
 	var chatRoom = this;
-  $('table').on('click', '.add-chat', function() {
-    console.log('the add-chat was clicked');
-    console.log(chatRoom.UIDom);
-    $('.chat-holder').append(chatRoom.UIDom);
-  });
+    $('table').on('click', '.add-chat', function() {
+	    console.log('the add-chat was clicked');
+	    console.log(chatRoom.UIDom);
+	    $('.chat-holder').append(chatRoom.UIDom);
+    });
 }
 
 ChatRoom.prototype.displayChatMessage = function(message) {	
 	  console.log("displayChatMessage was called");
-	  var $chatbox = this.$uiDom.find(".chatroom-chat");
 	  var date = new Date(message.messageDate);
-	  
 	  var minutes = date.getMinutes();
 	  if (minutes < 10) {
 	    minutes = "0" + minutes;
 	  }
-	  
 	  var dateString = date.getHours() + ":" + minutes;
+	  
+	  if (message.to == "all") {
+		  var $chatbox = $('#chatbox');
+		  $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
+				  message.from + ': ' + message.text + '</p>');
+		  $chatbox.scrollTop($chatbox[0].scrollHeight);
+		  return;
+	  }
+	  
+	  var $chatbox = this.$uiDom.find(".chatroom-chat");
 	  $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
 	      message.from + ': ' + message.text + '</p>');
 	  $chatbox.scrollTop($chatbox[0].scrollHeight);
@@ -41,17 +52,15 @@ ChatRoom.prototype.displayChatMessage = function(message) {
  * Bind methods to chatroom related actions
  */
 ChatRoom.prototype.bindChatroomActions = function() {
-	var chatRoom = this;
-	
     $('.chat-holder').on('click', '.icon-minus', function() {
-    	console.log('icon minus was clicked');
-    	var titleText = $(this).parent().text();
-    	var icon = $('.chatroom-container > div > .chatroom-title:contains("' + titleText + '") > i:eq(1)');
-    	var title = $('.chatroom-container > div > .chatroom-title:contains("' + titleText + '")');
-    	icon.removeClass('icon-minus');
-    	icon.addClass('icon-chevron-up').click(function() { upClickHandler($(this)); });
-    	
-    	title.parent().siblings().hide();
+		console.log('icon minus was clicked');
+		var titleText = $(this).parent().text();
+		var icon = $('.chatroom-container > div > .chatroom-title:contains("' + titleText + '") > i:eq(1)');
+		var title = $('.chatroom-container > div > .chatroom-title:contains("' + titleText + '")');
+		icon.removeClass('icon-minus');
+		icon.addClass('icon-chevron-up').click(function() { upClickHandler($(this)); });
+		
+		title.parent().siblings().hide();
     });
     
     function upClickHandler($this) {

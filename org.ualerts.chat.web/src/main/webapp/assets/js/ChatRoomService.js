@@ -21,6 +21,7 @@ ChatRoomService.prototype.onMessage = function(message) {
   default:	// to <User1>, from me
 	  chatRoomName = message.to;
   }
+  
   var room = this.getChatRoom(chatRoomName);
   console.log('This is what this.getChatRoom("all") returned: ' + room);
   if (room == false) {

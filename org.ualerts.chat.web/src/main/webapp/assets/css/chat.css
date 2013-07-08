@@ -25,6 +25,7 @@ form, p, span {
     height: 270px;
     border: 1px solid #ACD8F0;
     overflow: auto;
+    display: none;
 }
 
 #messageField {
