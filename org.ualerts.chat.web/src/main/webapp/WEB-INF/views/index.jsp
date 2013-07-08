@@ -10,12 +10,12 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/typewatch.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/Callback.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/RemoteService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/PageController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoom.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/sockjs-0.3.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
     <body>
@@ -67,27 +67,29 @@
 	        </div>
         </div>
      </div>
-   	<div class="chatroom">
-   		&nbsp;
-   	</div>
    	<div class="chat-holder">
+<!--    			<div class="chatroom-container">
+		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
+		   		<div class="chatroom-chat"></div>
+		   		<div><input class="chatroom-message-field" type="text"></div>
+		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon0<i class="icon-minus pull-right"></i></p>
+		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
 		   		<div class="chatroom-chat"></div>
 		   		<input class="chatroom-message-field" type="text">
 		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon1<i class="icon-minus pull-right"></i></p>
+		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
 		   		<div class="chatroom-chat"></div>
 		   		<input class="chatroom-message-field" type="text">
 		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon2<i class="icon-minus pull-right"></i></p>
+		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
 		   		<div class="chatroom-chat"></div>
 		   		<input class="chatroom-message-field" type="text">
 		   	</div>
 		   	<div class="chatroom-container">
-		   		<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon3<i class="icon-minus pull-right"></i></p>
+		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
 				<div class="chatroom-chat">
 					<p>Brandon chat chat chat chat chat chat chat chat chat 
 					chat chat chat chat chat chat chat chat chat 
@@ -100,7 +102,7 @@
 					chat chat chat chat chat chat chat chat chat </p>
 				</div>
 				<input class="chatroom-message-field" type="text" />
-		   	</div>
+		   	</div> -->
 	 </div>
      <div class="footer">
      	<div class="conversation-bar">
@@ -111,8 +113,69 @@
 			<ul class="dropdown-menu">
 			    <li><a href="#">Link 1</a></li>
 			</ul>
-    	</div>
-	</div>
+    		</div>
+		</div>
     </div>
+    
+<%--     <div id="pusherChat">
+		<div id="membersContent">
+			<span id="expand">
+				<span class="close">&#x25BC;</span>
+				<span class="open">&#x25B2;</span>
+			</span>
+			<h2>
+				<span id="count">0</span> online
+			</h2>
+			<div class="scroll">
+				<div id="members-list"></div>
+			</div>
+		</div>    
+		
+		<!-- chat box template -->
+		<div id="templateChatBox">
+			<div class="pusherChatBox">
+				<span class="state">
+					<span class="pencil">
+						<img src="${pageContext.request.contextPath}/assets/pusher-chat/assets/pencil.gif" />
+					</span>
+					<span class="quote">
+						<img src="${pageContext.request.contextPath}/assets/pusher-chat/assets/quote.gif" />
+					</span>
+				</span>
+				<span class="expand">
+					<span class="close">&#x25BC;</span>
+					<span class="open">&#x25B2;</span>
+				</span>
+				<span class="closeBox">&times;</span>
+				<h2>
+					<a href="#" title="go to profile"><img src="" class="imgFriend" /></a>
+					<span class="userName"></span>
+				</h2>
+				<div class="slider">
+					<div class="logMsg">
+						<div class="msgTxt"></div>
+					</div>
+				</div>
+				<form method="post" name="#123">
+					<textarea name="msg" rows="3"></textarea>
+					<input type="hidden" name="from" class="from" />
+					<input type="hidden" name="to" class="to" />
+					<input type="hidden" name="typing" class="typing" value="false" />
+				</form>
+			</div>
+		</div>
+    </div>
+	<!-- #pusherChat end -->
+	
+	<div class="chatBoxWrap">
+		<div class="chatBoxslide"></div>
+		<span id="slideLeft">
+			<img src="${pageContext.request.contextPath}/assets/pusher-chat/assets/quote.gif" />&#x25C0;
+		</span>
+		<span id="slideRight">
+			&#x25B6; <img src="${pageContext.request.contextPath}/assets/pusher-chat/assets/quote.gif" />
+		</span>
+	</div>
+ --%>
 	</body>
 </html>

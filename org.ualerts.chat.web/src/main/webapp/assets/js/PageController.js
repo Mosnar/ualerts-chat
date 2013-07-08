@@ -19,6 +19,7 @@ PageController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
+    this.bindChatroomActions();
     $('#usernameField').focus();
 };
 
@@ -90,6 +91,7 @@ PageController.prototype.handleNameSubmit = function() {
  */
 PageController.prototype.updateUsername = function(name) {
     this.username = name;
+    this.ChatRoomService.prototype.setUsername(name);
 };
 
 /**
@@ -122,6 +124,7 @@ PageController.prototype.handleMessageSubmit = function() {
     $('#messageButton').click(function() {
         if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
+            // This is where "all" is defined as the message.to property
             pageC.service.sendMessage("<b>" + pageC.username + "</b>", "all", "chat", clientMessage);
             $messageField.val('');
         }
@@ -142,7 +145,7 @@ PageController.prototype.addToRoster = function(user) {
 	}
 	
 	this.connectedUsers.push(user);
-  var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '</td></tr>';
+	var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
 	$('#connected-users > tbody').prepend(htmlString);
 };
 
@@ -152,9 +155,9 @@ PageController.prototype.addToRoster = function(user) {
  * @param message The message object received
  */
 PageController.prototype.onMessage = function(message) {
-    var $chatbox = $('#chatbox');
-    var date = new Date(message.messageDate);
-    
+	var $chatbox = $('#chatbox');
+	var date = new Date(message.messageDate);
+
     var minutes = date.getMinutes();
     if (minutes < 10) {
     	minutes = "0" + minutes;
