@@ -19,7 +19,6 @@ PageController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
-    this.bindChatroomActions();
     $('#usernameField').focus();
 };
 
@@ -91,7 +90,6 @@ PageController.prototype.handleNameSubmit = function() {
  */
 PageController.prototype.updateUsername = function(name) {
     this.username = name;
-    this.ChatRoomService.prototype.setUsername(name);
 };
 
 /**
