@@ -117,25 +117,35 @@ public class ConcreteConversationTest {
 
   @Test
   public void testDeliverMessageToBroadcast() throws Exception {
-    final Participant participant = context.mock(Participant.class);
+    final Participant participant1 = context.mock(Participant.class, "first");
+    final Participant participant2 = context.mock(Participant.class, "second");
 
-    final UserName userName = new UserName(USER_NAME1);
-
+    final UserName userName1 = new UserName(USER_NAME1);
+    final UserName userName2 = new UserName(USER_NAME2);
+    
     final ChatTextMessage message = new ChatTextMessage();
     message.setTo(BROADCAST);
 
     context.checking(new Expectations() {
       {
-        oneOf(participant).setConversation(conversation);
-        oneOf(participant).deliverMessage(message);
-        oneOf(participant).getStatus();
+        oneOf(participant1).setConversation(conversation);
+        oneOf(participant1).deliverMessage(message);
+        oneOf(participant1).getStatus();
         will(returnValue(Status.ONLINE));
-        oneOf(participant).getUserName();
-        will(returnValue(userName));
+        oneOf(participant1).getUserName();
+        will(returnValue(userName1));
+        
+        oneOf(participant2).setConversation(conversation);
+        oneOf(participant2).deliverMessage(message);
+        oneOf(participant2).getStatus();
+        will(returnValue(Status.ONLINE));
+        oneOf(participant2).getUserName();
+        will(returnValue(userName2));
       }
     });
 
-    conversation.addParticipant(participant);
+    conversation.addParticipant(participant1);
+    conversation.addParticipant(participant2);
     conversation.deliverMessage(message);
     context.assertIsSatisfied();
   }
