@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.concrete;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -25,6 +25,9 @@ import static org.junit.Assert.assertSame;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.ualerts.chat.service.api.ChatService;
+import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.concrete.ConcreteChatService;
 import org.ualerts.chat.service.api.concrete.ConcreteConversation;
 
