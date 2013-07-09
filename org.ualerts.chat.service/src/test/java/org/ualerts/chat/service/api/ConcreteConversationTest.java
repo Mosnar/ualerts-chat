@@ -36,6 +36,7 @@ public class ConcreteConversationTest {
 
   private Mockery context;
   private Conversation conversation;
+  private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private static final String USER_NAME1 = "testname1";
   private static final String USER_NAME2 = "testname2";
   private static final String BROADCAST = "all";
@@ -44,6 +45,7 @@ public class ConcreteConversationTest {
   public void setUp() throws Exception {
     context = new Mockery();
     conversation = new ConcreteConversation();
+    conversation.setDateTimeService(dateTimeService);
   }
 
   @Test
@@ -166,6 +168,7 @@ public class ConcreteConversationTest {
     conversation.deliverMessage(message);
     context.assertIsSatisfied();
   }
+  
 
   @Test
   public void testIsValidUserNameTrue() {
@@ -208,6 +211,135 @@ public class ConcreteConversationTest {
     context.assertIsSatisfied();
   }
   
+  @Test
+  public void testFinalizeRegisterParticipant() {
+    final Participant participant1 = context.mock(Participant.class, "first");
+    final Participant participant2 = context.mock(Participant.class, "second");
+    final UserName userName1 = new UserName(USER_NAME1);
+    final UserName userName2 = new UserName(USER_NAME2);
+    
+
+    final RosterAddedMessage message = new RosterAddedMessage();
+    message.setFrom(USER_NAME1);
+    message.setTo(BROADCAST);
+   
+    context.checking(new Expectations() {
+      {
+        oneOf(participant1).setConversation(conversation);
+        oneOf(participant2).setConversation(conversation);
+        oneOf(participant1).setStatus(Status.ONLINE); 
+              
+        atLeast(3).of(participant1).getUserName();
+        will(returnValue(userName1));
+        
+        atLeast(3).of(participant2).getUserName();
+        will(returnValue(userName2));
+        
+        atLeast(2).of(participant1).getStatus();
+        will(returnValue(Status.ONLINE));
+        
+        atLeast(2).of(participant2).getStatus();
+        will(returnValue(Status.ONLINE));
+                
+        atLeast(2).of(participant1).deliverMessage(with(any(RosterMessage.class)));
+        atLeast(2).of(participant2).deliverMessage(with(any(RosterMessage.class)));
+        
+      } 
+    });
+    
+    conversation.addParticipant(participant1);
+    conversation.addParticipant(participant2);
+    conversation.finalizeRegisterParticipant(USER_NAME1);
+    
+    assertEquals(2, conversation.getParticipants().size());    
+    context.assertIsSatisfied();
+  }
   
+  @Test
+  public void testFinalizeRegisterParticipantNull() throws Exception {
+    final Participant participant = context.mock(Participant.class);
+  
+    final UserName userName1 = new UserName(USER_NAME1);
+    
+    context.checking(new Expectations() {
+      {
+        oneOf(participant).setConversation(conversation);
+        atLeast(2).of(participant).getUserName();
+        will(returnValue(userName1));             
+      } 
+    });
+    
+    conversation.addParticipant(participant);
+    assertEquals(1, conversation.getParticipants().size()); 
+    conversation.finalizeRegisterParticipant(USER_NAME2);
+     
+    context.assertIsSatisfied();
+  }
+  
+  @Test
+  public void testFinalizeRegisterParticipantNULL_USER() throws Exception {
+    final Participant participant1 = context.mock(Participant.class, "first");
+    final Participant participant2 = context.mock(Participant.class, "second");
+    
+    final UserName userName = UserName.NULL_USER;
+    final UserName userName2 = new UserName(USER_NAME2);
+    
+    context.checking(new Expectations() {
+      {
+        oneOf(participant1).setConversation(conversation);
+        oneOf(participant2).setConversation(conversation);
+        atLeast(2).of(participant1).getUserName();
+        will(returnValue(userName));  
+        atLeast(2).of(participant2).getUserName();
+        will(returnValue(userName2));
+        
+        oneOf(participant2).setStatus(Status.ONLINE);
+        oneOf(participant2).getStatus();
+        will(returnValue(Status.ONLINE));
+        oneOf(participant2).deliverMessage(with(any(RosterMessage.class)));
+      } 
+    });
+    
+    conversation.addParticipant(participant1);
+    conversation.addParticipant(participant2);
+    assertEquals(2, conversation.getParticipants().size()); 
+    conversation.finalizeRegisterParticipant(USER_NAME2);
+     
+    context.assertIsSatisfied();
+  }
+  
+  @Test
+  public void testFinalizeRemoveParticipant() throws Exception {
+    final Participant participant1 = context.mock(Participant.class,"first");  
+    final Participant participant2 = context.mock(Participant.class, "second");
+    
+    final UserName userName1 = new UserName(USER_NAME1);
+    final UserName userName2 = new UserName(USER_NAME2); 
+    
+    context.checking(new Expectations() {
+      {
+        oneOf(participant1).setConversation(conversation);
+        oneOf(participant2).setConversation(conversation);
+       
+        atLeast(2).of(participant1).getUserName();
+        will(returnValue(userName1));  
+        
+        atLeast(2).of(participant2).getUserName();
+        will(returnValue(userName2));
+        
+        oneOf(participant2).getStatus();
+        will(returnValue(Status.ONLINE));
+       
+       oneOf(participant2).deliverMessage(with(any(RosterMessage.class)));
+      } 
+    });
+    
+    conversation.addParticipant(participant1);
+    conversation.addParticipant(participant2);
+    assertTrue(conversation.getParticipants().contains(participant1));
+    conversation.finalizeRemoveParticipant(USER_NAME1);
+     
+    context.assertIsSatisfied();
+  }
 
 }
