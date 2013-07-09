@@ -25,7 +25,6 @@ form, p, span {
     height: 270px;
     border: 1px solid #ACD8F0;
     overflow: auto;
-    display: none;
 }
 
 #messageField {
@@ -97,7 +96,7 @@ a.add-chat:hover {
 
 .chat-holder {
 	position: fixed;
-	bottom: 2.4em;
+ 	bottom: 1.4em;
 	right: 1em;
 }
 
@@ -109,7 +108,11 @@ a.add-chat:hover {
 	overflow-x: hidden;
 	background-color: #EBF4FB;
     display: inline-block;
-    margin: 0 0.2em;
+	/* margin: 0 0.2em; */
+}
+
+.chatroom-title-wrapper {
+	 position: relative;
 }
 
 .chatroom-title {
@@ -129,12 +132,16 @@ a.add-chat:hover {
 	/*margin-top: 1.2em;*/
 }
 
-.chatroom-message-field {
+.chatroomMessageField {
 	margin-top: 0.4em;
 	background-color: #fff;
 	border: 1px solid #ACD8F0;
 	height: 1em;
-	width: 13em;
+	width: 10em;
+}
+
+.chatroomMessageButton {
+	width: 3em;
 }
 
 .chatroom-title > .icon-minus, .chatroom-title > .icon-plus {

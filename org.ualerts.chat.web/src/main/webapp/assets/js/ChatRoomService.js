@@ -1,6 +1,7 @@
-function ChatRoomService() {
+function ChatRoomService(remoteService) {
   this.username = null;
   this.chatRoomList = new Array();
+  this.remoteService = remoteService;
 }
 
 ChatRoomService.prototype.onMessage = function(message) {
@@ -9,6 +10,17 @@ ChatRoomService.prototype.onMessage = function(message) {
   }
   
   var chatRoomName = "";
+  
+  // to me, from <User1>
+//  if (message.from == this.username) {
+//	  chatRoomName = message.to;
+//  }
+//  if ((message.to == this.username) && (message.from != this.username)) {
+//	  chatRoomName == message.to;
+//  }
+//  if (message.to == "all") {
+//	  chatRoomName = message.to;
+//  }
   
   switch(message.to) {
   case this.username:	// to me, from <User1>
@@ -23,13 +35,13 @@ ChatRoomService.prototype.onMessage = function(message) {
   }
   
   var room = this.getChatRoom(chatRoomName);
-  console.log('This is what this.getChatRoom("all") returned: ' + room);
   if (room == false) {
 	  room = this.createChatRoom(chatRoomName);
-	  console.log('This is what the value of this.createChatRoom(message.to) is: ' + room);
-	  console.log('This is what the value of message.to is: ' + message.to);
+	  console.log('this.createChatRoom(chatRoomName) is: ' + room);
+	  console.log('message.to is: ' + message.to);
   }
   room.displayChatMessage(message);
+  console.log('sending a messge to ' + message.to + ', from ' + message.from);
 };
 
 ChatRoomService.prototype.setUsername = function(username) {
@@ -37,9 +49,11 @@ ChatRoomService.prototype.setUsername = function(username) {
 };
 
 ChatRoomService.prototype.createChatRoom = function(chatRoomName) {
-	var room = new ChatRoom(chatRoomName, this.username);
-	console.log('this is what the value of new ChatRoom(chatRoomName, this.username) is: ' + room);
+	var room = new ChatRoom(chatRoomName, this.username, this.remoteService);
 	this.chatRoomList.push(room);
+	if (chatRoomName != "all") {
+		$(".chat-holder").append(room.$uiDom);
+	}
 	return room;
 };
 
@@ -48,7 +62,7 @@ ChatRoomService.prototype.getChatRoom = function(chatRoomName) {
 	for (var i = 0; i < list.length; i++) {
 		if (list[i].name == chatRoomName) {
 			return list[i];
-		}
+		};
 	}
 	return false;
 };

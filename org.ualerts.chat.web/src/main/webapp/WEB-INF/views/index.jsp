@@ -52,12 +52,11 @@
 	    	</p>
 	    	
 	    	<br />
-	        	<div id="chatbox"></div>
 	        	
 	        	<form id="messageForm" name="message" action="">
 	        		<div class="row">
 	        			<div class="span4">
-	        				<input name="userMessage" type="text" id="messageField"/>
+	        				<input type="text" id="messageField"/>
 	        			</div>
 	        			<div class="span2 text-center">
 		        			<input type="submit" class="btn btn-success" id="messageButton" value="Send" />
@@ -68,54 +67,19 @@
         </div>
      </div>
    	<div class="chat-holder">
-<!--    			<div class="chatroom-container">
-		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
-		   		<div class="chatroom-chat"></div>
-		   		<div><input class="chatroom-message-field" type="text"></div>
-		   	</div>
-		   	<div class="chatroom-container">
-		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
-		   		<div class="chatroom-chat"></div>
-		   		<input class="chatroom-message-field" type="text">
-		   	</div>
-		   	<div class="chatroom-container">
-		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
-		   		<div class="chatroom-chat"></div>
-		   		<input class="chatroom-message-field" type="text">
-		   	</div>
-		   	<div class="chatroom-container">
-		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
-		   		<div class="chatroom-chat"></div>
-		   		<input class="chatroom-message-field" type="text">
-		   	</div>
-		   	<div class="chatroom-container">
-		   		<div style="position: relative"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;Brandon-1<i class="icon-minus pull-right"></i></p></div>
-				<div class="chatroom-chat">
-					<p>Brandon chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat 
-					chat chat chat chat chat chat chat chat chat </p>
-				</div>
-				<input class="chatroom-message-field" type="text" />
-		   	</div> -->
 	 </div>
-     <div class="footer">
+<!--      <div class="footer">
      	<div class="conversation-bar">
 		    <div class="btn-group dropup pull-right">
-			<button class="btn dropdown-toggle" data-toggle="dropdown">
-			    <span class="icon-plus-sign"></span>
-			</button>
-			<ul class="dropdown-menu">
-			    <li><a href="#">Link 1</a></li>
-			</ul>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+				    <span class="icon-plus-sign"></span>
+				</button>
+				<ul class="dropdown-menu">
+				    <li><a href="#">Link 1</a></li>
+				</ul>
     		</div>
 		</div>
-    </div>
+    </div> -->
     
 <%--     <div id="pusherChat">
 		<div id="membersContent">

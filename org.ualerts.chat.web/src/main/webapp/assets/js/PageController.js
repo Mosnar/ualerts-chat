@@ -142,9 +142,25 @@ PageController.prototype.addToRoster = function(user) {
 		}
 	}
 	
+    /**
+     * Create a custom jquery selector :textEquals("string"). It is used in
+     * the makeDataTables(String[], String[]) function to find xml tags with text
+     * that exactly matches the group names.
+     */
+    $.expr[':'].textEquals = function(objNode, intStackIndex, arrProperties, arrNodeStack) {
+        return $(objNode).text() == arrProperties[3];
+    };
+	
 	this.connectedUsers.push(user);
 	var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
 	$('#connected-users > tbody').prepend(htmlString);
+	var pController = this;
+	$('#connected-users > tbody tr:first .add-chat').click(function() {
+		var contact = $.trim($(this).parent().text());
+		pController.chatRoomService.createChatRoom(contact, this.username, pController.service);
+		$('.chatroom-title-wrapper:textEquals(' + contact + ' )').find('.chatRoomMessageField').focus();
+		console.log("$('.chatroom-title-wrapper:contains(' + contact + ' )'):" + $('.chatroom-title-wrapper:contains(' + contact + ' )'));
+	});
 };
 
 /**

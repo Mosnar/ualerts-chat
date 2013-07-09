@@ -1,13 +1,13 @@
 $(document).ready(function() {
     /**
-     * Make sure forms don't submit GETs while in development.
+     * Make sure forms don't submit GET requests.
      */
-    $('form').submit(function() {
+    $('body').on('submit', 'form', function() {
         return false;
     });
             
     var remoteService = new RemoteService();
-    var chatRoomService = new ChatRoomService();
+    var chatRoomService = new ChatRoomService(remoteService);
     var pageController = new PageController(remoteService, chatRoomService);
     
     pageController.init();
