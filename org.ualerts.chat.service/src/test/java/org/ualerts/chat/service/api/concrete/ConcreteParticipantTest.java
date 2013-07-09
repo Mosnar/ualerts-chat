@@ -72,7 +72,6 @@ public class ConcreteParticipantTest {
     UserName userName = new UserName("TestName");
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
-    assertFalse(userName == userName.NULL_USER);
   }
 
   @Test
@@ -80,7 +79,6 @@ public class ConcreteParticipantTest {
     UserName userName = UserName.NULL_USER;
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
-    assertTrue(userName == UserName.NULL_USER);
   }
 
   @Test

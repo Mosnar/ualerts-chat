@@ -31,19 +31,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.ConcreteDateTimeService;
-import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
+import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.RosterMessage;
 import org.ualerts.chat.service.api.UserName;
-import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.concrete.ConcreteConversation;
 
 public class ConcreteConversationTest {
 
   private Mockery context;
-  private Conversation conversation;
+  private ConcreteConversation conversation;
   private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private static final String USER_NAME1 = "testname1";
   private static final String USER_NAME2 = "testname2";
@@ -174,9 +173,9 @@ public class ConcreteConversationTest {
         oneOf(participant2).getStatus();
         will(returnValue(Status.ONLINE));
 
-        atLeast(3).of(participant1).getUserName();
+        allowing(participant1).getUserName();
         will(returnValue(userName1));
-        atLeast(3).of(participant2).getUserName();
+        allowing(participant2).getUserName();
         will(returnValue(userName2));
       }
     });
@@ -187,6 +186,43 @@ public class ConcreteConversationTest {
     context.assertIsSatisfied();
   }
   
+  @Test
+  public void testDeliverParticipantMessageNULL_USER() throws Exception {
+    final Participant participant = context.mock(Participant.class);
+    final UserName userName = UserName.NULL_USER;
+    final ChatTextMessage message = new ChatTextMessage();
+  
+    context.checking(new Expectations() {
+      {
+        oneOf(participant).getUserName();
+        will(returnValue(userName));
+      }
+    });
+    
+    conversation.deliverParticipantMessage(participant, message);
+    context.assertIsSatisfied();
+  }
+  
+  @Test
+  public void testDeliverParticipantMessage() throws Exception {
+    final Participant participant = context.mock(Participant.class);
+    final UserName userName = new UserName(USER_NAME1);
+    final ChatTextMessage message = new ChatTextMessage();
+  
+    context.checking(new Expectations() {
+      {
+        oneOf(participant).getUserName();
+        will(returnValue(userName));
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+        oneOf(participant).deliverMessage(with(any(Message.class)));
+        
+      }
+    });
+    
+    conversation.deliverParticipantMessage(participant, message);
+    context.assertIsSatisfied();
+  }
 
   @Test
   public void testIsValidUserNameTrue() {
@@ -198,7 +234,7 @@ public class ConcreteConversationTest {
       {
         oneOf(participant1).setConversation(conversation);
 
-        atLeast(2).of(participant1).getUserName();
+        allowing(participant1).getUserName();
         will(returnValue(userName));
       }
     });
@@ -217,7 +253,7 @@ public class ConcreteConversationTest {
       {
         oneOf(participant).setConversation(conversation);
 
-        atLeast(2).of(participant).getUserName();
+        allowing(participant).getUserName();
         will(returnValue(userName));
       }
     });
@@ -247,20 +283,20 @@ public class ConcreteConversationTest {
         oneOf(participant2).setConversation(conversation);
         oneOf(participant1).setStatus(Status.ONLINE); 
               
-        atLeast(3).of(participant1).getUserName();
+       allowing(participant1).getUserName();
         will(returnValue(userName1));
         
-        atLeast(3).of(participant2).getUserName();
+        allowing(participant2).getUserName();
         will(returnValue(userName2));
         
-        atLeast(2).of(participant1).getStatus();
+        allowing(participant1).getStatus();
         will(returnValue(Status.ONLINE));
         
-        atLeast(2).of(participant2).getStatus();
+        allowing(participant2).getStatus();
         will(returnValue(Status.ONLINE));
                 
-        atLeast(2).of(participant1).deliverMessage(with(any(RosterMessage.class)));
-        atLeast(2).of(participant2).deliverMessage(with(any(RosterMessage.class)));
+        allowing(participant1).deliverMessage(with(any(RosterMessage.class)));
+        allowing(participant2).deliverMessage(with(any(RosterMessage.class)));
         
       } 
     });
@@ -282,7 +318,7 @@ public class ConcreteConversationTest {
     context.checking(new Expectations() {
       {
         oneOf(participant).setConversation(conversation);
-        atLeast(2).of(participant).getUserName();
+        allowing(participant).getUserName();
         will(returnValue(userName1));             
       } 
     });
@@ -306,9 +342,9 @@ public class ConcreteConversationTest {
       {
         oneOf(participant1).setConversation(conversation);
         oneOf(participant2).setConversation(conversation);
-        atLeast(2).of(participant1).getUserName();
+        allowing(participant1).getUserName();
         will(returnValue(userName));  
-        atLeast(2).of(participant2).getUserName();
+        allowing(participant2).getUserName();
         will(returnValue(userName2));
         
         oneOf(participant2).setStatus(Status.ONLINE);
@@ -339,10 +375,10 @@ public class ConcreteConversationTest {
         oneOf(participant1).setConversation(conversation);
         oneOf(participant2).setConversation(conversation);
        
-        atLeast(2).of(participant1).getUserName();
+        allowing(participant1).getUserName();
         will(returnValue(userName1));  
         
-        atLeast(2).of(participant2).getUserName();
+        allowing(participant2).getUserName();
         will(returnValue(userName2));
         
         oneOf(participant2).getStatus();
@@ -359,5 +395,6 @@ public class ConcreteConversationTest {
      
     context.assertIsSatisfied();
   }
+  
 
 }
