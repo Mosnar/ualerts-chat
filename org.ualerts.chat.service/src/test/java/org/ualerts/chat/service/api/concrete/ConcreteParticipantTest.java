@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.concrete;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -28,6 +28,12 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatTextMessage;
+import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.Message;
+import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
@@ -66,7 +72,6 @@ public class ConcreteParticipantTest {
     UserName userName = new UserName("TestName");
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
-    assertFalse(userName == userName.NULL_USER);
   }
 
   @Test
@@ -74,7 +79,6 @@ public class ConcreteParticipantTest {
     UserName userName = UserName.NULL_USER;
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
-    assertTrue(userName == UserName.NULL_USER);
   }
 
   @Test
