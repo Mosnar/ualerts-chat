@@ -2,6 +2,36 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.remoteService = remoteService;
+	this.$uiDom = "";
+	
+	var self = this;
+	
+	/**
+	 * Assign the $uiDom property a string of HTML markup, and append it to the
+	 * .chat-holder
+	 */
+	function setUpUi(self) {
+		self.$uiDom = $('<div class="chatroom-container container-fluid">'
+		   		+ '<div class="chatroom-title-wrapper row-fluid"><p class="chatroom-title span12"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p></div>'
+		   		+ '<div class="chatroom-chat"></div>'
+		   		+ '<div class="row-fluid"><form action=""><input class="chatRoomMessageField span9" type="text"><input class="chatroomMessageButton btn btn-success span3" type="submit" value="Send" /></form></div>'
+			+ '</div>');
+			
+		$(".chat-holder").append(self.$uiDom);
+	}
+	
+	function onMessageSend(self) {
+	    $chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
+	    self.$uiDom.find('.chatroomMessageButton').click(function() {
+	    	if ($.trim($chatRoomMessageField.val()) != "") {
+	    		var clientMessage = $chatRoomMessageField.val();
+
+	    		self.remoteService.sendMessage(self.username, self.name, "chat", clientMessage);
+	    		console.log('sent a message to: ' + self.name);
+	    		$chatRoomMessageField.val('');
+	    	}
+	    });
+	}
 	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');
@@ -9,26 +39,8 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	}
 	
 	if (chatRoomName != 'all') {
-		this.$uiDom = $('<div class="chatroom-container container-fluid">'
-	   		+ '<div class="chatroom-title-wrapper row-fluid"><p class="chatroom-title span12"><i class="icon-user"></i>&nbsp;&nbsp;' + this.name + '<i class="icon-minus pull-right"></i></p></div>'
-	   		+ '<div class="chatroom-chat"></div>'
-	   		+ '<div class="row-fluid"><form action=""><input class="chatRoomMessageField span9" type="text"><input class="chatroomMessageButton btn btn-success span3" type="submit" value="Send" /></form></div>'
-		+ '</div>');
-		
-		var chatR = this;
-		$(".chat-holder").append(chatR.$uiDom);
-		
-	    // On click submit messages
-	    $chatRoomMessageField = this.$uiDom.find('.chatRoomMessageField');
-	    this.$uiDom.find('.chatroomMessageButton').click(function() {
-	    	if ($.trim($chatRoomMessageField.val()) != "") {
-	    		var clientMessage = $chatRoomMessageField.val();
-
-	    		chatR.remoteService.sendMessage(chatR.username, chatR.name, "chat", clientMessage);
-	    		console.log('sent a message to: ' + chatR.name);
-	    		$chatRoomMessageField.val('');
-	    	}
-	    });
+		setUpUi(self);
+		onMessageSend(self);
 	}
 }
 
