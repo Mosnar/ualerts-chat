@@ -193,18 +193,30 @@ PageController.prototype.onMessage = function(message) {
     	minutes = "0" + minutes;
     }
     
-    switch(message.type) {
-    case "ROSTER_ADDED":
-        var dateString = date.getHours() + ":" + minutes;
-        $chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.</p>');
-        this.addToRoster(message.from);
-    	break;
-    case "ROSTER_CONTENT":
-  		this.addToRoster(message.from);
-  		console.log('The ROSTER_CONTENT message is sent from ' + message.from + ' and is sent to ' + message.to);
-  		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
-    	break;
+    if (message.type == "ROSTER") {
+    	switch(message.subType) {
+    	case "ADDED":
+    		var dateString = date.getHours() + ":" + minutes;
+    		$chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.<p>');
+    		this.addToRoster(message.from);
+    		break;
+    	case "CONTENT":
+    		this.addToRoster(message.from);
+    	}
     }
+    
+//    switch(message.type) {
+//    case "ROSTER":
+//        var dateString = date.getHours() + ":" + minutes;
+//        $chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.</p>');
+//        this.addToRoster(message.from);
+//    	break;
+//    case "ROSTER_CONTENT":
+//  		this.addToRoster(message.from);
+//  		console.log('The ROSTER_CONTENT message is sent from ' + message.from + ' and is sent to ' + message.to);
+//  		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
+//    	break;
+//    }
 };
 
 /**

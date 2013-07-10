@@ -107,7 +107,7 @@ ChatRoom.prototype.bindChatroomActions = function() {
     };
     
     function downClickHandler($this) {
-		console.log('down was clicked');
+    	console.log('down was clicked');
     	var titleText = $this.parent().text();
     	var title = $('.chatroom-container > div > .chatroom-title:contains("' + titleText + '")');
     	var icon = $('.chatroom-container > div > .chatroom-title:contains("' + titleText + '") > i:eq(1)');
