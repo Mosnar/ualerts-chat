@@ -20,14 +20,39 @@
 package org.ualerts.chat.service.api;
 
 /**
- * Message describing a participant 
- * added to a conversation
+ * Message describing a roster activity
  *
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class RosterMessage extends Message {
+public abstract class RosterMessage extends Message {
+
+  private final String TYPE = "ROSTER";
   
- 
+  private String userName;
+  
+  /**
+   * Access the user name associated with this RosterMessage
+   * @return the user name 
+   */
+  public String getUserName() {
+    return userName;
+  }
+
+  /**
+   * Set the user name associated with this RosterMessage
+   * @param userName
+   */
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public final String getType() {
+   return TYPE;
+  }
 
 }

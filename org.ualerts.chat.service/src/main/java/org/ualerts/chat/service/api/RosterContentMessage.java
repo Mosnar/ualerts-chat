@@ -1,5 +1,5 @@
 /*
- * File created on Jun 17, 2013
+ * File created on Jul 3, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -19,36 +19,21 @@
 
 package org.ualerts.chat.service.api;
 
-public class ChatTextMessage extends Message {
+/**
+ * Message describing a previously added participant.
+ *
+ * @author Billy Coleman
+ * @author Ransom Roberson
+ */
+public class RosterContentMessage extends RosterMessage {
 
-  private static final String TYPE = "chat";
-  
-	private String text;
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String getType() {
-    return TYPE;
-  }
-
+  private final String SUBTYPE = "CONTENT";
   /**
    * {@inheritDoc}
    */
   @Override
   public String getSubType() {
-    return "";
+    return SUBTYPE;
   }
-	
-	
 
 }
