@@ -22,13 +22,15 @@ package org.ualerts.chat.service.api.concrete;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.RosterContentMessage;
 import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.RosterAddedMessage;
+import org.ualerts.chat.service.api.RosterContentMessage;
 import org.ualerts.chat.service.api.RosterRemovedMessage;
 import org.ualerts.chat.service.api.UserName;
 
@@ -41,6 +43,8 @@ import org.ualerts.chat.service.api.UserName;
 
 public class ConcreteConversation implements Conversation {
 
+  private static final Logger logger = 
+      LoggerFactory.getLogger(ConcreteConversation.class);
   private static final String BROADCAST_MESSAGE = "all";
 
   private Set<Participant> participants = new HashSet<Participant>();
@@ -62,7 +66,7 @@ public class ConcreteConversation implements Conversation {
   @Override
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE)) {
-      for (Participant participant : participants) {
+      for (Participant participant : getParticipants()) {
         deliverParticipantMessage(participant, message);
       }
     }
@@ -77,6 +81,7 @@ public class ConcreteConversation implements Conversation {
   protected void deliverParticipantMessage(Participant participant, Message message) {
     if(participant != null && participant.getUserName() != UserName.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
+      logger.info("Going to deliver a message to " + participant.getUserName().getName());
         participant.deliverMessage(message);
     }
   }
@@ -184,7 +189,7 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public Set<Participant> getParticipants() {
-    return participants;
+    return new HashSet<Participant>(participants);
   }
 
   @Override

@@ -100,8 +100,6 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
 
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-       
-    chatClient = getChatClient();
     chatClient.setSession(session);
     participant = chatClient.getParticipant();
     Conversation conversation = participant.getConversation();
