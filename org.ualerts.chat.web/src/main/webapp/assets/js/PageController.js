@@ -164,11 +164,9 @@ PageController.prototype.addToRoster = function(user) {
 				self.chatRoomService.createChatRoom(contact, this.username, self.service);
 			}
 			else {
-				console.log('you already have that ChatRoom: ' + contact);
 				$(self.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField').focus();
 			}
 			self.chatRoomService.getChatRoom(contact).$uiDom.find($('.chatRoomMessageField')).focus();
-			console.log('the ChatRoom name: ' + $(self.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField'));
 		});
 	}
 	
@@ -189,6 +187,7 @@ PageController.prototype.onMessage = function(message) {
 	var $chatbox = $('#chatbox');
 	var date = new Date(message.messageDate);
     var minutes = date.getMinutes();
+    
     if (minutes < 10) {
     	minutes = "0" + minutes;
     }
@@ -200,23 +199,18 @@ PageController.prototype.onMessage = function(message) {
     		$chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.<p>');
     		this.addToRoster(message.from);
     		break;
+    	case "REMOVED":
+    		this.chatRoomService.removeChatRoomByName(message.from);
+    		$('#connected-users tbody tr td').each(function() {
+    			if ($.trim($(this).text()) == message.from) {
+    				$(this).parent().remove();
+    			}
+    		});
+    		break;
     	case "CONTENT":
     		this.addToRoster(message.from);
     	}
     }
-    
-//    switch(message.type) {
-//    case "ROSTER":
-//        var dateString = date.getHours() + ":" + minutes;
-//        $chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.</p>');
-//        this.addToRoster(message.from);
-//    	break;
-//    case "ROSTER_CONTENT":
-//  		this.addToRoster(message.from);
-//  		console.log('The ROSTER_CONTENT message is sent from ' + message.from + ' and is sent to ' + message.to);
-//  		console.log('The case ROSTER_CONTENT is passing the string ' + message.from + ' to addToRoster(user)');
-//    	break;
-//    }
 };
 
 /**
@@ -236,17 +230,17 @@ PageController.prototype.validateUsername = function() {
  * 		  method, which has a "result" property that is either "valid" or
  * 		  "invalid"
  */
-PageController.prototype.handleValidity = function(jsonObj, storedUsername) {	
-    if ((new String(JSON.parse(jsonObj).result).valueOf() == new String("valid").valueOf())
-    		&& $('#usernameField').val() === storedUsername) {
-        console.log("The username " + storedUsername + " is valid");
+PageController.prototype.handleValidity = function(jsonObj, storedUsername) {
+//    if ((new String(JSON.parse(jsonObj).result).valueOf() == new String("valid")).valueOf())
+//    		&& $('#usernameField').val() === storedUsername) {
+    if (JSON.parse(jsonObj).result == "valid"
+		&& $('#usernameField').val() === storedUsername) {
         $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + storedUsername + ' </span>');
         $('#nameButton').removeAttr('disabled');
     }
-    else if (new String(JSON.parse(jsonObj).result).valueOf() == new String("invalid").valueOf()) {
-        console.log("The username " + storedUsername + "  is not valid");
+    else if (JSON.parse(jsonObj).result == "invalid") {
         $('#username-validity').html('<div class="cancel"></div>&nbsp<span> ' + storedUsername + ' </span>');
         $('#nameButton').attr('disabled', 'disabled');
 
-    }
+    };
 };

@@ -67,18 +67,6 @@
         </div>
      </div>
    	<div class="chat-holder">
-	 </div>
-<!--      <div class="footer">
-     	<div class="conversation-bar">
-		    <div class="btn-group dropup pull-right">
-				<button class="btn dropdown-toggle" data-toggle="dropdown">
-				    <span class="icon-plus-sign"></span>
-				</button>
-				<ul class="dropdown-menu">
-				    <li><a href="#">Link 1</a></li>
-				</ul>
-    		</div>
-		</div>
-    </div> -->
+	</div>
 	</body>
 </html>

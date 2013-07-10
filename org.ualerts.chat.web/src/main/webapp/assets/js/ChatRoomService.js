@@ -4,6 +4,15 @@ function ChatRoomService(remoteService) {
   this.remoteService = remoteService;
 }
 
+ChatRoomService.prototype.removeChatRoomByName = function(name) {
+	for (var i = 0; i < this.chatRoomList.length; i++) {
+		if (this.chatRoomList[i].name == name) {
+			this.chatRoomList.splice(i, 1);
+			return;
+		}
+	}
+};
+
 ChatRoomService.prototype.onMessage = function(message) {
 	var chatRoomName = "";
 	var room = "";
