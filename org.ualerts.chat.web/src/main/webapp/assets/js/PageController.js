@@ -63,25 +63,26 @@ PageController.prototype.htmlEncode = function(string) {
  * Enable the message input field
  */
 PageController.prototype.handleNameSubmit = function() {
-    var pageC = this;
+    var self = this;
+    
+    function setUpUi() {
+    	self.acknowledgeUser();
+    	self.prepareMessageField();
+        $('#messageField').attr('placeholder', 'Type a message...').focus();
+        $("#nameForm").hide();
+    }
     
     $('#nameButton').click(function() {    	
         var $username = $('#usernameField').val();
-        $username = pageC.htmlEncode($username);
-    	
-        function setUpUi() {
-        	pageC.acknowledgeUser();
-        	pageC.prepareMessageField();
-            $('#messageField').attr('placeholder', 'Type a message...').focus();
-            $("#nameForm").hide();
-        }
+        $username = self.htmlEncode($username);
         
         if ($.trim($username) != "") {
         	setUpUi();
         }
-        pageC.service.submitName();
-        pageC.chatRoomService.setUsername($username);
-        pageC.chatRoomService.createChatRoom("all");
+        
+        self.service.submitName();
+        self.chatRoomService.setUsername($username);
+        self.chatRoomService.createChatRoom("all");
     });
     
     this.service.connect();
@@ -100,8 +101,8 @@ PageController.prototype.updateUsername = function(name) {
  * Display a welcome message on the view.
  */
 PageController.prototype.acknowledgeUser = function() {
-    var pageC = this;
-    $('#user-welcome').text('Welcome, ' + pageC.username + ".");
+    var self = this;
+    $('#user-welcome').text('Welcome, ' + self.username + ".");
 };
 
 /**
@@ -121,56 +122,62 @@ PageController.prototype.prepareMessageField = function() {
  * sendMessage method
  */
 PageController.prototype.handleMessageSubmit = function() {
-    var pageC = this;
+    var self = this;
     $messageField = $('#messageField');
     $('#messageButton').click(function() {
         if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
-            // This is where "all" is defined as the message.to property
-            pageC.service.sendMessage("<b>" + pageC.username + "</b>", "all", "chat", clientMessage);
+            self.service.sendMessage("<b>" + self.username + "</b>", "all", "chat", clientMessage);
             $messageField.val('');
         }
     });
 };
 
 /**
- * Make HTML to append the user to the connected users table
+ * Make HTML to append the user to the connected users table, if the user s not
+ * already a connected user
  * 
  * @param user The user to be enrolled on the connected users table
  */
 PageController.prototype.addToRoster = function(user) {
-	// Check to see if user is already a connected user
-	for (var i = 0; i < this.connectedUsers.length; i++) {
-		if (user == this.connectedUsers[i]) {
-			return;
+	var self = this;
+	function userExists() {
+		for (var i = 0; i < self.connectedUsers.length; i++) {
+			if (user == self.connectedUsers[i]) {
+				return true;
+			}
+			return false;
 		}
 	}
 	
-    /**
-     * Create a custom jquery selector :textEquals("string"). It is used in
-     * the makeDataTables(String[], String[]) function to find xml tags with text
-     * that exactly matches the group names.
-     */
-    $.expr[':'].textEquals = function(objNode, intStackIndex, arrProperties, arrNodeStack) {
-        return $(objNode).text() == arrProperties[3];
-    };
+	function addUser() {
+		self.connectedUsers.push(user);
+		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user
+			+ '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
+		$('#connected-users > tbody').prepend(htmlString);
+	}
 	
-	this.connectedUsers.push(user);
-	var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user + '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
-	$('#connected-users > tbody').prepend(htmlString);
-	var pController = this;
-	$('#connected-users > tbody tr:first .add-chat').click(function() {
-		var contact = $.trim($(this).parent().text());
-		if (pController.chatRoomService.getChatRoom(contact) == false) {
-			pController.chatRoomService.createChatRoom(contact, this.username, pController.service);
-		}
-		else {
-			console.log('you already have that ChatRoom: ' + contact);
-			$(pController.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField').focus();
-		}
-		pController.chatRoomService.getChatRoom(contact).$uiDom.find($('.chatRoomMessageField')).focus();
-		console.log('the ChatRoom name: ' + $(pController.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField'));
-	});
+	function addChatClickHandler() {
+		$('#connected-users > tbody tr:first .add-chat').click(function() {
+			var contact = $.trim($(this).parent().text());
+			if (self.chatRoomService.getChatRoom(contact) == false) {
+				self.chatRoomService.createChatRoom(contact, this.username, self.service);
+			}
+			else {
+				console.log('you already have that ChatRoom: ' + contact);
+				$(self.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField').focus();
+			}
+			self.chatRoomService.getChatRoom(contact).$uiDom.find($('.chatRoomMessageField')).focus();
+			console.log('the ChatRoom name: ' + $(self.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField'));
+		});
+	}
+	
+	if (userExists()) {
+		return;
+	};
+	addUser();
+	addChatClickHandler();
+
 };
 
 /**
@@ -181,7 +188,6 @@ PageController.prototype.addToRoster = function(user) {
 PageController.prototype.onMessage = function(message) {
 	var $chatbox = $('#chatbox');
 	var date = new Date(message.messageDate);
-
     var minutes = date.getMinutes();
     if (minutes < 10) {
     	minutes = "0" + minutes;
@@ -205,9 +211,9 @@ PageController.prototype.onMessage = function(message) {
  * Have RemoteService validate the username by calling checkUsername method on it
  */
 PageController.prototype.validateUsername = function() {
-	var pageC = this;
+	var self = this;
 	this.updateUsername($.trim($('#usernameField').val()));
-    this.service.checkUsername(pageC.htmlEncode(pageC.username), this.handleValidity);
+    this.service.checkUsername(self.htmlEncode(self.username), this.handleValidity);
 };
 
 /**
