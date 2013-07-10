@@ -65,15 +65,19 @@ PageController.prototype.htmlEncode = function(string) {
 PageController.prototype.handleNameSubmit = function() {
     var pageC = this;
     
-    $('#nameButton').click(function() {
+    $('#nameButton').click(function() {    	
         var $username = $('#usernameField').val();
         $username = pageC.htmlEncode($username);
     	
-        if ($.trim($username) != "") {
+        function setUpUi() {
         	pageC.acknowledgeUser();
         	pageC.prepareMessageField();
             $('#messageField').attr('placeholder', 'Type a message...').focus();
             $("#nameForm").hide();
+        }
+        
+        if ($.trim($username) != "") {
+        	setUpUi();
         }
         pageC.service.submitName();
         pageC.chatRoomService.setUsername($username);
@@ -157,9 +161,15 @@ PageController.prototype.addToRoster = function(user) {
 	var pController = this;
 	$('#connected-users > tbody tr:first .add-chat').click(function() {
 		var contact = $.trim($(this).parent().text());
-		pController.chatRoomService.createChatRoom(contact, this.username, pController.service);
-		$('.chatroom-title-wrapper:textEquals(' + contact + ' )').find('.chatRoomMessageField').focus();
-		console.log("$('.chatroom-title-wrapper:contains(' + contact + ' )'):" + $('.chatroom-title-wrapper:contains(' + contact + ' )'));
+		if (pController.chatRoomService.getChatRoom(contact) == false) {
+			pController.chatRoomService.createChatRoom(contact, this.username, pController.service);
+		}
+		else {
+			console.log('you already have that ChatRoom: ' + contact);
+			$(pController.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField').focus();
+		}
+		pController.chatRoomService.getChatRoom(contact).$uiDom.find($('.chatRoomMessageField')).focus();
+		console.log('the ChatRoom name: ' + $(pController.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField'));
 	});
 };
 

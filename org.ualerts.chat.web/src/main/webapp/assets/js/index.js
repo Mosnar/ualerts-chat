@@ -24,15 +24,22 @@ $(document).ready(function() {
         });
     }
     
+    /**
+     * Enable rearrangement of ChatRooms
+     */
+    function onResizeHandlers() {
+        var nextChatContainer = 0;
+        $(window).bind('resize', function() {
+            var sumChatWidth = $('div.chat-holder').width();
+            if ($(window).width() < sumChatWidth + 20) {
+            	$('.chatroom-container:eq(' + nextChatContainer + ')').css('display', 'none');
+            	nextChatContainer++;
+            }
+            console.log($(window).width());
+            console.log(sumChatWidth);
+        });
+    }
+    
     enableTypeWatch();
-    var nextChatContainer = 0;
-    $(window).bind('resize', function() {
-        var sumChatWidth = $('div.chat-holder').width();
-        if ($(window).width() < sumChatWidth + 20) {
-        	$('.chatroom-container:eq(' + nextChatContainer + ')').css('display', 'none');
-        	nextChatContainer++;
-        }
-        console.log($(window).width());
-        console.log(sumChatWidth);
-    });
+    onResizeHandlers();
 });

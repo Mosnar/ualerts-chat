@@ -9,17 +9,17 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	}
 	
 	if (chatRoomName != 'all') {
-		this.$uiDom = $('<div class="chatroom-container">'
-	   		+ '<div class="chatroom-title-wrapper"><p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + this.name + '<i class="icon-minus pull-right"></i></p></div>'
+		this.$uiDom = $('<div class="chatroom-container container-fluid">'
+	   		+ '<div class="chatroom-title-wrapper row-fluid"><p class="chatroom-title span12"><i class="icon-user"></i>&nbsp;&nbsp;' + this.name + '<i class="icon-minus pull-right"></i></p></div>'
 	   		+ '<div class="chatroom-chat"></div>'
-	   		+ '<div><form action=""><input class="chatroomMessageField" type="text"><input class="chatroomMessageButton btn btn-success" type="submit" value="Send" /></form></div>'
+	   		+ '<div class="row-fluid"><form action=""><input class="chatRoomMessageField span9" type="text"><input class="chatroomMessageButton btn btn-success span3" type="submit" value="Send" /></form></div>'
 		+ '</div>');
 		
 		var chatR = this;
 		$(".chat-holder").append(chatR.$uiDom);
 		
 	    // On click submit messages
-	    $chatRoomMessageField = this.$uiDom.find('.chatroomMessageField');
+	    $chatRoomMessageField = this.$uiDom.find('.chatRoomMessageField');
 	    this.$uiDom.find('.chatroomMessageButton').click(function() {
 	    	if ($.trim($chatRoomMessageField.val()) != "") {
 	    		var clientMessage = $chatRoomMessageField.val();

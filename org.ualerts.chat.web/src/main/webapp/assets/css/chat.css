@@ -132,16 +132,16 @@ a.add-chat:hover {
 	/*margin-top: 1.2em;*/
 }
 
-.chatroomMessageField {
+.chatRoomMessageField {
 	margin-top: 0.4em;
 	background-color: #fff;
 	border: 1px solid #ACD8F0;
 	height: 1em;
-	width: 10em;
+	/* width: 10em; */
 }
 
 .chatroomMessageButton {
-	width: 3em;
+	/* width: 3em; */
 }
 
 .chatroom-title > .icon-minus, .chatroom-title > .icon-plus {
