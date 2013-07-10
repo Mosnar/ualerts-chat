@@ -44,27 +44,40 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	}
 }
 
-ChatRoom.prototype.displayChatMessage = function(message) {	
-	  console.log("displayChatMessage was called");
-	  var date = new Date(message.messageDate);
-	  var minutes = date.getMinutes();
-	  if (minutes < 10) {
-	    minutes = "0" + minutes;
-	  }
-	  var dateString = date.getHours() + ":" + minutes;
-	  
-	  if (message.to == "all") {
-		  var $chatbox = $('#chatbox');
-		  $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-				  message.from + ': ' + message.text + '</p>');
-		  $chatbox.scrollTop($chatbox[0].scrollHeight);
-		  return;
-	  }
-	  
-	  var $chatbox = this.$uiDom.find(".chatroom-chat");
-	  $chatbox.append('<p>' + '(' + dateString + ')' + ' ' +
-	      message.from + ': ' + message.text + '</p>');
-	  $chatbox.scrollTop($chatbox[0].scrollHeight);
+/**
+ * Display the message received in a one-on-one chat room
+ * 
+ * @param message The message passed from ChatRoomService.onMessage
+ */
+ChatRoom.prototype.displayChatMessage = function(message) {
+	
+	var $chatbox = "";
+	
+	/**
+	 * Build a string to be displayed with the chat message text
+	 * 
+	 * @returns dateString The messageDate property of the message in the form
+	 * 			hh:mm
+	 */
+	function buildDateString() {
+		var date = new Date(message.messageDate);
+		var minutes = date.getMinutes();
+		if (minutes < 10) {
+			minutes = "0" + minutes;
+		}
+		var dateString = date.getHours() + ": " + minutes;
+		return dateString;
+	}
+	
+	if (message.to == "all") {
+		$chatbox = $('#chatbox');
+	}
+	else {
+		$chatbox = this.$uiDom.find(".chatroom-chat");
+	}
+	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
+			message.from + ': ' + message.text + '</p>');
+	$chatbox.scrollTop($chatbox[0].scrollHeight);
 };
 
 /**
