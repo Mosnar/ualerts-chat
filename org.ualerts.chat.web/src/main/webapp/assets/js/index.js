@@ -18,7 +18,7 @@ $(document).ready(function() {
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
-        callback: function() { pageController.validateUsername();},
+        callback: function() { pageController.validateUsername(); },
         wait: 0,
         captureLength: 1
         });
@@ -40,6 +40,16 @@ $(document).ready(function() {
         });
     }
     
+    function usernameChangeHandler() {
+    	$('#usernameField').keyup(function(e){
+    		if ($(this).val() == "") {
+    			pageController.nameSubmitDisable();
+    			$('#username-validity').empty();
+    		};
+    	});
+    }
+    
     enableTypeWatch();
     onResizeHandlers();
+    usernameChangeHandler();
 });
