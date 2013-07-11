@@ -42,7 +42,7 @@ $(document).ready(function() {
     
     function usernameChangeHandler() {
     	$('#usernameField').keyup(function(e){
-    		if (e.keyCode == 8) {
+    		if ($(this).val() == "") {
     			pageController.nameSubmitDisable();
     			$('#username-validity').empty();
     		};

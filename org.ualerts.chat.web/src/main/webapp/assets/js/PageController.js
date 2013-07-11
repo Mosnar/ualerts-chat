@@ -163,9 +163,6 @@ PageController.prototype.addToRoster = function(user) {
 			if (self.chatRoomService.getChatRoom(contact) == false) {
 				self.chatRoomService.createChatRoom(contact, this.username, self.service);
 			}
-			else {
-				$(self.chatRoomService.getChatRoom(contact).$uiDom).find('.chatRoomMessageField').focus();
-			}
 			self.chatRoomService.getChatRoom(contact).$uiDom.find($('.chatRoomMessageField')).focus();
 		});
 	}
@@ -227,7 +224,11 @@ PageController.prototype.onMessage = function(message) {
  */
 PageController.prototype.validateUsername = function() {
 	var self = this;
-	this.updateUsername($.trim($('#usernameField').val()));
+	var name = $.trim($('#usernameField').val());
+	this.updateUsername(name);
+	if (name == "") {
+		return;
+	}
     this.service.checkUsername(self.htmlEncode(self.username), this.handleValidity);
 };
 
