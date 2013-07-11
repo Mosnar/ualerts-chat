@@ -1,7 +1,7 @@
 /**
  * The service facade that handles messages from the controller.
  */
-function ChatService() {
+function RemoteService() {
     this.listeners = new Array();
     this.ws = null;
 }
@@ -9,12 +9,12 @@ function ChatService() {
 /**
  * Add an object's callback function to the array of callback functions.
  *
- * @param callback A subscriber's callback function that the ChatService will
+ * @param callback A subscriber's callback function that the RemoteService will
  *                 when it loops through the array in 
- *                 ChatService.notifyListeners(). It must be a Callback object,
+ *                 RemoteService.notifyListeners(). It must be a Callback object,
  *                 which has an execute method
  */
-ChatService.prototype.addListener = function(callback) {
+RemoteService.prototype.addListener = function(callback) {
 	if (typeof callback != "object" || typeof callback.execute != "function")
 		console.log('The callback ' + callback + ' is not an object of the Callback class');
 	  this.listeners.push(callback);
@@ -25,7 +25,7 @@ ChatService.prototype.addListener = function(callback) {
  *
  * @param callback The callback function to remove from the listeners array
  */
-ChatService.prototype.removeListener = function(callback) {    
+RemoteService.prototype.removeListener = function(callback) {    
     this.listeners.splice(this.listeners.indexOf(callback), 1);
 };
 
@@ -38,7 +38,7 @@ ChatService.prototype.removeListener = function(callback) {
  * @param type The type of the message
  * @param text The text of the message
  */
-ChatService.prototype.sendMessage = function(from, to, type, text) {
+RemoteService.prototype.sendMessage = function(from, to, type, text) {
     var message = {
         from : from,
         to: to,
@@ -52,14 +52,14 @@ ChatService.prototype.sendMessage = function(from, to, type, text) {
 /**
  * Connect to the service
  */
-ChatService.prototype.connect = function() {
-	var chatS = this;
+RemoteService.prototype.connect = function() {
+	var remoteS = this;
     this.ws = new SockJS("sockjs/connector");
     this.ws.onmessage = function(event) {
-    	console.log(event);
+    	console.log('The event passed to the SockJS onmessage(event) is: ' + event);
     	var message = $.parseJSON(event.data);
-        for (var i = 0; i < chatS.listeners.length; i++) {
-        	chatS.listeners[i].execute(message);
+        for (var i = 0; i < remoteS.listeners.length; i++) {
+        	remoteS.listeners[i].execute(message);
         }
     };
 };
@@ -67,7 +67,7 @@ ChatService.prototype.connect = function() {
 /**
  * Disconnect from the service
  */
-ChatService.prototype.disconnect = function() {
+RemoteService.prototype.disconnect = function() {
     console.log("You have disconnected");
 };
 
@@ -77,7 +77,7 @@ ChatService.prototype.disconnect = function() {
  * @param username The username to check validity for
  * @param callback The method to call when the Ajax call is done
  */
-ChatService.prototype.checkUsername = function(username, callback) {
+RemoteService.prototype.checkUsername = function(username, callback) {
 	var storedUsername = username;
 	
     $.ajax({
@@ -92,12 +92,12 @@ ChatService.prototype.checkUsername = function(username, callback) {
 /**
  * Send a POST request for the service to create a participant
  */
-ChatService.prototype.submitName = function() {
+RemoteService.prototype.submitName = function() {
     $.ajax({
         type: "POST",
         url: window.location.href + "/submitName",
         data: {}
     }).done(function(data) {
-        console.log('The data returned from the ChatService.submitname() POST: ' + data);
+        console.log('The data returned from the RemoteService.submitname() POST: ' + data);
     });
 };

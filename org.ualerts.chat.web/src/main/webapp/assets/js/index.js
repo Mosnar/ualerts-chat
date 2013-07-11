@@ -1,42 +1,45 @@
 $(document).ready(function() {
     /**
-     * Make sure forms don't submit GETs while in development.
+     * Make sure forms don't submit GET requests.
      */
-    $('form').submit(function() {
+    $('body').on('submit', 'form', function() {
         return false;
     });
             
-    var chatService = new ChatService();
-    var chatController = new ChatController(chatService);
+    var remoteService = new RemoteService();
+    var chatRoomService = new ChatRoomService(remoteService);
+    var pageController = new PageController(remoteService, chatRoomService);
     
-    chatController.init();
+    pageController.init();
+    remoteService.addListener(new Callback(chatRoomService.onMessage, chatRoomService));
     
     /**
      * Enable typeWatch on #usernameField 
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
-        callback: function() { chatController.validateUsername(); },
+        callback: function() { pageController.validateUsername();},
         wait: 0,
         captureLength: 1
         });
     }
     
     /**
-     * Sort the username list by online status
+     * Enable rearrangement of ChatRooms
      */
-    function sortUsers(users) {
-        for (var i = 0; i < users.length; i ++) {
-            var $user = $('#connected-users tbody tr td:eq(' + i + ')');
-            if ($user.hasClass('offline')) {
-                console.log('The user ' + $user.text() + ' is offline');
+    function onResizeHandlers() {
+        var nextChatContainer = 0;
+        $(window).bind('resize', function() {
+            var sumChatWidth = $('div.chat-holder').width();
+            if ($(window).width() < sumChatWidth + 20) {
+            	$('.chatroom-container:eq(' + nextChatContainer + ')').css('display', 'none');
+            	nextChatContainer++;
             }
-            else {
-                console.log('The user ' + $user.text() + ' is online');
-            }
-        }
+            console.log($(window).width());
+            console.log(sumChatWidth);
+        });
     }
     
     enableTypeWatch();
-    //sortUsers(users);
+    onResizeHandlers();
 });
