@@ -48,6 +48,9 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	    });
 	}
 	
+
+	
+	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
@@ -57,6 +60,19 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		setUpUi(self);
 		onMessageSend(self);
 	}
+}
+
+function parseUrls(text) {
+	var replacedText, replacePattern1;
+	 
+	//URLs starting with http://, https://, ftps://, ftp://
+	replacePattern1 = /(\b(https?|ftps?):\/\/[-A-Z0-9+&amp;@#\/%?=~_|!:,.;]*[-A-Z0-9+&amp;@#\/%=~_|])/ig;
+	replacedText = text.replace(replacePattern1, '<a title="$1" href="$1" target="_blank">$1</a>');
+	 
+	//URLs starting with "www."
+	replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+	replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+return replacedText;
 }
 
 /**
@@ -91,6 +107,6 @@ ChatRoom.prototype.displayChatMessage = function(message) {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
-			message.from + ': ' + message.text + '</p>');
+			message.from + ': ' + parseUrls(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
 };
