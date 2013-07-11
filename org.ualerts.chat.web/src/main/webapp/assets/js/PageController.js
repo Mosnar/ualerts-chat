@@ -242,7 +242,7 @@ PageController.prototype.validateUsername = function() {
  */
 PageController.prototype.handleValidity = function(jsonObj, storedUsername) {
     if (JSON.parse(jsonObj).result == "valid"
-		&& $('#usernameField').val() === storedUsername) {
+		&& $.trim($('#usernameField').val()) === storedUsername) {
         $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + storedUsername + ' </span>');
         $('#nameButton').removeAttr('disabled');
     }
