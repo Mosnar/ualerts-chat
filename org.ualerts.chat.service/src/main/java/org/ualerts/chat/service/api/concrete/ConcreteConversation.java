@@ -81,7 +81,6 @@ public class ConcreteConversation implements Conversation {
   protected void deliverParticipantMessage(Participant participant, Message message) {
     if(participant != null && participant.getUserName() != UserName.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
-      logger.info("Going to deliver a message to " + participant.getUserName().getName());
         participant.deliverMessage(message);
     }
   }
