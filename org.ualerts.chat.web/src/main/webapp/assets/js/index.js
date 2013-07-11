@@ -7,7 +7,7 @@ $(document).ready(function() {
     });
             
     var remoteService = new RemoteService();
-    chatRoomService = new ChatRoomService(remoteService);
+    var chatRoomService = new ChatRoomService(remoteService);
     var pageController = new PageController(remoteService, chatRoomService);
     
     pageController.init();
@@ -35,6 +35,8 @@ $(document).ready(function() {
             	$('.chatroom-container:eq(' + nextChatContainer + ')').css('display', 'none');
             	nextChatContainer++;
             }
+            console.log($(window).width());
+            console.log(sumChatWidth);
         });
     }
     

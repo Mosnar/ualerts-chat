@@ -11,11 +11,27 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	 * .chat-holder
 	 */
 	function setUpUi(self) {
-		self.$uiDom = $('<div class="chatroom-container container-fluid">'
-		   		+ '<div class="chatroom-title-wrapper row-fluid"><p class="chatroom-title span12"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p></div>'
+		self.$uiDom = $(
+			'<div class="chatroom-container">'
+		   		+ '<div class="chatroom-title-wrapper">'
+		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
+		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
-		   		+ '<div class="row-fluid"><form action=""><input class="chatRoomMessageField span9" type="text"><input class="chatroomMessageButton btn btn-success span3" type="submit" value="Send" /></form></div>'
-			+ '</div>');
+		   		+ '<div>'
+		   		+	'<form action="">'
+		   		+		'<div class="row-fluid">'
+		   		+			'<div class="span12">'
+		   		+				'<input class="chatRoomMessageField" type="text">'
+		   		+			'</div>'
+		   		+		'</div>'
+		   		+		'<div class="row-fluid">'
+		   		+			'<div class="span12">'
+		   		+				'<input class="chatroomMessageButton btn btn-success" type="submit" value="Send" />'
+		   		+			'</div>'
+		   		+		'</div>'
+		   		+	'</form>'
+		   		+ '</div>'
+		   	+ '</div>');
 			
 		$(".chat-holder").append(self.$uiDom);
 	}

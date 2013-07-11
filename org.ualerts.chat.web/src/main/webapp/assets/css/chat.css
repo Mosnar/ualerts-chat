@@ -90,18 +90,14 @@ form, p, span {
 	cursor: pointer;
 }
 
-a.add-chat:hover {
-	
-}
-
 .chat-holder {
 	position: fixed;
- 	bottom: 1.4em;
+ 	bottom: 0;
 	right: 1em;
 }
 
 .chatroom-container {
-	position: relative;
+	position: relative; 
 	border: 1px solid #ACD8F0;
 	width: 14em;
 	/*height: 18em;*/
@@ -137,15 +133,17 @@ a.add-chat:hover {
 	background-color: #fff;
 	border: 1px solid #ACD8F0;
 	height: 1em;
-	/* width: 10em; */
+	width: 13em;
 }
 
 .chatroomMessageButton {
-	/* width: 3em; */
+	width: 14em		!important;
+	margin-top: -0.3em;
 }
 
 .chatroom-title > .icon-minus, .chatroom-title > .icon-plus {
 	margin-right: 0.4em;
+	visibility: hidden;
 }
 
 .chatroom-title > .icon-user {

@@ -19,7 +19,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
     <body>
-    <div class="container-responsive">
+    <div class="container">
     	<div class="row">
     		<div class="span3">
 				<table id="connected-users" class="table table-bordered table-hover table-condensed">
@@ -48,10 +48,9 @@
 	                <div style="clear: both"></div>
 	        	</div>
 	        	
-	    	<p id="user-welcome">	
-	    	</p>
-	    	
-	    	<br />
+	    		<p id="user-welcome">	
+	    		</p>
+	    		<br />
 	        	
 	        	<form id="messageForm" name="message" action="">
 	        		<div class="row">
@@ -65,7 +64,7 @@
 	        	</form>
 	        </div>
         </div>
-     </div>
+    </div>
    	<div class="chat-holder">
 	</div>
 	</body>

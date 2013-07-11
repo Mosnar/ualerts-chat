@@ -16,6 +16,7 @@ function RemoteService() {
  */
 RemoteService.prototype.addListener = function(callback) {
 	if (typeof callback != "object" || typeof callback.execute != "function")
+		console.log('The callback ' + callback + ' is not an object of the Callback class');
 	  this.listeners.push(callback);
 };
 
@@ -55,6 +56,7 @@ RemoteService.prototype.connect = function() {
 	var remoteS = this;
     this.ws = new SockJS("sockjs/connector");
     this.ws.onmessage = function(event) {
+    	console.log('The event passed to the SockJS onmessage(event) is: ' + event);
     	var message = $.parseJSON(event.data);
         for (var i = 0; i < remoteS.listeners.length; i++) {
         	remoteS.listeners[i].execute(message);
@@ -95,5 +97,7 @@ RemoteService.prototype.submitName = function() {
         type: "POST",
         url: window.location.href + "/submitName",
         data: {}
+    }).done(function(data) {
+        console.log('The data returned from the RemoteService.submitname() POST: ' + data);
     });
 };

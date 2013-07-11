@@ -185,18 +185,27 @@ PageController.prototype.addToRoster = function(user) {
  */
 PageController.prototype.onMessage = function(message) {
 	var $chatbox = $('#chatbox');
-	var date = new Date(message.messageDate);
-    var minutes = date.getMinutes();
-    
-    if (minutes < 10) {
-    	minutes = "0" + minutes;
-    }
+	
+	/**
+	 * Build a string to be displayed with the chat message text
+	 * 
+	 * @returns dateString The messageDate property of the message in the form
+	 * 			hh:mm
+	 */
+	function buildDateString() {
+		var date = new Date(message.messageDate);
+		var minutes = date.getMinutes();
+		if (minutes < 10) {
+			minutes = "0" + minutes;
+		}
+		var dateString = date.getHours() + ": " + minutes;
+		return dateString;
+	}
     
     if (message.type == "ROSTER") {
     	switch(message.subType) {
     	case "ADDED":
-    		var dateString = date.getHours() + ":" + minutes;
-    		$chatbox.append('<p>' + '(' + dateString + ') ' + message.from + ' has entered the chat.<p>');
+    		$chatbox.append('<p>' + '(' + buildDateString() + ') ' + message.from + ' has entered the chat.<p>');
     		this.addToRoster(message.from);
     		break;
     	case "REMOVED":
@@ -231,8 +240,6 @@ PageController.prototype.validateUsername = function() {
  * 		  "invalid"
  */
 PageController.prototype.handleValidity = function(jsonObj, storedUsername) {
-//    if ((new String(JSON.parse(jsonObj).result).valueOf() == new String("valid")).valueOf())
-//    		&& $('#usernameField').val() === storedUsername) {
     if (JSON.parse(jsonObj).result == "valid"
 		&& $('#usernameField').val() === storedUsername) {
         $('#username-validity').html('<div class="check"></div>&nbsp;<span> ' + storedUsername + ' </span>');
