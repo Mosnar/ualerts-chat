@@ -18,9 +18,7 @@ $(document).ready(function() {
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
-        callback: function() { pageController.validateUsername();
-        	console.log('typewatch fired');
-        },
+        callback: function() { pageController.validateUsername(); },
         wait: 0,
         captureLength: 1
         });
