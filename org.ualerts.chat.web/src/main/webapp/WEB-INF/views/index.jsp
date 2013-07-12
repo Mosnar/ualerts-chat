@@ -7,6 +7,9 @@
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap-responsive.min.css" />
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css" />
     
+    <script type="text/javascript">
+      var CONTEXT_PATH = "${pageContext.request.contextPath}";
+    </script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery-2.0.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/typewatch.js"></script>
@@ -16,8 +19,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/PageController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomManager.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomService.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/GlobalMessageIndicator.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoom.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/GlobalMessageIndicator.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
     </head>
     <body>
@@ -69,5 +72,6 @@
     </div>
    	<div class="chat-holder">
 	</div>
+	<div id="sound"></div>
 	</body>
 </html>
