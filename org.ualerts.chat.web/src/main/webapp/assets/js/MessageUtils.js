@@ -3,7 +3,7 @@ function MessageUtils() {};
 MessageUtils.prepareMessage = function(text) {
     var message = MessageUtils.addLinks(text);
     return message;
-}
+};
 
 /**
  * Parse a block of text to detect URLs and convert them to hyperlinks
