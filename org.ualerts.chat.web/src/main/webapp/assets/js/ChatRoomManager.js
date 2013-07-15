@@ -49,8 +49,7 @@ ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
 	}
 
 	//if chatRoom's DOM entry exists, remove it in
-	//preparation for 'placing' it at the front
-	//of other chatRoom entries
+	//preparation for prepending it 
 	removeDom();
 	
 	//prepend this chatRoom's DOM entry before any others
