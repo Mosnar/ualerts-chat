@@ -8,7 +8,7 @@ ChatRoomManager.prototype.addChatRoom = function(chatRoomName, username, remoteS
 	this.chatRoomList.push(room);
 	
 	if (chatRoomName != "all") {
-		this.focusOnChatRoom(chatRoomName);
+//		this.focusOnChatRoom(chatRoomName);
 	}
 
 	return room;
@@ -57,12 +57,11 @@ ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
 	$('.chat-holder').prepend(this.chatRoomList[selectedIndex].$uiDom);
 	
 	//set this chatRoom's array position to be first
-	this.chatRoomList.move(selectedIndex, 0);
+	if (selectedIndex >= 0 && selectedIndex < this.chatRoomList.length) {
+		this.chatRoomList.move(selectedIndex, 0);
+	}
 };
 
 Array.prototype.move = function (from, to) {
-	if (from >= 0 && from < this.chatRoomList.length
-			&& to >= 0 && to < this.chatRoomList.length) {
-		this.splice(to, 0, this.splice(from, 1)[0]);
-	}
+	this.splice(to, 0, this.splice(from, 1)[0]);
 };
