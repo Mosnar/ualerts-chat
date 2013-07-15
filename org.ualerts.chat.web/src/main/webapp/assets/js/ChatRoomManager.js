@@ -50,20 +50,19 @@ ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
 
 	//if chatRoom's DOM entry exists, remove it in
 	//preparation for prepending it 
-	removeDom();
+	var chatId = "#" + chatRoomName + ".chatroom-container";
+	$(chatId).remove();
 	
 	//prepend this chatRoom's DOM entry before any others
 	$('.chat-holder').prepend(this.chatRoomList[selectedIndex].$uiDom);
 	
 	//set this chatRoom's array position to be first
 	this.chatRoomList.move(selectedIndex, 0);
-		
-	function removeDom() {
-		var chatId = "#" + chatRoomName + ".chatroom-container";
-		$(chatId).remove();
-	}
 };
 
 Array.prototype.move = function (from, to) {
-	this.splice(to, 0, this.splice(from, 1)[0]);
+	if (from >= 0 && from < this.chatRoomList.length
+			&& to >= 0 && to < this.chatRoomList.length) {
+		this.splice(to, 0, this.splice(from, 1)[0]);
+	}
 };
