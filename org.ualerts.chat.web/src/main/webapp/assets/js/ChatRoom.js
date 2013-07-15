@@ -48,6 +48,9 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	    });
 	}
 	
+
+	
+	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
@@ -58,6 +61,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		onMessageSend(self);
 	}
 }
+
 
 /**
  * Display the message received in a one-on-one chat room
@@ -91,6 +95,6 @@ ChatRoom.prototype.displayChatMessage = function(message) {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
-			message.from + ': ' + message.text + '</p>');
+			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
 };
