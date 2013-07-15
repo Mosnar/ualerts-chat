@@ -11,9 +11,8 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	 * .chat-holder
 	 */
 	function setUpUi(self) {
-		var cleanName = removeSpaces(self.name);
 		self.$uiDom = $(
-			'<div class="chatroom-container" id="' + cleanName + '">'
+			'<div class="chatroom-container" id="' + self.name + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
 		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
@@ -35,15 +34,6 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		   	+ '</div>');
 			
 		$(".chat-holder").append(self.$uiDom);
-	}
-	
-	/**
-	 * Returns the supplied string with spaces replaced with underscores
-	 * @param string to clean
-	 * @returns clean string
-	 */
-	function removeSpaces(string) {
-		return string.replace(/ /g,"_");
 	}
 	
 	function onMessageSend(self) {
