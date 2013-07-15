@@ -134,7 +134,7 @@ PageController.prototype.handleMessageSubmit = function() {
 };
 
 /**
- * Make HTML to append the user to the connected users table, if the user s not
+ * Make HTML to append the user to the connected users table, if the user is not
  * already a connected user
  * 
  * @param user The user to be enrolled on the connected users table

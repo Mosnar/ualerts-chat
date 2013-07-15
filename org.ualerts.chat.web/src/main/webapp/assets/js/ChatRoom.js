@@ -41,7 +41,6 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	    self.$uiDom.find('.chatroomMessageButton').click(function() {
 	    	if ($.trim($chatRoomMessageField.val()) != "") {
 	    		var clientMessage = $chatRoomMessageField.val();
-
 	    		self.remoteService.sendMessage(self.username, self.name, "chat", clientMessage);
 	    		$chatRoomMessageField.val('');
 	    	}
@@ -55,7 +54,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
 	}
-	
+	console.log('attempting onMessageSend');
 	if (chatRoomName != 'all') {
 		setUpUi(self);
 		onMessageSend(self);
