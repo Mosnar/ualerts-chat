@@ -8,10 +8,12 @@ $(document).ready(function() {
             
     var remoteService = new RemoteService();
     var chatRoomService = new ChatRoomService(remoteService);
+    var globalMessageIndicator = new GlobalMessageIndicator(remoteService);
     var pageController = new PageController(remoteService, chatRoomService);
     
     pageController.init();
     remoteService.addListener(new Callback(chatRoomService.onMessage, chatRoomService));
+    remoteService.addListener(new Callback(globalMessageIndicator.onMessage, globalMessageIndicator));
     
     /**
      * Enable typeWatch on #usernameField 
