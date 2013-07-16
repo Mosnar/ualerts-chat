@@ -4,13 +4,8 @@ function ChatRoomManager() {
 
 ChatRoomManager.prototype.addChatRoom = function(chatRoomName, username, remoteService) {
 	var room = new ChatRoom(chatRoomName, username, remoteService);
-
 	this.chatRoomList.push(room);
-	
-	if (chatRoomName != "all") {
-//		this.focusOnChatRoom(chatRoomName);
-	}
-
+	this.redraw();
 	return room;
 };
 
@@ -34,32 +29,38 @@ ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
 };
 
 ChatRoomManager.prototype.redraw = function() {
+	var windowWidth = $(window).width() - 40;
+	var chatRoomWidth = $('.chatroom-container:visible').last().width();
+	var count = 0;
+	var maxNum = Math.floor(windowWidth/chatRoomWidth);
 	
+	// start from the end of the list
+	// stop at index 1, because index 0 is the "all" chatroom
+	for (var i = this.chatRoomList.length - 1; i >= 1; i--) {		
+		if(count < maxNum) {
+			$('.chatroom-container:eq(' + (i - 1) + ')').show();
+			count++;
+		}
+		else {
+			$('.chatroom-container:eq(' + (i - 1) + ')').hide();
+		}
+	}
 };
 
 ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
-	
 	//find this chatRoom in the array
-	var selectedIndex = null;	
+	var selectedIndex = null;
 	for (var i = 0; i < this.chatRoomList.length; i++) {
 		if (this.chatRoomList[i].name == chatRoomName) {
 			selectedIndex = i;
 			break;
 		}
 	}
-
-	//if chatRoom's DOM entry exists, remove it in
-	//preparation for prepending it 
-	var chatId = "#" + chatRoomName + ".chatroom-container";
-	$(chatId).remove();
 	
-	//prepend this chatRoom's DOM entry before any others
-	$('.chat-holder').prepend(this.chatRoomList[selectedIndex].$uiDom);
+	$('.chatroom-container:contains(' + chatRoomName + ')').insertAfter($('.chatroom-container').last());
 	
-	//set this chatRoom's array position to be first
-	if (selectedIndex >= 0 && selectedIndex < this.chatRoomList.length) {
-		this.chatRoomList.move(selectedIndex, 0);
-	}
+	//set this chatRoom's array position to be last
+	this.chatRoomList.move(selectedIndex, this.chatRoomList.length - 1);
 };
 
 Array.prototype.move = function (from, to) {

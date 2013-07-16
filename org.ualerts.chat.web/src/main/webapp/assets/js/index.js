@@ -5,7 +5,6 @@ $(document).ready(function() {
     $('body').on('submit', 'form', function() {
         return false;
     });
-            
     var remoteService = new RemoteService();
     var chatRoomService = new ChatRoomService(remoteService);
     var globalMessageIndicator = new GlobalMessageIndicator(remoteService);
@@ -16,7 +15,7 @@ $(document).ready(function() {
     remoteService.addListener(new Callback(globalMessageIndicator.onMessage, globalMessageIndicator));
     
     /**
-     * Enable typeWatch on #usernameField 
+     * Enable typeWatch on #usernameField
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
@@ -26,20 +25,29 @@ $(document).ready(function() {
         });
     }
     
+//    /**
+//     * Enable rearrangement of ChatRooms
+//     */
+//    function onResizeHandlers() {
+//        var nextChatContainer = 0;
+//        $(window).bind('resize', function() {
+//            var sumChatWidth = $('div.chat-holder').width();
+//            if ($(window).width() < sumChatWidth + 20) {
+//            	$('.chatroom-container:eq(' + nextChatContainer + ')').css('display', 'none');
+//            	nextChatContainer++;
+//            }
+//            console.log($(window).width());
+//            console.log(sumChatWidth);
+//        });
+//    }
+    
     /**
      * Enable rearrangement of ChatRooms
      */
     function onResizeHandlers() {
-        var nextChatContainer = 0;
-        $(window).bind('resize', function() {
-            var sumChatWidth = $('div.chat-holder').width();
-            if ($(window).width() < sumChatWidth + 20) {
-            	$('.chatroom-container:eq(' + nextChatContainer + ')').css('display', 'none');
-            	nextChatContainer++;
-            }
-            console.log($(window).width());
-            console.log(sumChatWidth);
-        });
+      $(window).bind('resize', function() {
+          chatRoomService.getChatRoomManager().redraw();
+      });
     }
     
     function usernameChangeHandler() {

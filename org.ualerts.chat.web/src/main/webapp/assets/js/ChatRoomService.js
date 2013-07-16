@@ -46,3 +46,7 @@ ChatRoomService.prototype.removeChatRoomByName = function(name) {
 ChatRoomService.prototype.getChatRoom = function(chatRoomName) {
 	return this.chatRoomManager.getChatRoom(chatRoomName);
 };
+
+ChatRoomService.prototype.getChatRoomManager = function() {
+	return this.chatRoomManager;
+};

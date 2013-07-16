@@ -12,7 +12,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	 */
 	function setUpUi(self) {
 		self.$uiDom = $(
-			'<div class="chatroom-container" id="' + self.name + '">'
+			'<div class="chatroom-container">'
 		   		+ '<div class="chatroom-title-wrapper">'
 		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
@@ -37,7 +37,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	}
 	
 	function onMessageSend(self) {
-	    $chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
+	    var $chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
 	    self.$uiDom.find('.chatroomMessageButton').click(function() {
 	    	if ($.trim($chatRoomMessageField.val()) != "") {
 	    		var clientMessage = $chatRoomMessageField.val();
