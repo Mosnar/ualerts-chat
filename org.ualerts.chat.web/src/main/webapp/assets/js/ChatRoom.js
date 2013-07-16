@@ -59,7 +59,6 @@ function ChatRoom(chatRoomName, username, remoteService) {
     {
     	if (self.missedMessage) {
     		self.$uiDom.find(".chatroom-title-unread").removeClass("chatroom-title-unread").addClass("chatroom-title");
-    		//self.$uiDom.find(".chatroom-title").removeClass("chatroom-title-unread")
     		self.missedMessage = false;
     	}
     }
