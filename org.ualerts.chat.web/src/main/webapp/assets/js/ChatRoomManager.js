@@ -33,10 +33,11 @@ ChatRoomManager.prototype.redraw = function() {
 	var windowWidth = $(window).width();
 	console.log('windowWidth: ' + windowWidth);
 
-	var chatRoomWidth = $('.chatroom-container:visible').last().width();
+	var chatRoomWidth = $('.chatroom-container:visible').last().width() + 8;
 	console.log('chatRoomWidth: ' + chatRoomWidth);
 	var count = 0;
-	var maxNum = windowWidth/chatRoomWidth;
+	var maxNum = Math.floor(windowWidth/chatRoomWidth);
+	
 	console.log('maxNum: ' + maxNum);
 
 	for (var i = this.chatRoomList.length - 1; i >= 1; i--) {		
@@ -45,12 +46,14 @@ ChatRoomManager.prototype.redraw = function() {
 			console.log('show');
 			count++;
 			console.log('count: ' + count);
+			$('.chatroom-container:contains('+this.chatRoomList[i].name+')').show();
 		}
 		else {
 			this.chatRoomList[i].$uiDom.find('.chatroom-container').hide();
 			console.log('this.chatRoomList: ' + this.chatRoomList);
-			console.log(this.chatRoomList[i].$uiDom.find('.chatroom-container'));
+			console.log(this.chatRoomList[i].name);
 			console.log('hide');
+			$('.chatroom-container:contains('+this.chatRoomList[i].name+')').hide();
 		}
 	}
 
