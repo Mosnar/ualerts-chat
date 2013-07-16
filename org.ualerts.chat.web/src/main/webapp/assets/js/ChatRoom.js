@@ -64,12 +64,20 @@ function ChatRoom(chatRoomName, username, remoteService) {
     	}
     }
 	
+    /**
+     * Used along with guid() for generating segments of a unique id
+     * @return unique guid segment
+     */
 	function s4() {
 		  return Math.floor((1 + Math.random()) * 0x10000)
 		             .toString(16)
 		             .substring(1);
 	};
 
+	/**
+	 * Generates a unique identification string
+	 * @returns unique id string
+	 */
 	function guid() {
 	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
 	  	s4() + '-' + s4() + s4() + s4();
