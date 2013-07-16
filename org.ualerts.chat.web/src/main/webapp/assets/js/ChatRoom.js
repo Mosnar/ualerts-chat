@@ -3,8 +3,19 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	this.username = username;
 	this.remoteService = remoteService;
 	this.$uiDom = "";
-	
+	var windowFocus = true;
 	var self = this;
+	var uuid = guid();
+	
+	// On page focus
+	$(window).focus(function() {
+		windowFocus = true;
+		stopTitlePulse();
+	})
+	// On page blur
+	.blur(function() {
+		windowFocus = false;
+	});
 	
 	/**
 	 * Assign the $uiDom property a string of HTML markup, and append it to the
@@ -12,7 +23,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	 */
 	function setUpUi(self) {
 		self.$uiDom = $(
-			'<div class="chatroom-container" id="' + self.name + '">'
+			'<div class="chatroom-container" id="' + uuid + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
 		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
@@ -34,6 +45,17 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		   	+ '</div>');
 			
 		$(".chat-holder").append(self.$uiDom);
+	}
+	
+	function s4() {
+		  return Math.floor((1 + Math.random()) * 0x10000)
+		             .toString(16)
+		             .substring(1);
+	};
+
+	function guid() {
+	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+	  	s4() + '-' + s4() + s4() + s4();
 	}
 	
 	function onMessageSend(self) {
@@ -89,8 +111,7 @@ ChatRoom.prototype.displayChatMessage = function(message) {
 	
 	if (message.to == "all") {
 		$chatbox = $('#chatbox');
-	}
-	else {
+	} else {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +

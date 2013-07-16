@@ -119,6 +119,10 @@ form, p, span {
 	width: inherit;
 }
 
+.chatroom-title-unread {
+	background-color: #ff9191;
+}
+
 .chatroom-chat {
 	padding: 0.4em 0.4em 0.4em 0.4em;
 	background-color: #fff;
