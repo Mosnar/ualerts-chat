@@ -28,7 +28,24 @@ ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
 	return false;
 };
 
-
+ChatRoomManager.prototype.redraw = function() {
+	var windowWidth = $(window).width() - 40;
+	var chatRoomWidth = $('.chatroom-container:visible').last().width();
+	var count = 0;
+	var maxNum = Math.floor(windowWidth/chatRoomWidth);
+	
+	// start from the end of the list
+	// stop at index 1, because index 0 is the "all" chatroom
+	for (var i = this.chatRoomList.length - 1; i >= 1; i--) {		
+		if(count < maxNum) {
+			$('.chatroom-container:eq(' + (i - 1) + ')').show();
+			count++;
+		}
+		else {
+			$('.chatroom-container:eq(' + (i - 1) + ')').hide();
+		}
+	}
+};
 
 ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
 	//find this chatRoom in the array
