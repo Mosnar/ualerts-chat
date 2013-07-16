@@ -16,7 +16,7 @@ $(document).ready(function() {
     remoteService.addListener(new Callback(globalMessageIndicator.onMessage, globalMessageIndicator));
     
     /**
-     * Enable typeWatch on #usernameField 
+     * Enable typeWatch on #usernameField
      */
     function enableTypeWatch() {
         $('#usernameField').typeWatch({
@@ -52,6 +52,6 @@ $(document).ready(function() {
     }
     
     enableTypeWatch();
-    onResizeHandlers();
+    //onResizeHandlers();
     usernameChangeHandler();
 });

@@ -3,13 +3,10 @@ function ChatRoomManager() {
 }
 
 ChatRoomManager.prototype.addChatRoom = function(chatRoomName, username, remoteService) {
+	this.redraw();
 	var room = new ChatRoom(chatRoomName, username, remoteService);
 
 	this.chatRoomList.push(room);
-	
-	if (chatRoomName != "all") {
-//		this.focusOnChatRoom(chatRoomName);
-	}
 
 	return room;
 };
@@ -34,7 +31,16 @@ ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
 };
 
 ChatRoomManager.prototype.redraw = function() {
-	
+	var chatRoomWidth = $('.chatroom-container:last').width();
+	var numChatRooms = $('.chatroom-container').length;
+	var sumChatRoomWidth = chatRoomWidth * (numChatRooms + 1 );
+	console.log('sumChatRoomWidth: ' + sumChatRoomWidth);
+	console.log('$(window).width(): ' + $(window).width());
+	if ($(window).width() < sumChatRoomWidth) {
+		console.log('if reached');
+		$('.chatroom-container:visible').first().hide();
+		console.log($('.chatroom-container[display="inline-block"]'));
+	}
 };
 
 ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
