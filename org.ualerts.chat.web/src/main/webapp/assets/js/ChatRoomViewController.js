@@ -1,4 +1,4 @@
-function ChatRoom(chatRoomName, username, remoteService) {
+function ChatRoomViewController(chatRoomName, username, remoteService) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.remoteService = remoteService;
@@ -67,7 +67,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
  * 
  * @param message The message passed from ChatRoomService.onMessage
  */
-ChatRoom.prototype.displayChatMessage = function(message) {
+ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	
 	var $chatbox = "";
 	

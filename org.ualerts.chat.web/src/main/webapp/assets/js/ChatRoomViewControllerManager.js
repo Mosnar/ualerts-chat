@@ -1,15 +1,15 @@
-function ChatRoomManager() {
+function ChatRoomViewControllerManager() {
 	this.chatRoomList = new Array();
 }
 
-ChatRoomManager.prototype.addChatRoom = function(chatRoomName, username, remoteService) {
-	var room = new ChatRoom(chatRoomName, username, remoteService);
+ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService) {
+	var room = new ChatRoomViewController(chatRoomName, username, remoteService);
 	this.chatRoomList.push(room);
 	this.redraw();
 	return room;
 };
 
-ChatRoomManager.prototype.removeChatRoom = function(chatRoomName) {
+ChatRoomViewControllerManager.prototype.removeChatRoomViewController = function(chatRoomName) {
 	for (var i = 0; i < this.chatRoomList.length; i++) {
 		if (this.chatRoomList[i].name == chatRoomName) {
 			this.chatRoomList.splice(i, 1);
@@ -18,7 +18,7 @@ ChatRoomManager.prototype.removeChatRoom = function(chatRoomName) {
 	}
 };
 
-ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
+ChatRoomViewControllerManager.prototype.getChatRoomViewController = function(chatRoomName) {
 	var list = this.chatRoomList;
 	for (var i = 0; i < list.length; i++) {
 		if (list[i].name == chatRoomName) {
@@ -28,7 +28,7 @@ ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
 	return false;
 };
 
-ChatRoomManager.prototype.redraw = function() {
+ChatRoomViewControllerManager.prototype.redraw = function() {
 	var windowWidth = $(window).width() - 40;
 	var chatRoomWidth = $('.chatroom-container:visible').last().width();
 	var count = 0;
@@ -47,7 +47,7 @@ ChatRoomManager.prototype.redraw = function() {
 	}
 };
 
-ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
+ChatRoomViewControllerManager.prototype.focusOnChatRoom = function(chatRoomName) {
 	//find this chatRoom in the array
 	var selectedIndex = null;
 	for (var i = 0; i < this.chatRoomList.length; i++) {

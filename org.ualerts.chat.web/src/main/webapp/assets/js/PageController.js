@@ -82,7 +82,7 @@ PageController.prototype.handleNameSubmit = function() {
         
         self.service.submitName();
         self.chatRoomService.setUsername($username);
-        self.chatRoomService.createChatRoom("all");
+        self.chatRoomService.createChatRoomViewController("all");
     });
     
     this.service.connect();
@@ -160,10 +160,10 @@ PageController.prototype.addToRoster = function(user) {
 	function addChatClickHandler() {
 		$('#connected-users > tbody tr:first .add-chat').click(function() {
 			var contact = $.trim($(this).parent().text());
-			if (self.chatRoomService.getChatRoom(contact) == false) {
-				self.chatRoomService.createChatRoom(contact, this.username, self.service);
+			if (self.chatRoomService.getChatRoomViewController(contact) == false) {
+				self.chatRoomService.createChatRoomViewController(contact, this.username, self.service);
 			}
-			self.chatRoomService.getChatRoom(contact).$uiDom.find($('.chatRoomMessageField')).focus();
+			self.chatRoomService.getChatRoomViewController(contact).$uiDom.find($('.chatRoomMessageField')).focus();
 		});
 	}
 	
