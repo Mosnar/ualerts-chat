@@ -3,18 +3,18 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	this.username = username;
 	this.remoteService = remoteService;
 	this.$uiDom = "";
-	var windowFocus = true;
+	this.windowFocus = true;
+	this.missedMessage = true;
 	var self = this;
 	var uuid = guid();
 	
 	// On page focus
 	$(window).focus(function() {
-		windowFocus = true;
-		stopTitlePulse();
+		self.windowFocus = true;
 	})
 	// On page blur
 	.blur(function() {
-		windowFocus = false;
+		self.windowFocus = false;
 	});
 	
 	/**
@@ -25,7 +25,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + uuid + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
+		   		+ 	'<p class="chatroom-title-unread"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
 		   		+ '<div>'
@@ -44,8 +44,25 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		   		+ '</div>'
 		   	+ '</div>');
 			
+	    self.$uiDom.find(".chatroom-chat, .chatroom-title, .chatRoomMessageField").focus(function() {
+	    	handleMessageReadClick();
+	    });	
+	    
 		$(".chat-holder").append(self.$uiDom);
 	}
+	
+	/**
+	 * This function will check if there are unread messages and modify the
+	 * one-on-one chat boxes accordingly
+	 */
+    function handleMessageReadClick()
+    {
+    	if (self.missedMessage) {
+    		self.$uiDom.find(".chatroom-title-unread").removeClass("chatroom-title-unread").addClass("chatroom-title");
+    		//self.$uiDom.find(".chatroom-title").removeClass("chatroom-title-unread")
+    		self.missedMessage = false;
+    	}
+    }
 	
 	function s4() {
 		  return Math.floor((1 + Math.random()) * 0x10000)
@@ -69,8 +86,6 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	    });
 	}
 	
-
-	
 	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');
@@ -82,7 +97,6 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		onMessageSend(self);
 	}
 }
-
 
 /**
  * Display the message received in a one-on-one chat room
@@ -113,6 +127,11 @@ ChatRoom.prototype.displayChatMessage = function(message) {
 		$chatbox = $('#chatbox');
 	} else {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
+		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
+		{
+			this.missedMessage = true;
+			this.$uiDom.find(".chatroom-title").removeClass("chatroom-title").addClass("chatroom-title-unread");
+		}
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
