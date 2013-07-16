@@ -3,7 +3,6 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	this.username = username;
 	this.remoteService = remoteService;
 	this.$uiDom = "";
-	this.$chatRoomMessageField = null;
 	
 	var self = this;
 	
@@ -38,15 +37,18 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	}
 	
 	function onMessageSend(self) {
-	    self.$chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
+	    var $chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
 	    self.$uiDom.find('.chatroomMessageButton').click(function() {
-	    	if ($.trim(self.$chatRoomMessageField.val()) != "") {
-	    		var clientMessage = self.$chatRoomMessageField.val();
+	    	if ($.trim($chatRoomMessageField.val()) != "") {
+	    		var clientMessage = $chatRoomMessageField.val();
 	    		self.remoteService.sendMessage(self.username, self.name, "chat", clientMessage);
-	    		self.$chatRoomMessageField.val('');
+	    		$chatRoomMessageField.val('');
 	    	}
 	    });
 	}
+	
+
+	
 	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');

@@ -105,6 +105,7 @@ form, p, span {
 	background-color: #EBF4FB;
     display: inline-block;
 	/* margin: 0 0.2em; */
+	float: left;
 }
 
 .chatroom-title-wrapper {
