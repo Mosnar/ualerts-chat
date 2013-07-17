@@ -1,7 +1,8 @@
-function ChatRoomViewController(chatRoomName, username, remoteService) {
+function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.remoteService = remoteService;
+	this.uniqueId = uniqueId;
 	this.$uiDom = "";
 	
 	var self = this;
@@ -12,7 +13,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService) {
 	 */
 	function setUpUi(self) {
 		self.$uiDom = $(
-			'<div class="chatroom-container">'
+			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
 		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
@@ -96,4 +97,8 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
+};
+
+ChatRoomViewController.prototype.getWidth = function() {
+	return $(".chatroom-container#" + this.uniqueId).width();
 };

@@ -161,7 +161,7 @@ PageController.prototype.addToRoster = function(user) {
 		$('#connected-users > tbody tr:first .add-chat').click(function() {
 			var contact = $.trim($(this).parent().text());
 			if (self.chatRoomService.getChatRoomViewController(contact) == false) {
-				self.chatRoomService.createChatRoomViewController(contact, this.username, self.service);
+				self.chatRoomService.createChatRoomViewController(contact);
 			}
 			self.chatRoomService.getChatRoomViewController(contact).$uiDom.find($('.chatRoomMessageField')).focus();
 		});

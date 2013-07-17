@@ -38,7 +38,6 @@ ChatRoomService.prototype.createChatRoomViewController = function(chatRoomName) 
 	return this.chatRoomViewControllerManager.addChatRoomViewController(chatRoomName, this.username, this.remoteService);
 };
 
-
 ChatRoomService.prototype.removeChatRoomByName = function(name) {
 	this.chatRoomViewControllerManager.removeChatRoomViewController(name);
 };

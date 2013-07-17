@@ -1,9 +1,11 @@
 function ChatRoomViewControllerManager() {
 	this.chatRoomList = new Array();
+	this.uniqueIdCounter = 0;
 }
 
 ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService) {
-	var room = new ChatRoomViewController(chatRoomName, username, remoteService);
+	var room = new ChatRoomViewController(chatRoomName, username, remoteService, this.uniqueIdCounter);
+	this.uniqueIdCounter++;
 	this.chatRoomList.push(room);
 	this.redraw();
 	return room;
@@ -30,7 +32,10 @@ ChatRoomViewControllerManager.prototype.getChatRoomViewController = function(cha
 
 ChatRoomViewControllerManager.prototype.redraw = function() {
 	var windowWidth = $(window).width() - 40;
-	var chatRoomWidth = $('.chatroom-container:visible').last().width();
+	var lastIndex = this.chatRoomList.length - 1;
+	console.log('lastIndex: ' + lastIndex);
+	var chatRoomWidth = this.chatRoomList[lastIndex].getWidth();
+	console.log('chatRoomWidth2: ' + chatRoomWidth);
 	var count = 0;
 	var maxNum = Math.floor(windowWidth/chatRoomWidth);
 	
