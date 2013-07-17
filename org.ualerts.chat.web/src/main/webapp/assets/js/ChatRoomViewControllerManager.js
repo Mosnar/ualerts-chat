@@ -1,11 +1,12 @@
 function ChatRoomViewControllerManager() {
 	this.chatRoomList = new Array();
-	this.uniqueIdCounter = 0;
+	this.uniqueIdNum = 0;
 }
 
 ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService) {
-	var room = new ChatRoomViewController(chatRoomName, username, remoteService, this.uniqueIdCounter);
-	this.uniqueIdCounter++;
+	var uniqueId = 'room-' + this.uniqueIdNum;
+	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId);
+	this.uniqueIdNum++;
 	this.chatRoomList.push(room);
 	this.redraw();
 	return room;
