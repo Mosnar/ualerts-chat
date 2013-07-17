@@ -100,9 +100,36 @@ ChatRoomViewController.prototype.getWidth = function() {
 	return $(".chatroom-container#" + this.uniqueId).width();
 };
 
+ChatRoomViewController.prototype.hideOverflowButton = function() {
+	var numItems = $('#overflow-chatroom-button .dropdown-menu li').length;
+	console.log('number of li items: ' + numItems);
+	if (numItems == 0) {
+		$('#overflow-chatroom-button').hide();
+	}
+};
+
+ChatRoomViewController.prototype.addHiddenOverflow = function() {
+	if (this.name != 'all') {
+		var listEntry = $('<li id="' + this.uniqueId + '"><a>' + this.name + '</a></li>');
+		var listEntryId = $('#overflow-chatroom-button .dropdown-menu li').attr('id');
+		console.log('listEntryId: ' + listEntryId);
+		if (listEntryId != this.uniqueId) {
+			console.log('the id does not match');
+			$('#overflow-chatroom-button .dropdown-menu').append(listEntry);
+		}
+	}
+};
+
+ChatRoomViewController.prototype.removeHiddenOverflow = function() {
+	if (this.name != 'all') {
+		$('#overflow-chatroom-button .dropdown-menu li#' + this.uniqueId).remove();
+	}
+};
+
 ChatRoomViewController.prototype.hide = function() {
 	if (this.name != 'all') {
-		$(".chatroom-container#" + this.uniqueId).hide();
+		$('.chatroom-container#' + this.uniqueId).hide();
+		$('#overflow-chatroom-button').show();
 	}
 };
 

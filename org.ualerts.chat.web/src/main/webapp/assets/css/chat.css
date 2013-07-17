@@ -96,6 +96,15 @@ form, p, span {
 	right: 1em;
 }
 
+#overflow-wrapper {
+	position: relative;
+}
+
+#overflow-chatroom-button {
+	display: none;
+	bottom: 0;
+}
+
 .chatroom-container {
 	position: relative; 
 	border: 1px solid #ACD8F0;
