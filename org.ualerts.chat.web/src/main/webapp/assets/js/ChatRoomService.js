@@ -1,7 +1,10 @@
 function ChatRoomService(remoteService) {
   this.username = null;
   this.remoteService = remoteService;
-  this.chatRoomViewControllerManager = new ChatRoomViewControllerManager();
+  this.hiddenChatRoomViewController = new HiddenChatRoomViewController();
+  this.chatRoomViewControllerManager = new ChatRoomViewControllerManager(this.hiddenChatRoomViewController);
+  
+  this.hiddenChatRoomViewController.addListener(new Callback(this.chatRoomViewControllerManager.focusOnChatRoom, this.chatRoomViewControllerManager));
 }
 
 ChatRoomService.prototype.onMessage = function(message) {

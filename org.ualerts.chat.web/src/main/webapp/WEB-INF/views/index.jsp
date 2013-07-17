@@ -20,6 +20,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomViewControllerManager.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomService.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/ChatRoomViewController.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/HiddenChatRoomViewController.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/GlobalMessageIndicator.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/MessageUtils.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/index.js"></script>
@@ -74,8 +75,8 @@
    	<div class="chat-holder">
    		<div id="overflow-wrapper">
 			<div id="overflow-chatroom-button" class="btn-group dropup">
-			    <button class="btn dropdown-toggle" data-toggle="dropdown">
-				<span class="icon-plus-sign"></span>
+			    <button id="hidden-chatroom-button" class="btn dropdown-toggle" data-toggle="dropdown">
+					<span class="button-count"></span>
 			    </button>
 			    <ul class="dropdown-menu">
 			    </ul>

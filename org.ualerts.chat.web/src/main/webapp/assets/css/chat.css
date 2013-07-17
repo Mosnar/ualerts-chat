@@ -105,6 +105,10 @@ form, p, span {
 	bottom: 0;
 }
 
+#overflow-chatroom-button .dropdown-menu li:hover {
+	background-color: #0088cc;
+}
+
 .chatroom-container {
 	position: relative; 
 	border: 1px solid #ACD8F0;
@@ -172,4 +176,8 @@ form, p, span {
 
 .dropdown-toggle {
 	margin-right: 0.8em;
+}
+
+.button-count {
+	
 }

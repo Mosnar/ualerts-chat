@@ -1,8 +1,9 @@
-function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId) {
+function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, chatRoomViewControllerManager) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
+	this.chatRoomViewControllerManager = chatRoomViewControllerManager;
 	this.$uiDom = "";
 	
 	var self = this;
@@ -66,7 +67,12 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
  * @param message The message passed from ChatRoomService.onMessage
  */
 ChatRoomViewController.prototype.displayChatMessage = function(message) {
-	
+	var self = this;
+	if ($('#overflow-chatroom-button .dropdown-menu li:contains(' + this.name + ')').length == 1) {
+		console.log('self.name: ' + self.name);
+		self.chatRoomViewControllerManager.focusOnChatRoom(self.name);
+		console.log('the displaychatmessage() was called while chatroom was hidden');
+	}
 	var $chatbox = "";
 	
 	/**
@@ -98,39 +104,6 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 
 ChatRoomViewController.prototype.getWidth = function() {
 	return $(".chatroom-container#" + this.uniqueId).width();
-};
-
-ChatRoomViewController.prototype.hideOverflowButton = function() {
-	var numItems = $('#overflow-chatroom-button .dropdown-menu li').length;
-	console.log('number of li items: ' + numItems);
-	if (numItems == 0) {
-		$('#overflow-chatroom-button').hide();
-	}
-};
-
-ChatRoomViewController.prototype.addHiddenOverflow = function() {
-	if (this.name != 'all') {
-		var listEntry = $('<li id="' + this.uniqueId + '"><a>' + this.name + '</a></li>');
-		var listEntryId = $('#overflow-chatroom-button .dropdown-menu li').attr('id');
-		console.log('listEntryId: ' + listEntryId);
-		if (listEntryId != this.uniqueId) {
-			console.log('the id does not match');
-			$('#overflow-chatroom-button .dropdown-menu').append(listEntry);
-		}
-	}
-};
-
-ChatRoomViewController.prototype.removeHiddenOverflow = function() {
-	if (this.name != 'all') {
-		$('#overflow-chatroom-button .dropdown-menu li#' + this.uniqueId).remove();
-	}
-};
-
-ChatRoomViewController.prototype.hide = function() {
-	if (this.name != 'all') {
-		$('.chatroom-container#' + this.uniqueId).hide();
-		$('#overflow-chatroom-button').show();
-	}
 };
 
 ChatRoomViewController.prototype.show = function() {
