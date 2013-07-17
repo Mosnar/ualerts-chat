@@ -55,7 +55,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
 	}
-	console.log('attempting onMessageSend');
+
 	if (chatRoomName != 'all') {
 		setUpUi(self);
 		onMessageSend(self);

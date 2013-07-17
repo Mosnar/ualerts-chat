@@ -33,9 +33,7 @@ ChatRoomViewControllerManager.prototype.getChatRoomViewController = function(cha
 ChatRoomViewControllerManager.prototype.redraw = function() {
 	var windowWidth = $(window).width() - 40;
 	var lastIndex = this.chatRoomList.length - 1;
-	console.log('lastIndex: ' + lastIndex);
 	var chatRoomWidth = this.chatRoomList[lastIndex].getWidth();
-	console.log('chatRoomWidth2: ' + chatRoomWidth);
 	var count = 0;
 	var maxNum = Math.floor(windowWidth/chatRoomWidth);
 	
