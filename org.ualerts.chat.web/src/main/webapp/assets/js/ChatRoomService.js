@@ -8,7 +8,7 @@ ChatRoomService.prototype.onMessage = function(message) {
 	var chatRoomName = "";
 	var room = "";
 	
-	if (message.type != "chat" || this.chatRoomViewControllerManager.chatRoomList.length == 0) {
+	if (message.type != "chat" || this.chatRoomViewControllerManager.size() == 0) {
 		return;
 	}
 	

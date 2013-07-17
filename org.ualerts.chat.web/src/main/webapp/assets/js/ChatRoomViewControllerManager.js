@@ -70,3 +70,7 @@ ChatRoomViewControllerManager.prototype.focusOnChatRoom = function(chatRoomName)
 Array.prototype.move = function (from, to) {
 	this.splice(to, 0, this.splice(from, 1)[0]);
 };
+
+ChatRoomViewControllerManager.prototype.size = function() {
+	return this.chatRoomList.length;
+};
