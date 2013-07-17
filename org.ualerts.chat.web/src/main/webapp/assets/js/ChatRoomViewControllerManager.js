@@ -40,7 +40,7 @@ ChatRoomViewControllerManager.prototype.redraw = function() {
 	
 	// start from the end of the list
 	// stop at index 1, because index 0 is the "all" chatroom
-	for (var i = this.chatRoomList.length - 1; i >= 1; i--) {		
+	for (var i = this.chatRoomList.length - 1; i >= 0; i--) {		
 		if(count < maxNum) {
 			this.chatRoomList[i].show();
 			count++;

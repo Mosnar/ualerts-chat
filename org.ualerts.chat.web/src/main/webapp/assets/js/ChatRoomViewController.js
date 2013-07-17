@@ -104,7 +104,9 @@ ChatRoomViewController.prototype.getWidth = function() {
 };
 
 ChatRoomViewController.prototype.hide = function() {
-	$(".chatroom-container#" + this.uniqueId).hide();
+	if (this.uniqueId != 'room-0') {
+		$(".chatroom-container#" + this.uniqueId).hide();
+	}
 };
 
 ChatRoomViewController.prototype.show = function() {
