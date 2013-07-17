@@ -1,7 +1,8 @@
-function ChatRoom(chatRoomName, username, remoteService) {
+function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.remoteService = remoteService;
+	this.uniqueId = uniqueId;
 	this.$uiDom = "";
 	
 	var self = this;
@@ -12,7 +13,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	 */
 	function setUpUi(self) {
 		self.$uiDom = $(
-			'<div class="chatroom-container">'
+			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
 		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
@@ -47,14 +48,11 @@ function ChatRoom(chatRoomName, username, remoteService) {
 	    });
 	}
 	
-
-	
-	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
 	}
-	console.log('attempting onMessageSend');
+
 	if (chatRoomName != 'all') {
 		setUpUi(self);
 		onMessageSend(self);
@@ -67,7 +65,7 @@ function ChatRoom(chatRoomName, username, remoteService) {
  * 
  * @param message The message passed from ChatRoomService.onMessage
  */
-ChatRoom.prototype.displayChatMessage = function(message) {
+ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	
 	var $chatbox = "";
 	
@@ -96,4 +94,18 @@ ChatRoom.prototype.displayChatMessage = function(message) {
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
+};
+
+ChatRoomViewController.prototype.getWidth = function() {
+	return $(".chatroom-container#" + this.uniqueId).width();
+};
+
+ChatRoomViewController.prototype.hide = function() {
+	if (this.name != 'all') {
+		$(".chatroom-container#" + this.uniqueId).hide();
+	}
+};
+
+ChatRoomViewController.prototype.show = function() {
+	$(".chatroom-container#" + this.uniqueId).show();
 };

@@ -1,15 +1,18 @@
-function ChatRoomManager() {
+function ChatRoomViewControllerManager() {
 	this.chatRoomList = new Array();
+	this.uniqueIdNum = 0;
 }
 
-ChatRoomManager.prototype.addChatRoom = function(chatRoomName, username, remoteService) {
-	var room = new ChatRoom(chatRoomName, username, remoteService);
+ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService) {
+	var uniqueId = 'room-' + this.uniqueIdNum;
+	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId);
+	this.uniqueIdNum++;
 	this.chatRoomList.push(room);
 	this.redraw();
 	return room;
 };
 
-ChatRoomManager.prototype.removeChatRoom = function(chatRoomName) {
+ChatRoomViewControllerManager.prototype.removeChatRoomViewController = function(chatRoomName) {
 	for (var i = 0; i < this.chatRoomList.length; i++) {
 		if (this.chatRoomList[i].name == chatRoomName) {
 			this.chatRoomList.splice(i, 1);
@@ -18,7 +21,7 @@ ChatRoomManager.prototype.removeChatRoom = function(chatRoomName) {
 	}
 };
 
-ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
+ChatRoomViewControllerManager.prototype.getChatRoomViewController = function(chatRoomName) {
 	var list = this.chatRoomList;
 	for (var i = 0; i < list.length; i++) {
 		if (list[i].name == chatRoomName) {
@@ -28,26 +31,27 @@ ChatRoomManager.prototype.getChatRoom = function(chatRoomName) {
 	return false;
 };
 
-ChatRoomManager.prototype.redraw = function() {
+ChatRoomViewControllerManager.prototype.redraw = function() {
 	var windowWidth = $(window).width() - 40;
-	var chatRoomWidth = $('.chatroom-container:visible').last().width();
+	var lastIndex = this.chatRoomList.length - 1;
+	var chatRoomWidth = this.chatRoomList[lastIndex].getWidth();
 	var count = 0;
 	var maxNum = Math.floor(windowWidth/chatRoomWidth);
 	
 	// start from the end of the list
 	// stop at index 1, because index 0 is the "all" chatroom
-	for (var i = this.chatRoomList.length - 1; i >= 1; i--) {		
+	for (var i = this.chatRoomList.length - 1; i >= 0; i--) {		
 		if(count < maxNum) {
-			$('.chatroom-container:eq(' + (i - 1) + ')').show();
+			this.chatRoomList[i].show();
 			count++;
 		}
 		else {
-			$('.chatroom-container:eq(' + (i - 1) + ')').hide();
+			this.chatRoomList[i].hide();
 		}
 	}
 };
 
-ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
+ChatRoomViewControllerManager.prototype.focusOnChatRoom = function(chatRoomName) {
 	//find this chatRoom in the array
 	var selectedIndex = null;
 	for (var i = 0; i < this.chatRoomList.length; i++) {
@@ -65,4 +69,8 @@ ChatRoomManager.prototype.focusOnChatRoom = function(chatRoomName) {
 
 Array.prototype.move = function (from, to) {
 	this.splice(to, 0, this.splice(from, 1)[0]);
+};
+
+ChatRoomViewControllerManager.prototype.size = function() {
+	return this.chatRoomList.length;
 };

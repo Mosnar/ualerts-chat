@@ -46,7 +46,7 @@ $(document).ready(function() {
      */
     function onResizeHandlers() {
       $(window).bind('resize', function() {
-          chatRoomService.getChatRoomManager().redraw();
+          chatRoomService.getChatRoomViewControllerManager().redraw();
       });
     }
     

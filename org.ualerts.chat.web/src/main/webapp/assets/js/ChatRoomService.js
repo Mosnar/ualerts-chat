@@ -1,14 +1,14 @@
 function ChatRoomService(remoteService) {
   this.username = null;
   this.remoteService = remoteService;
-  this.chatRoomManager = new ChatRoomManager();
+  this.chatRoomViewControllerManager = new ChatRoomViewControllerManager();
 }
 
 ChatRoomService.prototype.onMessage = function(message) {
 	var chatRoomName = "";
 	var room = "";
 	
-	if (message.type != "chat" || this.chatRoomManager.chatRoomList.length == 0) {
+	if (message.type != "chat" || this.chatRoomViewControllerManager.size() == 0) {
 		return;
 	}
 	
@@ -23,9 +23,9 @@ ChatRoomService.prototype.onMessage = function(message) {
 		chatRoomName = message.to;
 	}
 	
-	room = this.getChatRoom(chatRoomName);
+	room = this.getChatRoomViewController(chatRoomName);
 	if (room == false) {
-		room = this.createChatRoom(chatRoomName);
+		room = this.createChatRoomViewController(chatRoomName);
 	}
 	room.displayChatMessage(message);
 };
@@ -34,19 +34,18 @@ ChatRoomService.prototype.setUsername = function(username) {
 	this.username = username;
 };
 
-ChatRoomService.prototype.createChatRoom = function(chatRoomName) {
-	return this.chatRoomManager.addChatRoom(chatRoomName, this.username, this.remoteService);
+ChatRoomService.prototype.createChatRoomViewController = function(chatRoomName) {
+	return this.chatRoomViewControllerManager.addChatRoomViewController(chatRoomName, this.username, this.remoteService);
 };
-
 
 ChatRoomService.prototype.removeChatRoomByName = function(name) {
-	this.chatRoomManager.removeChatRoom(name);
+	this.chatRoomViewControllerManager.removeChatRoomViewController(name);
 };
 
-ChatRoomService.prototype.getChatRoom = function(chatRoomName) {
-	return this.chatRoomManager.getChatRoom(chatRoomName);
+ChatRoomService.prototype.getChatRoomViewController = function(chatRoomName) {
+	return this.chatRoomViewControllerManager.getChatRoomViewController(chatRoomName);
 };
 
-ChatRoomService.prototype.getChatRoomManager = function() {
-	return this.chatRoomManager;
+ChatRoomService.prototype.getChatRoomViewControllerManager = function() {
+	return this.chatRoomViewControllerManager;
 };
