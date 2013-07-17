@@ -48,9 +48,6 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	    });
 	}
 	
-
-	
-	
 	if (chatRoomName == 'all') {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
@@ -104,7 +101,7 @@ ChatRoomViewController.prototype.getWidth = function() {
 };
 
 ChatRoomViewController.prototype.hide = function() {
-	if (this.uniqueId != 'room-0') {
+	if (this.name != 'all') {
 		$(".chatroom-container#" + this.uniqueId).hide();
 	}
 };
