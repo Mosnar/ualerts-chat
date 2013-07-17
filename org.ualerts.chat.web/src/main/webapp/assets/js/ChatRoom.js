@@ -43,9 +43,13 @@ function ChatRoom(chatRoomName, username, remoteService) {
 		   		+ '</div>'
 		   	+ '</div>');
 			
-	    self.$uiDom.find(".chatroom-chat, .chatroom-title, .chatRoomMessageField").focus(function() {
+	    self.$uiDom.find(".chatroom-chat, .chatroom-title").click(function() {
 	    	handleMessageReadClick();
 	    });	
+	    self.$uiDom.find(".chatRoomMessageField").focus(function() {
+	    	handleMessageReadClick();
+	    });	
+	    
 	    
 		$(".chat-holder").append(self.$uiDom);
 	}
