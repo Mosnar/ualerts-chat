@@ -72,6 +72,15 @@
         </div>
     </div>
    	<div class="chat-holder">
+   		<div id="overflow-wrapper">
+			<div id="overflow-chatroom-button" class="btn-group dropup">
+			    <button class="btn dropdown-toggle" data-toggle="dropdown">
+				<span class="icon-plus-sign"></span>
+			    </button>
+			    <ul class="dropdown-menu">
+			    </ul>
+			</div>
+		</div>
 	</div>
 	<div id="sound"></div>
 	</body>

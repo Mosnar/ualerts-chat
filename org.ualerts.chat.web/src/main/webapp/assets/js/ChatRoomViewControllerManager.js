@@ -34,7 +34,8 @@ ChatRoomViewControllerManager.prototype.getChatRoomViewController = function(cha
 ChatRoomViewControllerManager.prototype.redraw = function() {
 	var windowWidth = $(window).width() - 40;
 	var lastIndex = this.chatRoomList.length - 1;
-	var chatRoomWidth = this.chatRoomList[lastIndex].getWidth();
+	var referenceChatRoom = this.chatRoomList[lastIndex];
+	var chatRoomWidth = referenceChatRoom.getWidth();
 	var count = 0;
 	var maxNum = Math.floor(windowWidth/chatRoomWidth);
 	
@@ -43,10 +44,13 @@ ChatRoomViewControllerManager.prototype.redraw = function() {
 	for (var i = this.chatRoomList.length - 1; i >= 0; i--) {		
 		if(count < maxNum) {
 			this.chatRoomList[i].show();
+			this.chatRoomList[i].removeHiddenOverflow();
+			referenceChatRoom.hideOverflowButton();
 			count++;
 		}
 		else {
 			this.chatRoomList[i].hide();
+			this.chatRoomList[i].addHiddenOverflow();
 		}
 	}
 };
