@@ -102,3 +102,11 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 ChatRoomViewController.prototype.getWidth = function() {
 	return $(".chatroom-container#" + this.uniqueId).width();
 };
+
+ChatRoomViewController.prototype.hide = function() {
+	$(".chatroom-container#" + this.uniqueId).hide();
+};
+
+ChatRoomViewController.prototype.show = function() {
+	$(".chatroom-container#" + this.uniqueId).show();
+};

@@ -43,11 +43,11 @@ ChatRoomViewControllerManager.prototype.redraw = function() {
 	// stop at index 1, because index 0 is the "all" chatroom
 	for (var i = this.chatRoomList.length - 1; i >= 1; i--) {		
 		if(count < maxNum) {
-			$('.chatroom-container:eq(' + (i - 1) + ')').show();
+			this.chatRoomList[i].show();
 			count++;
 		}
 		else {
-			$('.chatroom-container:eq(' + (i - 1) + ')').hide();
+			this.chatRoomList[i].hide();
 		}
 	}
 };
