@@ -1,11 +1,12 @@
-function ChatRoomViewControllerManager() {
+function ChatRoomViewControllerManager(hiddenChatRoomViewController) {
 	this.chatRoomList = new Array();
 	this.uniqueIdNum = 0;
+	this.hiddenChatRoomViewController = hiddenChatRoomViewController;
 }
 
 ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService) {
 	var uniqueId = 'room-' + this.uniqueIdNum;
-	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId);
+	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, this);
 	this.uniqueIdNum++;
 	this.chatRoomList.push(room);
 	this.redraw();
@@ -44,13 +45,13 @@ ChatRoomViewControllerManager.prototype.redraw = function() {
 	for (var i = this.chatRoomList.length - 1; i >= 0; i--) {		
 		if(count < maxNum) {
 			this.chatRoomList[i].show();
-			this.chatRoomList[i].removeHiddenOverflow();
-			referenceChatRoom.hideOverflowButton();
+			this.hiddenChatRoomViewController.removeHiddenOverflow(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
+			this.hiddenChatRoomViewController.hideOverflowButton();
 			count++;
 		}
 		else {
-			this.chatRoomList[i].hide();
-			this.chatRoomList[i].addHiddenOverflow();
+			this.hiddenChatRoomViewController.hide(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
+			this.hiddenChatRoomViewController.addHiddenOverflow(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
 		}
 	}
 };
@@ -69,6 +70,8 @@ ChatRoomViewControllerManager.prototype.focusOnChatRoom = function(chatRoomName)
 	
 	//set this chatRoom's array position to be last
 	this.chatRoomList.move(selectedIndex, this.chatRoomList.length - 1);
+	this.redraw();
+	$('.chatroom-container:contains(' + chatRoomName + ')').find($('.chatRoomMessageField')).focus();
 };
 
 Array.prototype.move = function (from, to) {
