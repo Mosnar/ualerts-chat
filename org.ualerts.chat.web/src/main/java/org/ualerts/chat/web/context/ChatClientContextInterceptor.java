@@ -21,9 +21,11 @@ package org.ualerts.chat.web.context;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.ualerts.chat.service.api.ChatClient;
 
@@ -38,8 +40,8 @@ import org.ualerts.chat.service.api.ChatClient;
 public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
     implements ChatClientContext, DisposableBean {
   
-  private static final ThreadLocal<ChatClient> chatClientContext =
-      new ThreadLocal<ChatClient>() { };
+  private static final ThreadLocal<HttpSession> sessionHolder =
+      new ThreadLocal<HttpSession>() { };
       
   private static final String CHAT_CLIENT_SESSION_ATTR = 
       "org.ualerts.chat.web.chatClient";
@@ -47,8 +49,7 @@ public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
   public boolean preHandle(HttpServletRequest request, 
       HttpServletResponse response, Object handler) throws Exception {
     
-    chatClientContext.set((ChatClient) 
-        request.getSession().getAttribute(CHAT_CLIENT_SESSION_ATTR));
+    sessionHolder.set((HttpSession) request.getSession());
     return true;
   };
   
@@ -56,18 +57,9 @@ public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
    * {@inheritDoc}
    */
   @Override
-  public void postHandle(HttpServletRequest request,
-      HttpServletResponse response, Object handler, ModelAndView modelAndView)
-      throws Exception {
-    request.getSession().setAttribute(CHAT_CLIENT_SESSION_ATTR, getChatClient());
-  }
-      
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public ChatClient getChatClient() {
-    return chatClientContext.get();
+    return (ChatClient) 
+        sessionHolder.get().getAttribute(CHAT_CLIENT_SESSION_ATTR);
   }
   
   /**
@@ -75,7 +67,7 @@ public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
    */
   @Override
   public void setChatClient(ChatClient chatClient) {
-    chatClientContext.set(chatClient);
+    sessionHolder.get().setAttribute(CHAT_CLIENT_SESSION_ATTR, chatClient);
   }
   
   /**
@@ -83,7 +75,7 @@ public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
    */
   @Override
   public void destroy() throws Exception {
-    chatClientContext.set(null);
+    sessionHolder.set(null);
   }
   
 }

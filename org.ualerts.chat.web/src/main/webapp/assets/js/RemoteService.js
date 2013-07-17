@@ -54,7 +54,7 @@ RemoteService.prototype.sendMessage = function(from, to, type, text) {
  */
 RemoteService.prototype.connect = function() {
 	var remoteS = this;
-    this.ws = new SockJS("sockjs/connector");
+    this.ws = new SockJS(CONTEXT_PATH + "/ui/sockjs/connector");
     this.ws.onmessage = function(event) {
     	console.log('The event passed to the SockJS onmessage(event) is: ' + event);
     	var message = $.parseJSON(event.data);
@@ -82,7 +82,7 @@ RemoteService.prototype.checkUsername = function(username, callback) {
 	
     $.ajax({
         type: "POST",
-        url: window.location.href + "/checkName",
+        url: window.location.href + "checkName",
         data: { name: username }
     }).done(function(jsonObj) {
         callback(jsonObj, storedUsername);
@@ -95,7 +95,7 @@ RemoteService.prototype.checkUsername = function(username, callback) {
 RemoteService.prototype.submitName = function() {
     $.ajax({
         type: "POST",
-        url: window.location.href + "/submitName",
+        url: window.location.href + "submitName",
         data: {}
     }).done(function(data) {
         console.log('The data returned from the RemoteService.submitname() POST: ' + data);
