@@ -107,3 +107,7 @@ ChatRoomViewController.prototype.getWidth = function() {
 ChatRoomViewController.prototype.show = function() {
 	$(".chatroom-container#" + this.uniqueId).show();
 };
+
+ChatRoomViewController.prototype.focus = function() {
+	$('.chatroom-container:contains(' + self.name + ')').find($('.chatRoomMessageField')).focus();
+};

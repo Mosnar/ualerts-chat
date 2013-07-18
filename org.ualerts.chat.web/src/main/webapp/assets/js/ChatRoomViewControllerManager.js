@@ -69,7 +69,7 @@ ChatRoomViewControllerManager.prototype.focusOnChatRoom = function(chatRoomName)
 	//set this chatRoom's array position to be last
 	this.chatRoomList.move(selectedIndex, this.chatRoomList.length - 1);
 	this.redraw();
-	$('.chatroom-container:contains(' + chatRoomName + ')').find($('.chatRoomMessageField')).focus();
+	this.chatRoomList[selectedIndex].focus();
 };
 
 Array.prototype.move = function (from, to) {
