@@ -40,16 +40,16 @@ ChatRoomViewControllerManager.prototype.redraw = function() {
 	var count = 0;
 	var maxNum = Math.floor(windowWidth/chatRoomWidth);
 	
+	this.hiddenChatRoomViewController.clear();
 	for (var i = this.chatRoomList.length - 1; i >= 0; i--) {		
 		if(count < maxNum) {
 			this.chatRoomList[i].show();
-			this.hiddenChatRoomViewController.removeHiddenOverflow(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
-			this.hiddenChatRoomViewController.hideOverflowButton();
+			this.hiddenChatRoomViewController.removeElement(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
 			count++;
 		}
 		else {
-			this.hiddenChatRoomViewController.hide(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
-			this.hiddenChatRoomViewController.addHiddenOverflow(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
+			this.chatRoomList[i].hide();
+			this.hiddenChatRoomViewController.addElement(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
 		}
 	}
 };

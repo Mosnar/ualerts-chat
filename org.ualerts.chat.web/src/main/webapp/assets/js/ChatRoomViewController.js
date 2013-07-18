@@ -97,13 +97,17 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 };
 
 ChatRoomViewController.prototype.getWidth = function() {
-	return $(".chatroom-container#" + this.uniqueId).width();
+	return this.$uiDom.width();
 };
 
 ChatRoomViewController.prototype.show = function() {
-	$(".chatroom-container#" + this.uniqueId).show();
+	this.$uiDom.show();
+};
+
+ChatRoomViewController.prototype.hide = function() {
+	this.$uiDom.hide();
 };
 
 ChatRoomViewController.prototype.focus = function() {
-	$('.chatroom-container:contains(' + self.name + ')').find($('.chatRoomMessageField')).focus();
+	this.$uiDom.find($('.chatRoomMessageField')).focus();
 };
