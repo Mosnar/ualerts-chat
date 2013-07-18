@@ -69,9 +69,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	var self = this;
 	if ($('#overflow-chatroom-button .dropdown-menu li:contains(' + this.name + ')').length == 1) {
-		console.log('self.name: ' + self.name);
 		self.chatRoomViewControllerManager.focusOnChatRoom(self.name);
-		console.log('the displaychatmessage() was called while chatroom was hidden');
 	}
 	var $chatbox = "";
 	
