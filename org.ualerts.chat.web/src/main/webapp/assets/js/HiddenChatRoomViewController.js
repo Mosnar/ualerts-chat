@@ -56,3 +56,12 @@ HiddenChatRoomViewController.prototype.hide = function(name, uniqueId) {
 		$('#overflow-chatroom-button').show();
 	}
 };
+
+HiddenChatRoomViewController.prototype.contains = function(name) {
+	if ($('#overflow-chatroom-button .dropdown-menu li:contains(' + name + ')').length == 1) {
+		return true;
+	}
+	else {
+		return false;
+	}
+};

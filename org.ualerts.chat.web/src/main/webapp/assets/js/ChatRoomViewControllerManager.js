@@ -6,7 +6,7 @@ function ChatRoomViewControllerManager(hiddenChatRoomViewController) {
 
 ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService) {
 	var uniqueId = 'room-' + this.uniqueIdNum;
-	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, this);
+	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId);
 	this.uniqueIdNum++;
 	this.chatRoomList.push(room);
 	this.redraw();
@@ -33,7 +33,7 @@ ChatRoomViewControllerManager.prototype.getChatRoomViewController = function(cha
 };
 
 ChatRoomViewControllerManager.prototype.redraw = function() {
-	var windowWidth = $(window).width() - 40;
+	var windowWidth = $(window).width() - 75;
 	var lastIndex = this.chatRoomList.length - 1;
 	var referenceChatRoom = this.chatRoomList[lastIndex];
 	var chatRoomWidth = referenceChatRoom.getWidth();
