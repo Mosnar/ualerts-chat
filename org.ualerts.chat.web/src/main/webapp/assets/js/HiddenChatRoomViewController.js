@@ -14,7 +14,6 @@ HiddenChatRoomViewController.prototype.notifyListeners = function(name) {
 
 HiddenChatRoomViewController.prototype.hideOverflowButton = function() {
 	var numItems = $('#overflow-chatroom-button .dropdown-menu li').length;
-	console.log('number of li items: ' + numItems);
 	if (numItems == 0) {
 		$('#overflow-chatroom-button').hide();
 	}
@@ -23,7 +22,6 @@ HiddenChatRoomViewController.prototype.hideOverflowButton = function() {
 HiddenChatRoomViewController.prototype.bindListClickHandler = function(name) {
 	var self = this;
 	$('#overflow-chatroom-button .dropdown-menu li:contains(' + name + ')').click(function() {
-//		self.chatRoomViewControllerManager.focusOnChatRoom(name);
 		self.notifyListeners(name);
 	});
 };
@@ -32,9 +30,7 @@ HiddenChatRoomViewController.prototype.addHiddenOverflow = function(name, unique
 	if (name != 'all') {
 		var listEntry = $('<li id="' + uniqueId + '">' + name + '</li>');
 		var listEntryId = $('#overflow-chatroom-button .dropdown-menu li:contains(' + name + ')').attr('id');
-		console.log('name: ' + name);
 		if (listEntryId != uniqueId) {
-			console.log('the listEntryId: ' + listEntryId + ' does not match this.uniqueId: ' + uniqueId);
 			$('#overflow-chatroom-button .dropdown-menu').append(listEntry);
 			this.bindListClickHandler(name);
 			this.updateButtonCount();
