@@ -1,9 +1,8 @@
-function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, chatRoomViewControllerManager) {
+function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
-	this.chatRoomViewControllerManager = chatRoomViewControllerManager;
 	this.$uiDom = "";
 	
 	var self = this;
@@ -67,10 +66,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
  * @param message The message passed from ChatRoomService.onMessage
  */
 ChatRoomViewController.prototype.displayChatMessage = function(message) {
-	var self = this;
-	if ($('#overflow-chatroom-button .dropdown-menu li:contains(' + this.name + ')').length == 1) {
-		self.chatRoomViewControllerManager.focusOnChatRoom(self.name);
-	}
+
 	var $chatbox = "";
 	
 	/**

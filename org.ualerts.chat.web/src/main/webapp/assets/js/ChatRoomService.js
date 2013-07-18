@@ -30,6 +30,9 @@ ChatRoomService.prototype.onMessage = function(message) {
 	if (room == false) {
 		room = this.createChatRoomViewController(chatRoomName);
 	}
+	if(this.hiddenChatRoomViewController.contains(chatRoomName)) {
+		this.chatRoomViewControllerManager.focusOnChatRoom(chatRoomName);
+	}
 	room.displayChatMessage(message);
 };
 
