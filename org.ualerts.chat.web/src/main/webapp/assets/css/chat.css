@@ -97,7 +97,9 @@ form, p, span {
 }
 
 #overflow-wrapper {
-	position: relative;
+	position: absolute;
+	bottom: 0;
+	left: -50px;
 }
 
 #overflow-chatroom-button {
