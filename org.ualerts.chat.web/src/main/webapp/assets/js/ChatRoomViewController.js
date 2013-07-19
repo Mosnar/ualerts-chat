@@ -4,8 +4,20 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
 	this.$uiDom = "";
+	this.windowFocus = true;
+	this.missedMessage = true;
 	
 	var self = this;
+	
+	
+	// On page focus
+	$(window).focus(function() {
+		self.windowFocus = true;
+	})
+	// On page blur
+	.blur(function() {
+		self.windowFocus = false;
+	});
 	
 	/**
 	 * Assign the $uiDom property a string of HTML markup, and append it to the
@@ -33,9 +45,28 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		   		+	'</form>'
 		   		+ '</div>'
 		   	+ '</div>');
-			
+	    self.$uiDom.find(".chatroom-chat, .chatroom-title").click(function() {
+	    	handleMessageReadClick();
+	    });	
+	    self.$uiDom.find(".chatRoomMessageField").focus(function() {
+	    	handleMessageReadClick();
+	    });	
+	    
+	    
 		$(".chat-holder").append(self.$uiDom);
 	}
+	
+	/**
+	 * This function will check if there are unread messages and modify the
+	 * one-on-one chat boxes accordingly
+	 */
+    function handleMessageReadClick()
+    {
+    	if (self.missedMessage) {
+    		self.$uiDom.find(".chatroom-title-unread").removeClass("chatroom-title-unread").addClass("chatroom-title");
+    		self.missedMessage = false;
+    	}
+    }
 	
 	function onMessageSend(self) {
 	    var $chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
@@ -90,6 +121,11 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	}
 	else {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
+		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
+		{
+			this.missedMessage = true;
+			this.$uiDom.find(".chatroom-title").removeClass("chatroom-title").addClass("chatroom-title-unread");
+		}
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
