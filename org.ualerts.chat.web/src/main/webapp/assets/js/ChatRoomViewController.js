@@ -66,7 +66,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
  * @param message The message passed from ChatRoomService.onMessage
  */
 ChatRoomViewController.prototype.displayChatMessage = function(message) {
-	
+
 	var $chatbox = "";
 	
 	/**
@@ -97,15 +97,17 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 };
 
 ChatRoomViewController.prototype.getWidth = function() {
-	return $(".chatroom-container#" + this.uniqueId).width();
-};
-
-ChatRoomViewController.prototype.hide = function() {
-	if (this.name != 'all') {
-		$(".chatroom-container#" + this.uniqueId).hide();
-	}
+	return this.$uiDom.width();
 };
 
 ChatRoomViewController.prototype.show = function() {
-	$(".chatroom-container#" + this.uniqueId).show();
+	this.$uiDom.show();
+};
+
+ChatRoomViewController.prototype.hide = function() {
+	this.$uiDom.hide();
+};
+
+ChatRoomViewController.prototype.focus = function() {
+	this.$uiDom.find($('.chatRoomMessageField')).focus();
 };

@@ -1,7 +1,10 @@
 function ChatRoomService(remoteService) {
   this.username = null;
   this.remoteService = remoteService;
-  this.chatRoomViewControllerManager = new ChatRoomViewControllerManager();
+  this.hiddenChatRoomViewController = new HiddenChatRoomViewController();
+  this.chatRoomViewControllerManager = new ChatRoomViewControllerManager(this.hiddenChatRoomViewController);
+  
+  this.hiddenChatRoomViewController.addListener(new Callback(this.chatRoomViewControllerManager.focusOnChatRoom, this.chatRoomViewControllerManager));
 }
 
 ChatRoomService.prototype.onMessage = function(message) {
@@ -26,6 +29,9 @@ ChatRoomService.prototype.onMessage = function(message) {
 	room = this.getChatRoomViewController(chatRoomName);
 	if (room == false) {
 		room = this.createChatRoomViewController(chatRoomName);
+	}
+	if(this.hiddenChatRoomViewController.contains(chatRoomName)) {
+		this.chatRoomViewControllerManager.focusOnChatRoom(chatRoomName);
 	}
 	room.displayChatMessage(message);
 };
