@@ -5,7 +5,20 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	this.uniqueId = uniqueId;
 	this.$uiDom = "";
 	
+	this.windowFocus = true;
+	this.missedMessage = true;
+	
 	var self = this;
+	
+	
+	// On page focus
+	$(window).focus(function() {
+		self.windowFocus = true;
+	})
+	// On page blur
+	.blur(function() {
+		self.windowFocus = false;
+	});
 	
 	/**
 	 * Assign the $uiDom property a string of HTML markup, and append it to the
@@ -15,7 +28,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
+		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
 		   		+ '<div>'
@@ -33,9 +46,27 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		   		+	'</form>'
 		   		+ '</div>'
 		   	+ '</div>');
-			
+	    self.$uiDom.click(function() {
+	    	handleMessageReadClick();
+	    });	
+	    self.$uiDom.find(".chatRoomMessageField").focus(function() {
+	    	handleMessageReadClick();
+	    });	
+	    
 		$(".chat-holder").append(self.$uiDom);
 	}
+	
+	/**
+	 * This function will check if there are unread messages and modify the
+	 * one-on-one chat boxes accordingly
+	 */
+    function handleMessageReadClick()
+    {
+    	if (self.missedMessage) {
+    		self.$uiDom.find(".chatroom-title").removeClass("unread");
+    		self.missedMessage = false;
+    	}
+    }
 	
 	function onMessageSend(self) {
 	    var $chatRoomMessageField = self.$uiDom.find('.chatRoomMessageField');
@@ -58,7 +89,6 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		onMessageSend(self);
 	}
 }
-
 
 /**
  * Display the message received in a one-on-one chat room
@@ -87,9 +117,13 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	
 	if (message.to == "all") {
 		$chatbox = $('#chatbox');
-	}
-	else {
+	} else {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
+		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
+		{
+			this.missedMessage = true;
+			this.$uiDom.find(".chatroom-title").addClass("unread");
+		}
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');

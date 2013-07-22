@@ -135,6 +135,10 @@ form, p, span {
 	width: inherit;
 }
 
+.unread {
+	background-color: #c2374c;
+}
+
 .chatroom-chat {
 	padding: 0.4em 0.4em 0.4em 0.4em;
 	background-color: #fff;
