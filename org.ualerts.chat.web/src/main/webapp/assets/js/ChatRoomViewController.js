@@ -63,7 +63,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
     function handleMessageReadClick()
     {
     	if (self.missedMessage) {
-    		self.$uiDom.find(".chatroom-title").toggleClass("unread");
+    		self.$uiDom.find(".chatroom-title").removeClass("unread");
     		self.missedMessage = false;
     	}
     }
@@ -122,7 +122,7 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
 		{
 			this.missedMessage = true;
-			this.$uiDom.find(".chatroom-title").toggleClass("unread");
+			this.$uiDom.find(".chatroom-title").addClass("unread");
 		}
 	}
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
