@@ -4,6 +4,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
 	this.$uiDom = "";
+	
 	this.windowFocus = true;
 	this.missedMessage = true;
 	
@@ -27,7 +28,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+ 	'<p class="chatroom-title"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
+		   		+ 	'<p class="chatroom-title-unread"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
 		   		+ '<div>'
@@ -90,7 +91,6 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	}
 }
 
-
 /**
  * Display the message received in a one-on-one chat room
  * 
@@ -118,8 +118,7 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 	
 	if (message.to == "all") {
 		$chatbox = $('#chatbox');
-	}
-	else {
+	} else {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
 		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
 		{
