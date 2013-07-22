@@ -135,12 +135,8 @@ form, p, span {
 	width: inherit;
 }
 
-.chatroom-title-unread {
-	/*position: absolute;*/
+.unread {
 	background-color: #c2374c;
-	padding: 0.1em 0.1em 0em 0.4em;
-	border-bottom: 1px solid #ACD8F0;
-	width: inherit;
 }
 
 .chatroom-chat {
