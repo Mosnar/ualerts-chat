@@ -48,4 +48,27 @@ public interface ChatClient {
 	 */
 	void deliverMessage(Message message);
 
+	/**
+	 * Sets the user name property
+	 * @param UserName
+	 */
+	void setUserName(String UserName);
+	
+	/**
+	 * Gets the user name property
+	 * @return user name
+	 */
+	String getUserName();
+	
+	/**
+	 * Sets the ChatClient's unique ID
+	 * @param id
+	 */
+	void setId(String id);
+	
+	/**
+	 * Returns the ChatClient's unique ID
+	 * @return
+	 */
+	String getId();
 }
