@@ -52,7 +52,7 @@ public interface ChatClient {
 	 * Sets the user name property
 	 * @param UserName
 	 */
-	void setUserName(String UserName);
+	void setUserName(String userName);
 	
 	/**
 	 * Gets the user name property
