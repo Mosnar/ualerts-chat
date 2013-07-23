@@ -30,14 +30,15 @@ public interface UserService {
   /**
    * Attempt to set the user's name on the chatclient
    * @param name new name
+   * @throws UserNameConflictException 
    */
-  public void setUserName(String name);
+  public void setUserName(String name) throws UserNameConflictException;
   
   /**
    * Performs user finalizing actions
    * @return UserIdentifier generated
    */
-  public String login() throws UserNameConflictException;
+  public String login();
   
   /**
    * Removes the user from its conversations
