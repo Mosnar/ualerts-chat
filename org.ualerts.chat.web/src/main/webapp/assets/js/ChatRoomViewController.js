@@ -111,7 +111,7 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 		if (minutes < 10) {
 			minutes = "0" + minutes;
 		}
-		var dateString = date.getHours() + ": " + minutes;
+		var dateString = date.getHours() + ":" + minutes;
 		return dateString;
 	}
 	

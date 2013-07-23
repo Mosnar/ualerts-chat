@@ -14,6 +14,10 @@ form, p, span {
     padding: 10px;
 }
 
+li[id^="hidden-room"] {
+	padding-left: 1em;
+}
+
 #wrapper input {
 	/*margin-bottom: 0px;*/
 }
@@ -109,6 +113,8 @@ form, p, span {
 
 #overflow-chatroom-button .dropdown-menu li:hover {
 	background-color: #0088cc;
+	color: #E0E0E0;
+	cursor: pointer;
 }
 
 .chatroom-container {
