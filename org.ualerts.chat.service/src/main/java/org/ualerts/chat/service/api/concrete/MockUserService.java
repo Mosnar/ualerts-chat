@@ -25,7 +25,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatService;
-import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.service.api.UserNameConflictException;
 import org.ualerts.chat.service.api.UserService;
@@ -38,14 +37,18 @@ import org.ualerts.chat.service.api.UserService;
  */
 public class MockUserService implements UserService {
   private ChatClient chatClientContext;
-  private Set<ChatClient> chatClients = new HashSet();
+  private Set<ChatClient> chatClients = new HashSet<ChatClient>();
   private ChatService chatService;
+  private static String DEFAULT_DOMAIN = "ualerts.org";
   
   /**
    * {@inheritDoc}
    */
   @Override
-  public void setUserName(String name) {
+  public void setUserName(String name) throws UserNameConflictException /*throws UserNameConflictException*/ {
+    if (this.findClient(name) != null) {
+      throw new UserNameConflictException("Name already in use");
+    }
     this.chatClientContext.getParticipant().setUserName(new UserName(name));
   }
 
@@ -53,15 +56,15 @@ public class MockUserService implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public String login() /*throws UserNameConflictException*/ {
+  public String login() {
     String userName = this.chatClientContext.getParticipant().getUserName().getName();
     if (this.findClient(userName) != null) {
-      return userName;
+      return userName + "@" + DEFAULT_DOMAIN;
     }
     chatClients.add(this.chatClientContext);
     this.chatClientContext.getParticipant().setConversation(chatService.findDefaultConversation());
     chatService.findDefaultConversation().finalizeRegisterParticipant(userName);
-    return userName;
+    return userName + "@" + DEFAULT_DOMAIN;
   }
 
   /**
