@@ -32,7 +32,8 @@ class ConcreteChatClient implements SockJsChatClient {
   private Participant participant;
   private WebSocketSession session;
   private ObjectMapper mapper = new ObjectMapper();
-
+  private String userName;
+  private String uniqueId;
   @Override
   public void deliverMessage(Message message) {
 
@@ -68,6 +69,40 @@ class ConcreteChatClient implements SockJsChatClient {
   @Override
   public Participant getParticipant() {
     return participant;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setUserName(String userName) {
+    this.userName = userName;
+    
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getUserName() {
+    return this.userName;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setId(String id) {
+    this.uniqueId = id;
+    
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getId() {
+    return this.uniqueId;
   }
 
 }
