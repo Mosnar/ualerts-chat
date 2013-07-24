@@ -25,7 +25,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatService;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserNameConflictException;
 import org.ualerts.chat.service.api.UserService;
 
@@ -45,11 +45,11 @@ public class MockUserService implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public void setUserName(String name) throws UserNameConflictException /*throws UserNameConflictException*/ {
+  public void setUserName(String name, String domain) throws UserNameConflictException /*throws UserNameConflictException*/ {
     if (this.findClient(name) != null) {
       throw new UserNameConflictException("Name already in use");
     }
-    this.chatClientContext.getParticipant().setUserName(new UserName(name));
+    this.chatClientContext.getParticipant().setUserName(new UserIdentifier(name, this.DEFAULT_DOMAIN));
   }
 
   /**
