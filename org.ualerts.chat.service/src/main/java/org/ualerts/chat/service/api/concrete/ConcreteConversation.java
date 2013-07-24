@@ -32,7 +32,7 @@ import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.RosterContentMessage;
 import org.ualerts.chat.service.api.RosterRemovedMessage;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 
 /**
  * The default conversation
@@ -79,7 +79,7 @@ public class ConcreteConversation implements Conversation {
   }
   
   protected void deliverParticipantMessage(Participant participant, Message message) {
-    if(participant != null && participant.getUserName() != UserName.NULL_USER
+    if(participant != null && participant.getUserName() != UserIdentifier.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
         participant.deliverMessage(message);
     }
@@ -99,7 +99,7 @@ public class ConcreteConversation implements Conversation {
   private Participant findParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
-      if (participant.getUserName() == UserName.NULL_USER) 
+      if (participant.getUserName() == UserIdentifier.NULL_USER) 
         continue;
 
       if (participant.getUserName().matches(name)) {
@@ -128,7 +128,7 @@ public class ConcreteConversation implements Conversation {
       // other users
       Message replyMessage;
       for (Participant thisParticipant : participants) {
-       if (thisParticipant.getUserName() != UserName.NULL_USER) {
+       if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
           if (!thisParticipant.getUserName().matches(name)) {
             replyMessage =
                 getRosterContentMessage(thisParticipant.getUserName().getName(),

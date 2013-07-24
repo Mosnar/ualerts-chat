@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.web.context.ChatClientContext;
 import org.ualerts.chat.web.sockjs.SockJsChatClient;
 
@@ -43,7 +43,7 @@ public class RosterAddedControllerTest {
   private final String USER_NAME1 = "Test1";
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
-  private final UserName userName = new UserName(USER_NAME1);
+  private final UserIdentifier userName = new UserIdentifier(USER_NAME1);
 
   @Before
   public void setUp() throws Exception {
@@ -98,7 +98,7 @@ public class RosterAddedControllerTest {
         will(returnValue(participant1));
 
         oneOf(participant1).getUserName();
-        will(returnValue(UserName.NULL_USER));
+        will(returnValue(UserIdentifier.NULL_USER));
       }
     });
     rosterAddedController.setChatClientContext(chatClientContext);

@@ -29,7 +29,7 @@ import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
@@ -58,7 +58,7 @@ public class NameCheckController {
       Conversation conversation = participant.getConversation();
       
       if(conversation.isValidUserName(name.trim())) {
-        UserName userName = new UserName(HtmlUtils.htmlEscape(name.trim()));
+        UserIdentifier userName = new UserIdentifier(HtmlUtils.htmlEscape(name.trim()));
         participant.setUserName(userName);
         return VALID;
       }

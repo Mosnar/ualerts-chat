@@ -32,7 +32,7 @@ public interface UserService {
    * @param name new name
    * @throws UserNameConflictException 
    */
-  public void setUserName(String name) throws UserNameConflictException;
+  public void setUserName(String name, String domain) throws UserNameConflictException;
   
   /**
    * Performs user finalizing actions

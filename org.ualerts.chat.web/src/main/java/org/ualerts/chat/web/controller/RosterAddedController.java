@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
@@ -51,7 +51,7 @@ public class RosterAddedController {
     chatClient = chatClientContext.getChatClient();
     Participant participant = chatClient.getParticipant();
     
-    if (participant.getUserName() == UserName.NULL_USER) {
+    if (participant.getUserName() == UserIdentifier.NULL_USER) {
       return INVALID;
     }
     Conversation conversation = participant.getConversation();   
