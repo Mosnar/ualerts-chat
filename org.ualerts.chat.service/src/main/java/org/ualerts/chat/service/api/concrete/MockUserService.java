@@ -49,7 +49,7 @@ public class MockUserService implements UserService {
     if (this.findClient(name) != null) {
       throw new UserNameConflictException("Name already in use");
     }
-    this.chatClientContext.getParticipant().setUserName(new UserIdentifier(name, this.DEFAULT_DOMAIN));
+    this.chatClientContext.getParticipant().setUserName(new UserIdentifier(name, DEFAULT_DOMAIN));
   }
 
   /**
