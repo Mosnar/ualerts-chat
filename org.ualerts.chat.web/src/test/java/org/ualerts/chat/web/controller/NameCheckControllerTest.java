@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.web.context.ChatClientContext;
 import org.ualerts.chat.web.sockjs.SockJsChatClient;
 /**
@@ -71,7 +71,7 @@ public class NameCheckControllerTest {
         oneOf(conversation).isValidUserName(USER_NAME1);
         will(returnValue(true));
         
-        UserName userName = new UserName(HtmlUtils.htmlEscape(USER_NAME1.trim()));
+        UserIdentifier userName = new UserIdentifier(HtmlUtils.htmlEscape(USER_NAME1.trim()));
         oneOf(participant1).setUserName(with(equal(userName)));
       }
     });
