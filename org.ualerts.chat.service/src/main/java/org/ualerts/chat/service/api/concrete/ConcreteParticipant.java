@@ -26,7 +26,7 @@ import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 
 /**
  * Concrete implementation of a participant
@@ -37,7 +37,7 @@ import org.ualerts.chat.service.api.UserName;
 public class ConcreteParticipant implements Participant {
   
   private Conversation conversation;
-  private UserName userName;
+  private UserIdentifier userName;
   private ChatClient chatClient;
   private Status status;
   /**
@@ -60,7 +60,7 @@ public class ConcreteParticipant implements Participant {
    * {@inheritDoc}
    */
   @Override
-  public void setUserName(UserName userName) {
+  public void setUserName(UserIdentifier userName) {
     this.userName = userName;
   }
 
@@ -68,7 +68,7 @@ public class ConcreteParticipant implements Participant {
    * {@inheritDoc}
    */
   @Override
-  public UserName getUserName() {
+  public UserIdentifier getUserName() {
     return userName;
   }
 

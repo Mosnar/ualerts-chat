@@ -37,7 +37,7 @@ import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.RosterMessage;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 
 public class ConcreteConversationTest {
 
@@ -119,8 +119,8 @@ public class ConcreteConversationTest {
     final Participant participant1 = context.mock(Participant.class, "first");
     final Participant participant2 = context.mock(Participant.class, "second");
 
-    final UserName userName1 = new UserName(USER_NAME1);
-    final UserName userName2 = new UserName(USER_NAME2);
+    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
+    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
     
     final ChatTextMessage message = new ChatTextMessage();
     message.setTo(BROADCAST);
@@ -154,8 +154,8 @@ public class ConcreteConversationTest {
     final Participant participant1 = context.mock(Participant.class, "first");
     final Participant participant2 =
         context.mock(Participant.class, "second");
-    final UserName userName1 = new UserName(USER_NAME1);
-    final UserName userName2 = new UserName(USER_NAME2);
+    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
+    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
     final ChatTextMessage message = new ChatTextMessage();
     message.setTo(USER_NAME1);
     message.setFrom(USER_NAME2);
@@ -189,7 +189,7 @@ public class ConcreteConversationTest {
   @Test
   public void testDeliverParticipantMessageNULL_USER() throws Exception {
     final Participant participant = context.mock(Participant.class);
-    final UserName userName = UserName.NULL_USER;
+    final UserIdentifier userName = UserIdentifier.NULL_USER;
     final ChatTextMessage message = new ChatTextMessage();
   
     context.checking(new Expectations() {
@@ -206,7 +206,7 @@ public class ConcreteConversationTest {
   @Test
   public void testDeliverParticipantMessage() throws Exception {
     final Participant participant = context.mock(Participant.class);
-    final UserName userName = new UserName(USER_NAME1);
+    final UserIdentifier userName = new UserIdentifier(USER_NAME1);
     final ChatTextMessage message = new ChatTextMessage();
   
     context.checking(new Expectations() {
@@ -228,7 +228,7 @@ public class ConcreteConversationTest {
   public void testIsValidUserNameTrue() {
     final Participant participant1 = context.mock(Participant.class, "first");
 
-    final UserName userName = new UserName(USER_NAME1);
+    final UserIdentifier userName = new UserIdentifier(USER_NAME1);
 
     context.checking(new Expectations() {
       {
@@ -247,7 +247,7 @@ public class ConcreteConversationTest {
   @Test
   public void testIsValidUserNameFalse() {
     final Participant participant = context.mock(Participant.class, "first");
-    final UserName userName = new UserName(USER_NAME1);
+    final UserIdentifier userName = new UserIdentifier(USER_NAME1);
 
     context.checking(new Expectations() {
       {
@@ -269,8 +269,8 @@ public class ConcreteConversationTest {
   public void testFinalizeRegisterParticipant() {
     final Participant participant1 = context.mock(Participant.class, "first");
     final Participant participant2 = context.mock(Participant.class, "second");
-    final UserName userName1 = new UserName(USER_NAME1);
-    final UserName userName2 = new UserName(USER_NAME2);
+    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
+    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
     
 
     final RosterAddedMessage message = new RosterAddedMessage();
@@ -313,7 +313,7 @@ public class ConcreteConversationTest {
   public void testFinalizeRegisterParticipantNull() throws Exception {
     final Participant participant = context.mock(Participant.class);
   
-    final UserName userName1 = new UserName(USER_NAME1);
+    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
     
     context.checking(new Expectations() {
       {
@@ -335,8 +335,8 @@ public class ConcreteConversationTest {
     final Participant participant1 = context.mock(Participant.class, "first");
     final Participant participant2 = context.mock(Participant.class, "second");
     
-    final UserName userName = UserName.NULL_USER;
-    final UserName userName2 = new UserName(USER_NAME2);
+    final UserIdentifier userName = UserIdentifier.NULL_USER;
+    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
     
     context.checking(new Expectations() {
       {
@@ -367,8 +367,8 @@ public class ConcreteConversationTest {
     final Participant participant1 = context.mock(Participant.class,"first");  
     final Participant participant2 = context.mock(Participant.class, "second");
     
-    final UserName userName1 = new UserName(USER_NAME1);
-    final UserName userName2 = new UserName(USER_NAME2); 
+    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
+    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2); 
     
     context.checking(new Expectations() {
       {

@@ -33,7 +33,7 @@ import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
@@ -69,14 +69,14 @@ public class ConcreteParticipantTest {
 
   @Test
   public void testSetAndGetUserNameNotNull() {
-    UserName userName = new UserName("TestName");
+    UserIdentifier userName = new UserIdentifier("TestName");
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
   }
 
   @Test
   public void testSetAndGetUserNameNull() {
-    UserName userName = UserName.NULL_USER;
+    UserIdentifier userName = UserIdentifier.NULL_USER;
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
   }
