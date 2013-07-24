@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.web.context;
+package org.ualerts.chat.service.api;
 
 import org.ualerts.chat.service.api.ChatClient;
 

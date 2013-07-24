@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserName;
-import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
  * Controller for sending a RosterAddedMessage upon user name submission
