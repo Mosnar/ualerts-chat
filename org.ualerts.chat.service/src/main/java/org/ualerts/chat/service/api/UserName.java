@@ -31,6 +31,7 @@ public class UserName {
   public static final UserName NULL_USER = new UserName();
   
   private String name;
+  private String domainName;
   
   public UserName(String userName){
     if(userName == null || userName.trim().isEmpty())
@@ -45,7 +46,7 @@ public class UserName {
   }
 
   public String getName() {
-    return name;
+    return name + "@" + domainName;
   }
   
   /**
