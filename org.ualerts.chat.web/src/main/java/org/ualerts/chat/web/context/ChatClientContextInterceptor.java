@@ -23,11 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatClientContext;
 
 /**
  * A ChatClientContext that is a HandlerInterceptorAdapter and stores the 

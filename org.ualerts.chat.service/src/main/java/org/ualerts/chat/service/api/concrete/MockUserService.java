@@ -23,7 +23,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.service.api.UserNameConflictException;
@@ -35,8 +37,10 @@ import org.ualerts.chat.service.api.UserService;
  * @author Ransom Robersom
  * @author Brandon Foster
  */
+@Service
 public class MockUserService implements UserService {
-  private ChatClient chatClientContext;
+  private ChatClientContext chatClientContext;
+  private ChatClient chatClient;
   private Set<ChatClient> chatClients = new HashSet<ChatClient>();
   private ChatService chatService;
   private static String DEFAULT_DOMAIN = "ualerts.org";
@@ -49,7 +53,9 @@ public class MockUserService implements UserService {
     if (this.findClient(name) != null) {
       throw new UserNameConflictException("Name already in use");
     }
-    this.chatClientContext.getParticipant().setUserName(new UserName(name));
+   
+    this.chatClient = chatClientContext.getChatClient();
+    this.chatClient.getParticipant().setUserName(new UserName(name));
   }
 
   /**
@@ -57,12 +63,12 @@ public class MockUserService implements UserService {
    */
   @Override
   public String login() {
-    String userName = this.chatClientContext.getParticipant().getUserName().getName();
+    String userName = this.chatClient.getParticipant().getUserName().getName();
     if (this.findClient(userName) != null) {
       return userName + "@" + DEFAULT_DOMAIN;
     }
-    chatClients.add(this.chatClientContext);
-    this.chatClientContext.getParticipant().setConversation(chatService.findDefaultConversation());
+    chatClients.add(this.chatClient);
+    this.chatClient.getParticipant().setConversation(chatService.findDefaultConversation());
     chatService.findDefaultConversation().finalizeRegisterParticipant(userName);
     return userName + "@" + DEFAULT_DOMAIN;
   }
@@ -72,8 +78,8 @@ public class MockUserService implements UserService {
    */
   @Override
   public void logout() {
-    chatClients.remove(this.chatClientContext);
-    String userName = this.chatClientContext.getParticipant().getUserName().getName();
+    chatClients.remove(this.chatClient);
+    String userName = this.chatClient.getParticipant().getUserName().getName();
     chatService.findDefaultConversation().finalizeRemoveParticipant(userName);
   }
 
@@ -103,8 +109,8 @@ public class MockUserService implements UserService {
     return null;
   }
 
-  @Autowired
-  public void setChatClientContext(ChatClient chatClientContext) {
+ 
+  public void setChatClientContext(ChatClientContext chatClientContext) {
     this.chatClientContext = chatClientContext;
   }
   

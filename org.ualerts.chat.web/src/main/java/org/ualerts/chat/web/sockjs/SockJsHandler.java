@@ -26,6 +26,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
 import org.springframework.web.util.HtmlUtils;
+import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
@@ -34,7 +35,6 @@ import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.UserName;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
-import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
  * socksjs message handler
