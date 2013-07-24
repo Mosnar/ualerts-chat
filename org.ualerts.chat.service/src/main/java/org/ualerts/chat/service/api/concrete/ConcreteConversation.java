@@ -49,11 +49,37 @@ public class ConcreteConversation implements Conversation {
 
   private Set<Participant> participants = new HashSet<Participant>();
   private DateTimeService dateTimeService;
+  
+  private String name;
 
   @Override
-  public void addParticipant(Participant participant) {
+  public void addParticipant(Participant participant) {    
+    if (participant == null)
+      return;
+    
     this.participants.add(participant);
     participant.setConversation(this);
+    
+    String name = participant.getChatClient().getUserName();
+
+    // send a message to all participants announcing user joining
+    participant.setStatus(Status.ONLINE);
+    Message rosterMessage = getRosterAddedMessage(name, BROADCAST_MESSAGE);
+    deliverMessage(rosterMessage);
+
+    // send a message to the newly joined user announcing the presence of the
+    // other users
+    Message replyMessage;
+    for (Participant thisParticipant : participants) {
+      if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
+        if (!thisParticipant.getUserName().matches(name)) {
+          replyMessage =
+              getRosterContentMessage(thisParticipant.getUserName()
+                  .getName(), name);
+          deliverMessage(replyMessage);
+        }
+      }
+    }
   }
 
   @Override
@@ -61,6 +87,13 @@ public class ConcreteConversation implements Conversation {
     if (participants.contains(participant)) {
       participants.remove(participant);
     }
+    
+    String userName = participant.getChatClient().getUserName();
+    
+    removeParticipant(participant);
+    Message message =
+        getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
+    deliverMessage(message);
   }
 
   @Override
@@ -110,48 +143,6 @@ public class ConcreteConversation implements Conversation {
     return thisParticipant;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void finalizeRegisterParticipant(String name) {
-
-    Participant participant = findParticipant(name);
-    if (participant != null) {
-      // send a message to all particpants announcing user joining
-      participant.setStatus(Status.ONLINE);
-      Message rosterMessage =
-          getRosterAddedMessage(name, BROADCAST_MESSAGE);
-      deliverMessage(rosterMessage);
-
-      // send a message to the newly joined user announcing the presence of the
-      // other users
-      Message replyMessage;
-      for (Participant thisParticipant : participants) {
-       if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
-          if (!thisParticipant.getUserName().matches(name)) {
-            replyMessage =
-                getRosterContentMessage(thisParticipant.getUserName().getName(),
-                    name);
-            deliverMessage(replyMessage);
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void finalizeRemoveParticipant(String userName) {
-    Participant participant = findParticipant(userName);
-    removeParticipant(participant);
-    Message message =
-        getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
-    deliverMessage(message);
-  }
-
   /*
    * Construct a roster message
    */
@@ -194,6 +185,14 @@ public class ConcreteConversation implements Conversation {
   @Override
   public void setDateTimeService(DateTimeService dateTimeService) {
     this.dateTimeService = dateTimeService;
+  }
+  
+  public String getName() {
+    return name;
+  }
+  
+  public void setName(String name) {
+    this.name = name;
   }
 
 }

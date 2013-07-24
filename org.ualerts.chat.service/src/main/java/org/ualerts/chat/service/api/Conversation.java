@@ -63,18 +63,6 @@ public interface Conversation {
 	boolean isValidUserName(String userName);
 	
 	/**
-	 * Complete registration tasks
-	 * @param userName
-	 */
-	void finalizeRegisterParticipant(String userName);
-	
-	/**
-	 * Complete detachment tasks
-	 * @param userName
-	 */
-	void finalizeRemoveParticipant(String userName);
-	
-	/**
 	 * Provide consistent DateTimeService
 	 * @param dateTimeService
 	 */
