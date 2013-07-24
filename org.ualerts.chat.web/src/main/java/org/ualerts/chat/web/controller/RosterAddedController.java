@@ -45,7 +45,7 @@ public class RosterAddedController {
   private ChatClientContext chatClientContext;
   private ChatClient chatClient;
 
-  @RequestMapping(value="/submitName", method = RequestMethod.POST)
+  @RequestMapping(value="/login", method = RequestMethod.POST)
   @ResponseBody
   public String sendRosterAddedMessage() {
     chatClient = chatClientContext.getChatClient();

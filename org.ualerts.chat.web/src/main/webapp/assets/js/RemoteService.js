@@ -95,7 +95,7 @@ RemoteService.prototype.checkUsername = function(username, callback) {
 RemoteService.prototype.submitName = function() {
     $.ajax({
         type: "POST",
-        url: window.location.href + "submitName",
+        url: window.location.href + "login",
         data: {}
     }).done(function(data) {
         console.log('The data returned from the RemoteService.submitname() POST: ' + data);
