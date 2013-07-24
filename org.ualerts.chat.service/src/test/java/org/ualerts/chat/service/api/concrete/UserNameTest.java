@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 
 /**
  * @author Billy Coleman
@@ -34,39 +34,39 @@ public class UserNameTest {
 
   @Test
   public void testUserNameNotNull() {
-    UserName userName = new UserName("Test");
-    assertFalse(userName == UserName.NULL_USER);
+    UserIdentifier userName = new UserIdentifier("Test");
+    assertFalse(userName == UserIdentifier.NULL_USER);
   }
 
   @Test
   public void testUserNameNull() {
-    UserName userName = UserName.NULL_USER;
-    assertTrue(userName == UserName.NULL_USER);
+    UserIdentifier userName = UserIdentifier.NULL_USER;
+    assertTrue(userName == UserIdentifier.NULL_USER);
   }
 
   @Test
   public void testMatchesTrue() {
-    UserName userName = new UserName("TeSt");
+    UserIdentifier userName = new UserIdentifier("TeSt");
     assertTrue(userName.matches("test"));
   }
 
   @Test
   public void testMatchesFalse() {
-    UserName userName = new UserName("test");
+    UserIdentifier userName = new UserIdentifier("test");
     assertFalse(userName.matches("testing"));
   }
 
   @Test
   public void testEqualsTrue() {
-    UserName userName = new UserName("Test");
-    UserName userName2 = new UserName("Test");
+    UserIdentifier userName = new UserIdentifier("Test");
+    UserIdentifier userName2 = new UserIdentifier("Test");
     assertEquals(userName, userName2);
   }
   
   @Test
   public void testEqualsFalse() {
-    UserName userName = new UserName("Test");
-    UserName userName2 = new UserName("Test2");
+    UserIdentifier userName = new UserIdentifier("Test");
+    UserIdentifier userName2 = new UserIdentifier("Test2");
     assertNotEquals(userName, userName2);
   }
 }

@@ -26,27 +26,32 @@ package org.ualerts.chat.service.api;
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class UserName {
+public class UserIdentifier {
   
-  public static final UserName NULL_USER = new UserName();
+  public static final UserIdentifier NULL_USER = new UserIdentifier();
   
   private String name;
-  private String domainName;
+  private String domain;
   
-  public UserName(String userName){
-    if(userName == null || userName.trim().isEmpty())
+  public UserIdentifier(String userName, String domainName){
+    if(userName == null || userName.trim().isEmpty() || domainName == null || domainName.trim().isEmpty())
     {
       throw new IllegalArgumentException();
     }
     this.name = userName;
+    this.domain = domainName;
   }
   
-  protected UserName() {
+  protected UserIdentifier() {
 
   }
 
   public String getName() {
-    return name + "@" + domainName;
+    return name;
+  }
+  
+  public String getFullIdentifier() {
+    return name + "@" + domain;
   }
   
   /**
@@ -73,9 +78,9 @@ public class UserName {
    */
   public boolean equals(Object obj)
   {
-    if (!obj.getClass().isAssignableFrom(UserName.class))
+    if (!obj.getClass().isAssignableFrom(UserIdentifier.class))
       return false;
-    UserName username = (UserName) obj;
+    UserIdentifier username = (UserIdentifier) obj;
     if (this.name.trim().equals(username.getName().trim()))
     {
       return true;
