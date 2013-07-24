@@ -82,9 +82,6 @@
 		</property>
 	</bean>
   
-	<bean id="userService" class="org.ualerts.chat.service.api.concrete.MockUserService" >
-		<property name="chatClientContext" ref="chatClientContext"/>
-	</bean>
 
 
 	<!-- bean class="org.springframework.context.support.ResourceBundleMessageSource" 

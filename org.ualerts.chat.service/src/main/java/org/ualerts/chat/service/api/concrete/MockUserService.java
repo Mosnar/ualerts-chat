@@ -40,7 +40,6 @@ import org.ualerts.chat.service.api.UserService;
 @Service
 public class MockUserService implements UserService {
   private ChatClientContext chatClientContext;
-  private ChatClient chatClient;
   private Set<ChatClient> chatClients = new HashSet<ChatClient>();
   private ChatService chatService;
   private static String DEFAULT_DOMAIN = "ualerts.org";
@@ -53,9 +52,9 @@ public class MockUserService implements UserService {
     if (this.findClient(name) != null) {
       throw new UserNameConflictException("Name already in use");
     }
-   
-    this.chatClient = chatClientContext.getChatClient();
-    this.chatClient.getParticipant().setUserName(new UserName(name));
+    ChatClient chatClient;
+    chatClient = chatClientContext.getChatClient();
+    chatClient.getParticipant().setUserName(new UserName(name));
   }
 
   /**
@@ -63,12 +62,13 @@ public class MockUserService implements UserService {
    */
   @Override
   public String login() {
-    String userName = this.chatClient.getParticipant().getUserName().getName();
+    ChatClient  chatClient = chatClientContext.getChatClient();
+    String userName = chatClient.getParticipant().getUserName().getName();
     if (this.findClient(userName) != null) {
       return userName + "@" + DEFAULT_DOMAIN;
     }
-    chatClients.add(this.chatClient);
-    this.chatClient.getParticipant().setConversation(chatService.findDefaultConversation());
+    chatClients.add(chatClient);
+    chatClient.getParticipant().setConversation(chatService.findDefaultConversation());
     chatService.findDefaultConversation().finalizeRegisterParticipant(userName);
     return userName + "@" + DEFAULT_DOMAIN;
   }
@@ -78,8 +78,9 @@ public class MockUserService implements UserService {
    */
   @Override
   public void logout() {
-    chatClients.remove(this.chatClient);
-    String userName = this.chatClient.getParticipant().getUserName().getName();
+    ChatClient  chatClient = chatClientContext.getChatClient();
+    chatClients.remove(chatClient);
+    String userName = chatClient.getParticipant().getUserName().getName();
     chatService.findDefaultConversation().finalizeRemoveParticipant(userName);
   }
 
