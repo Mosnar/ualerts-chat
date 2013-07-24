@@ -54,28 +54,29 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public void addParticipant(Participant participant) {    
+    if (participant == null)
+      return;
+    
     this.participants.add(participant);
     participant.setConversation(this);
     
     String name = participant.getChatClient().getUserName();
 
-    if (participant != null) {
-      // send a message to all particpants announcing user joining
-      participant.setStatus(Status.ONLINE);
-      Message rosterMessage = getRosterAddedMessage(name, BROADCAST_MESSAGE);
-      deliverMessage(rosterMessage);
+    // send a message to all participants announcing user joining
+    participant.setStatus(Status.ONLINE);
+    Message rosterMessage = getRosterAddedMessage(name, BROADCAST_MESSAGE);
+    deliverMessage(rosterMessage);
 
-      // send a message to the newly joined user announcing the presence of the
-      // other users
-      Message replyMessage;
-      for (Participant thisParticipant : participants) {
-        if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
-          if (!thisParticipant.getUserName().matches(name)) {
-            replyMessage =
-                getRosterContentMessage(thisParticipant.getUserName()
-                    .getName(), name);
-            deliverMessage(replyMessage);
-          }
+    // send a message to the newly joined user announcing the presence of the
+    // other users
+    Message replyMessage;
+    for (Participant thisParticipant : participants) {
+      if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
+        if (!thisParticipant.getUserName().matches(name)) {
+          replyMessage =
+              getRosterContentMessage(thisParticipant.getUserName()
+                  .getName(), name);
+          deliverMessage(replyMessage);
         }
       }
     }
