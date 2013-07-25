@@ -20,7 +20,6 @@
 package org.ualerts.chat.service.api.concrete;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
@@ -29,13 +28,11 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.ualerts.chat.service.api.ChatTextMessage;
+import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.DateTimeService;
-import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.RosterAddedMessage;
 import org.ualerts.chat.service.api.RosterMessage;
 import org.ualerts.chat.service.api.UserIdentifier;
 
@@ -46,6 +43,7 @@ public class ConcreteConversationTest {
   private DateTimeService dateTimeService = new ConcreteDateTimeService();
   private static final String USER_NAME1 = "testname1";
   private static final String USER_NAME2 = "testname2";
+  private static final String DOMAIN = "ualerts.org";
   private static final String BROADCAST = "all";
  
   @Before
@@ -53,15 +51,34 @@ public class ConcreteConversationTest {
     context = new Mockery();
     conversation = new ConcreteConversation();
     conversation.setDateTimeService(dateTimeService);
+    conversation.setName(DOMAIN);
   }
 
   @Test
-  public void testAddParticipant() throws Exception {
+  public void testAddParticipantMe() {
     final Participant participant = context.mock(Participant.class);
-
+    final ChatClient chatClient = context.mock(ChatClient.class);
+    final UserIdentifier userId = new UserIdentifier(USER_NAME1, DOMAIN);
+    
     context.checking(new Expectations() {
       {
         oneOf(participant).setConversation(conversation);
+        oneOf(participant).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME1));
+        oneOf(participant).setStatus(Status.ONLINE);
+        
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+        
+        oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
+        
+        oneOf(participant).getUserName();
+        will(returnValue(userId));
+        
+        exactly(2).of(participant).getUserName();
+        will(returnValue(userId));
       }
     });
 
@@ -71,330 +88,4 @@ public class ConcreteConversationTest {
     assertTrue(participants.contains(participant));
     context.assertIsSatisfied();
   }
-
-  @Test
-  public void testRemoveParticipant() {
-    final Participant participant1 = context.mock(Participant.class, "first");
-    final Participant participant2 =
-        context.mock(Participant.class, "second");
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-      }
-    });
-
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
-    assertEquals(2, conversation.getParticipants().size());
-
-    conversation.removeParticipant(participant1);
-    assertEquals(1, conversation.getParticipants().size());
-    assertTrue(conversation.getParticipants().contains(participant2));
-
-    context.assertIsSatisfied();
-  }
-
-  @Test
-  public void testRemoveParticipantNotFound() {
-    final Participant participant1 = context.mock(Participant.class, "first");
-    final Participant participant2 =
-        context.mock(Participant.class, "second");
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-      }
-    });
-
-    conversation.addParticipant(participant1);
-    conversation.removeParticipant(participant2);
-    assertEquals(1, conversation.getParticipants().size());
-    assertFalse(conversation.getParticipants().contains(participant2));
-
-    context.assertIsSatisfied();
-  }
-
-  @Test
-  public void testDeliverMessageToBroadcast() throws Exception {
-    final Participant participant1 = context.mock(Participant.class, "first");
-    final Participant participant2 = context.mock(Participant.class, "second");
-
-    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
-    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
-    
-    final ChatTextMessage message = new ChatTextMessage();
-    message.setTo(BROADCAST);
-
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant1).deliverMessage(message);
-        oneOf(participant1).getStatus();
-        will(returnValue(Status.ONLINE));
-        oneOf(participant1).getUserName();
-        will(returnValue(userName1));
-        
-        oneOf(participant2).setConversation(conversation);
-        oneOf(participant2).deliverMessage(message);
-        oneOf(participant2).getStatus();
-        will(returnValue(Status.ONLINE));
-        oneOf(participant2).getUserName();
-        will(returnValue(userName2));
-      }
-    });
-
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
-    conversation.deliverMessage(message);
-    context.assertIsSatisfied();
-  }
-
-  @Test
-  public void testDeliverMessageToParticipant() throws Exception {
-    final Participant participant1 = context.mock(Participant.class, "first");
-    final Participant participant2 =
-        context.mock(Participant.class, "second");
-    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
-    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
-    final ChatTextMessage message = new ChatTextMessage();
-    message.setTo(USER_NAME1);
-    message.setFrom(USER_NAME2);
-
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-
-        oneOf(participant1).deliverMessage(message);
-        oneOf(participant2).deliverMessage(message);
-
-        oneOf(participant1).getStatus();
-        will(returnValue(Status.ONLINE));
-        oneOf(participant2).getStatus();
-        will(returnValue(Status.ONLINE));
-
-        allowing(participant1).getUserName();
-        will(returnValue(userName1));
-        allowing(participant2).getUserName();
-        will(returnValue(userName2));
-      }
-    });
-
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
-    conversation.deliverMessage(message);
-    context.assertIsSatisfied();
-  }
-  
-  @Test
-  public void testDeliverParticipantMessageNULL_USER() throws Exception {
-    final Participant participant = context.mock(Participant.class);
-    final UserIdentifier userName = UserIdentifier.NULL_USER;
-    final ChatTextMessage message = new ChatTextMessage();
-  
-    context.checking(new Expectations() {
-      {
-        oneOf(participant).getUserName();
-        will(returnValue(userName));
-      }
-    });
-    
-    conversation.deliverParticipantMessage(participant, message);
-    context.assertIsSatisfied();
-  }
-  
-  @Test
-  public void testDeliverParticipantMessage() throws Exception {
-    final Participant participant = context.mock(Participant.class);
-    final UserIdentifier userName = new UserIdentifier(USER_NAME1);
-    final ChatTextMessage message = new ChatTextMessage();
-  
-    context.checking(new Expectations() {
-      {
-        oneOf(participant).getUserName();
-        will(returnValue(userName));
-        oneOf(participant).getStatus();
-        will(returnValue(Status.ONLINE));
-        oneOf(participant).deliverMessage(with(any(Message.class)));
-        
-      }
-    });
-    
-    conversation.deliverParticipantMessage(participant, message);
-    context.assertIsSatisfied();
-  }
-
-  @Test
-  public void testIsValidUserNameTrue() {
-    final Participant participant1 = context.mock(Participant.class, "first");
-
-    final UserIdentifier userName = new UserIdentifier(USER_NAME1);
-
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-
-        allowing(participant1).getUserName();
-        will(returnValue(userName));
-      }
-    });
-
-    conversation.addParticipant(participant1);
-
-    assertTrue(conversation.isValidUserName("SomethingElse"));
-  }
-
-  @Test
-  public void testIsValidUserNameFalse() {
-    final Participant participant = context.mock(Participant.class, "first");
-    final UserIdentifier userName = new UserIdentifier(USER_NAME1);
-
-    context.checking(new Expectations() {
-      {
-        oneOf(participant).setConversation(conversation);
-
-        allowing(participant).getUserName();
-        will(returnValue(userName));
-      }
-    });
-
-    conversation.addParticipant(participant);
-    assertEquals(1, conversation.getParticipants().size());
-
-    assertFalse(conversation.isValidUserName(USER_NAME1));
-    context.assertIsSatisfied();
-  }
-  
-  @Test
-  public void testFinalizeRegisterParticipant() {
-    final Participant participant1 = context.mock(Participant.class, "first");
-    final Participant participant2 = context.mock(Participant.class, "second");
-    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
-    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
-    
-
-    final RosterAddedMessage message = new RosterAddedMessage();
-    message.setFrom(USER_NAME1);
-    message.setTo(BROADCAST);
-   
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-        oneOf(participant1).setStatus(Status.ONLINE); 
-              
-       allowing(participant1).getUserName();
-        will(returnValue(userName1));
-        
-        allowing(participant2).getUserName();
-        will(returnValue(userName2));
-        
-        allowing(participant1).getStatus();
-        will(returnValue(Status.ONLINE));
-        
-        allowing(participant2).getStatus();
-        will(returnValue(Status.ONLINE));
-                
-        allowing(participant1).deliverMessage(with(any(RosterMessage.class)));
-        allowing(participant2).deliverMessage(with(any(RosterMessage.class)));
-        
-      } 
-    });
-    
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
-    conversation.finalizeRegisterParticipant(USER_NAME1);
-    
-    assertEquals(2, conversation.getParticipants().size());    
-    context.assertIsSatisfied();
-  }
-  
-  @Test
-  public void testFinalizeRegisterParticipantNull() throws Exception {
-    final Participant participant = context.mock(Participant.class);
-  
-    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
-    
-    context.checking(new Expectations() {
-      {
-        oneOf(participant).setConversation(conversation);
-        allowing(participant).getUserName();
-        will(returnValue(userName1));             
-      } 
-    });
-    
-    conversation.addParticipant(participant);
-    assertEquals(1, conversation.getParticipants().size()); 
-    conversation.finalizeRegisterParticipant(USER_NAME2);
-     
-    context.assertIsSatisfied();
-  }
-  
-  @Test
-  public void testFinalizeRegisterParticipantNULL_USER() throws Exception {
-    final Participant participant1 = context.mock(Participant.class, "first");
-    final Participant participant2 = context.mock(Participant.class, "second");
-    
-    final UserIdentifier userName = UserIdentifier.NULL_USER;
-    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2);
-    
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-        allowing(participant1).getUserName();
-        will(returnValue(userName));  
-        allowing(participant2).getUserName();
-        will(returnValue(userName2));
-        
-        oneOf(participant2).setStatus(Status.ONLINE);
-        oneOf(participant2).getStatus();
-        will(returnValue(Status.ONLINE));
-        oneOf(participant2).deliverMessage(with(any(RosterMessage.class)));
-      } 
-    });
-    
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
-    assertEquals(2, conversation.getParticipants().size()); 
-    conversation.finalizeRegisterParticipant(USER_NAME2);
-     
-    context.assertIsSatisfied();
-  }
-  
-  @Test
-  public void testFinalizeRemoveParticipant() throws Exception {
-    final Participant participant1 = context.mock(Participant.class,"first");  
-    final Participant participant2 = context.mock(Participant.class, "second");
-    
-    final UserIdentifier userName1 = new UserIdentifier(USER_NAME1);
-    final UserIdentifier userName2 = new UserIdentifier(USER_NAME2); 
-    
-    context.checking(new Expectations() {
-      {
-        oneOf(participant1).setConversation(conversation);
-        oneOf(participant2).setConversation(conversation);
-       
-        allowing(participant1).getUserName();
-        will(returnValue(userName1));  
-        
-        allowing(participant2).getUserName();
-        will(returnValue(userName2));
-        
-        oneOf(participant2).getStatus();
-        will(returnValue(Status.ONLINE));
-       
-       oneOf(participant2).deliverMessage(with(any(RosterMessage.class)));
-      } 
-    });
-    
-    conversation.addParticipant(participant1);
-    conversation.addParticipant(participant2);
-    assertTrue(conversation.getParticipants().contains(participant1));
-    conversation.finalizeRemoveParticipant(USER_NAME1);
-     
-    context.assertIsSatisfied();
-  }
-  
-
 }
