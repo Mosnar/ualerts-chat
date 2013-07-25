@@ -25,11 +25,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
-import org.ualerts.chat.web.context.ChatClientContext;
-import org.ualerts.chat.web.sockjs.SockJsChatClient;
+import org.ualerts.chat.service.api.UserService;
 
 /**
  * This test will validate the RosterAddedController functionality
@@ -40,10 +36,7 @@ public class RosterAddedControllerTest {
   private Mockery context;
   private RosterAddedController rosterAddedController;
 
-  private final String USER_NAME1 = "Test1";
-  private final String VALID = "{\"result\":\"valid\"}";
-  private final String INVALID = "{\"result\":\"invalid\"}";;
-  private final UserName userName = new UserName(USER_NAME1);
+  private final String USER_NAME = "Test1@org.ualerts.chat";
 
   @Before
   public void setUp() throws Exception {
@@ -52,58 +45,19 @@ public class RosterAddedControllerTest {
   }
 
   @Test
-  public void testSendRosterAddedMessageValid() throws Exception {
-    final ChatClientContext chatClientContext =
-        context.mock(ChatClientContext.class);
-    final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
-    final Participant participant1 = context.mock(Participant.class);
-    final Conversation conversation = context.mock(Conversation.class);
+  public void testLogin() throws Exception {
+    final UserService userService = context.mock(UserService.class);
 
     context.checking(new Expectations() {
       {
-        oneOf(chatClientContext).getChatClient();
-        will(returnValue(chatClient));
-
-        oneOf(chatClient).getParticipant();
-        will(returnValue(participant1));
-
-        exactly(2).of(participant1).getUserName();
-        will(returnValue(userName));
-
-        oneOf(participant1).getConversation();
-        will(returnValue(conversation));
-
-        oneOf(conversation).finalizeRegisterParticipant(userName.getName());
+        oneOf(userService).login();
+        will(returnValue(USER_NAME));
       }
-    });
-    rosterAddedController.setChatClientContext(chatClientContext);
 
-    assertEquals(VALID, rosterAddedController.sendRosterAddedMessage());
+    });
+    rosterAddedController.setUserService(userService);
+    assertEquals(USER_NAME, rosterAddedController.login());
     context.assertIsSatisfied();
   }
 
-  @Test
-  public void testSendRosterAddedMessageInvalid() throws Exception {
-    final ChatClientContext chatClientContext =
-        context.mock(ChatClientContext.class);
-    final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
-    final Participant participant1 = context.mock(Participant.class);
-
-    context.checking(new Expectations() {
-      {
-        oneOf(chatClientContext).getChatClient();
-        will(returnValue(chatClient));
-
-        oneOf(chatClient).getParticipant();
-        will(returnValue(participant1));
-
-        oneOf(participant1).getUserName();
-        will(returnValue(UserName.NULL_USER));
-      }
-    });
-    rosterAddedController.setChatClientContext(chatClientContext);
-
-    assertEquals(INVALID, rosterAddedController.sendRosterAddedMessage());
-    context.assertIsSatisfied();
-  }
 }

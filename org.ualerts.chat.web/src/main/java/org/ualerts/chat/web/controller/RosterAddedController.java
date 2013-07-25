@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.UserService;
 
 /**
- * Controller for sending a RosterAddedMessage upon user name submission
+ * Controller for loggin in a chat client
  * 
  * @author Billy Coleman
  * @author Ransom Roberson
@@ -39,7 +39,7 @@ public class RosterAddedController {
   
   @RequestMapping(value="/login", method = RequestMethod.POST)
   @ResponseBody
-  public String sendRosterAddedMessage() {
+  public String login() {
 
       return userService.login();
   }
