@@ -28,10 +28,33 @@ package org.ualerts.chat.service.api;
  */
 public interface ChatService {
 	
-	/**
-	 * Provides a default Conversation
-	 * @return the default Conversation
-	 * @throws ConversationNotFoundException
-	 */
-	Conversation findDefaultConversation();
+//	/**
+//	 * Provides a default Conversation
+//	 * @return the default Conversation
+//	 * @throws ConversationNotFoundException
+//	 */
+//	Conversation findDefaultConversation();
+  
+  /**
+   * Get a conversation whose name is the domain portion of the passed in
+   * UserIdentifier
+   * @param userIdentifier The full UserIdentifier to get the Conversation
+   *        whose name is that of the UserIdentifier's domain
+   * @return a conversation
+   */
+  Conversation getConversation(UserIdentifier userIdentifier);
+  
+  /**
+   * Join the user to a conversation
+   * @param userIdentifier The full userIdentifier of the Participant to join
+   *        to the Conversation
+   */
+  void joinConversation(UserIdentifier userIdentifier);
+  
+  /**
+   * Add a Conversation to the collection of Conversations
+   * @param userIdentifier The full UserIdentifier to create a Conversation
+   *        whose name is that of the UserIdentifier's domain
+   */
+  Conversation addConversation(UserIdentifier userIdentifier);
 }

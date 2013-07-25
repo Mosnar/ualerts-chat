@@ -19,37 +19,85 @@
 
 package org.ualerts.chat.service.api.concrete;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
+import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.UserIdentifier;
+import org.ualerts.chat.service.api.UserService;
 
 
 /**
  * Provides a Conversation
  * @author Billy Coleman
  * @author Ransom Roberson
+ * @author Brandon Foster
  *
  */
 @Service
 public class ConcreteChatService implements ChatService {
-
-	private Conversation defaultConversation;
+  
+	private Set<Conversation> conversations = new HashSet<Conversation>();
+	private DateTimeService dateTimeService;
+	private UserService userService;
 	
+  
 	@Autowired
 	public ConcreteChatService(DateTimeService dateTimeService) {
-	  defaultConversation = new ConcreteConversation();
-	  defaultConversation.setDateTimeService(dateTimeService);
+	  this.dateTimeService = dateTimeService;
 	}
-	
-	public ConcreteChatService(Conversation conversation) {
-		this.defaultConversation = conversation;
-	}
-	
-	@Override
-	public Conversation findDefaultConversation() {
-		return defaultConversation;
-	}
-	
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Conversation getConversation(UserIdentifier userIdentifier) {
+    for (Conversation conversation: conversations) {
+      if (conversation.getName().equals(userIdentifier.getDomain())) {
+        return conversation;
+      }
+    }
+    addConversation(userIdentifier);
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void joinConversation(UserIdentifier userIdentifier) {
+    Conversation conversation = getConversation(userIdentifier);
+    if (conversation == null) {
+      
+      conversation = addConversation(userIdentifier);
+    }
+      Participant participant = new ConcreteParticipant();
+      participant.setUserName(userIdentifier);
+      participant.setConversation(conversation);
+      participant.setChatClient(this.userService.findClient(userIdentifier.getName()));
+      conversation.addParticipant(participant);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Conversation addConversation(UserIdentifier userIdentifier) {
+    ConcreteConversation conversation = new ConcreteConversation();
+    conversation.setDateTimeService(this.dateTimeService);
+    conversation.setName(userIdentifier.getDomain());
+    conversations.add(conversation);
+    return conversation;
+  }
+  
+  @Autowired
+  public void getUserService(UserService userService) {
+    this.userService = userService;
+  }
 }
