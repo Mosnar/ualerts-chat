@@ -24,14 +24,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.ualerts.chat.service.api.ChatClient;
-import org.ualerts.chat.service.api.ChatClientContext;
-import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserService;
 
 /**
- * Controller for sending a RosterAddedMessage upon user name submission
+ * Controller for loggin in a chat client
  * 
  * @author Billy Coleman
  * @author Ransom Roberson
@@ -39,29 +35,18 @@ import org.ualerts.chat.service.api.UserName;
 @Controller
 public class RosterAddedController {
 
-  private final String VALID = "{\"result\":\"valid\"}";
-  private final String INVALID = "{\"result\":\"invalid\"}";
-
-  private ChatClientContext chatClientContext;
-  private ChatClient chatClient;
-
-  @RequestMapping(value="/submitName", method = RequestMethod.POST)
+  private UserService userService;
+  
+  @RequestMapping(value="/login", method = RequestMethod.POST)
   @ResponseBody
-  public String sendRosterAddedMessage() {
-    chatClient = chatClientContext.getChatClient();
-    Participant participant = chatClient.getParticipant();
-    
-    if (participant.getUserName() == UserName.NULL_USER) {
-      return INVALID;
-    }
-    Conversation conversation = participant.getConversation();   
-    conversation.finalizeRegisterParticipant(participant.getUserName().getName());
-    return VALID;
+  public String login() {
+
+      return userService.login();
   }
   
   @Autowired
-  public void setChatClientContext(ChatClientContext chatClientContext) {
-    this.chatClientContext = chatClientContext;
+  public void setUserService(UserService userService) {
+    this.userService = userService;
   }
   
 }
