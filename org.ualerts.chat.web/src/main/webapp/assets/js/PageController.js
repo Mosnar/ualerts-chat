@@ -80,7 +80,7 @@ PageController.prototype.handleNameSubmit = function() {
         	setUpUi();
         }
         
-        self.service.submitName();
+        self.service.login();
         self.chatRoomService.setUsername($username);
         self.chatRoomService.createChatRoomViewController("all");
     });

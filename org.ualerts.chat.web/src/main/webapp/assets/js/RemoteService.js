@@ -92,7 +92,7 @@ RemoteService.prototype.checkUsername = function(username, callback) {
 /**
  * Send a POST request for the service to create a participant
  */
-RemoteService.prototype.submitName = function() {
+RemoteService.prototype.login = function() {
     $.ajax({
         type: "POST",
         url: window.location.href + "login",
