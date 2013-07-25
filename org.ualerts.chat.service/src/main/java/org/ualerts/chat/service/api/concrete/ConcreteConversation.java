@@ -90,7 +90,6 @@ public class ConcreteConversation implements Conversation {
     
     String userName = participant.getChatClient().getUserName();
     
-    removeParticipant(participant);
     Message message =
         getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
     deliverMessage(message);
