@@ -46,7 +46,7 @@ public class MockUserService implements UserService {
    */
   @Override
   public void setUserName(String name, String domain) throws UserNameConflictException /*throws UserNameConflictException*/ {
-    if (this.findClient(name) != null) {
+    if (this.findClient(name) != null) { 
       throw new UserNameConflictException("Name already in use");
     }
     this.chatClientContext.getParticipant().setUserName(new UserIdentifier(name, DEFAULT_DOMAIN));
@@ -61,9 +61,8 @@ public class MockUserService implements UserService {
     if (this.findClient(userName) != null) {
       return userName + "@" + DEFAULT_DOMAIN;
     }
+    chatService.findDefaultConversation().addParticipant(this.chatClientContext.getParticipant());
     chatClients.add(this.chatClientContext);
-    this.chatClientContext.getParticipant().setConversation(chatService.findDefaultConversation());
-    chatService.findDefaultConversation().finalizeRegisterParticipant(userName);
     return userName + "@" + DEFAULT_DOMAIN;
   }
 
@@ -72,10 +71,9 @@ public class MockUserService implements UserService {
    */
   @Override
   public void logout() {
-    chatClients.remove(this.chatClientContext);
-    String userName = this.chatClientContext.getParticipant().getUserName().getName();
-    chatService.findDefaultConversation().finalizeRemoveParticipant(userName);
-  }
+    chatService.findDefaultConversation().removeParticipant(this.chatClientContext.getParticipant());
+    chatClients.remove(this.chatClientContext);  
+    }
 
   /**
    * {@inheritDoc}
