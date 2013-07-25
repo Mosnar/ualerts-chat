@@ -20,6 +20,7 @@
 package org.ualerts.chat.service.api.concrete;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
@@ -159,4 +160,119 @@ public class ConcreteConversationTest {
     context.assertIsSatisfied();
   }
 
+  @Test
+  public void testRemoveParticipant()
+  {
+    final Participant participant = context.mock(Participant.class, "one");
+    final Participant participant2 = context.mock(Participant.class, "two");
+    final ChatClient chatClient = context.mock(ChatClient.class);
+
+    context.checking(new Expectations() {
+      {
+        // Participant 1
+        oneOf(participant).setConversation(conversation);
+        oneOf(participant).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME1));
+        oneOf(participant).setStatus(Status.ONLINE);
+
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+
+        oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
+
+        oneOf(participant).getUserName();
+        will(returnValue(userId));
+
+        exactly(2).of(participant).getUserName();
+        will(returnValue(userId));
+        
+        
+        // Participant 2
+        oneOf(participant2).setConversation(conversation);
+        oneOf(participant2).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME2));
+        oneOf(participant2).setStatus(Status.ONLINE);
+
+        atLeast(1).of(participant2).getStatus();
+        will(returnValue(Status.ONLINE));
+        atLeast(1).of(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+
+        atLeast(1).of(participant2).deliverMessage(with(any(RosterMessage.class)));
+        atLeast(1).of(participant).deliverMessage(with(any(RosterMessage.class)));
+
+        oneOf(participant2).getUserName();
+        will(returnValue(userId2));
+
+        atLeast(2).of(participant2).getUserName();
+        will(returnValue(userId2));
+        
+        atLeast(1).of(participant).getUserName();
+        will(returnValue(userId));
+        
+        
+        // Remove Participant 1
+        oneOf(participant).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME1));
+      }
+    });
+
+    conversation.addParticipant(participant);
+    conversation.addParticipant(participant2);
+    Set<Participant> participants = conversation.getParticipants();
+    assertEquals(2, participants.size());
+    assertTrue(participants.contains(participant));
+    assertTrue(participants.contains(participant2));
+    
+    conversation.removeParticipant(participant);
+    Set<Participant> participants2 = conversation.getParticipants();
+    assertEquals(1, participants2.size());
+    assertFalse(participants2.contains(participant));
+    assertTrue(participants2.contains(participant2));    
+    context.assertIsSatisfied();    
+  }
+  
+  @Test
+  public void testIsValidUserNameTrue() {
+    assertTrue(conversation.isValidUserName("Test"));
+  }
+  
+  @Test
+  public void testIsValidUserNameFalse() {
+    final Participant participant = context.mock(Participant.class);
+    final ChatClient chatClient = context.mock(ChatClient.class);
+
+    context.checking(new Expectations() {
+      {
+        oneOf(participant).setConversation(conversation);
+        oneOf(participant).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME1));
+        oneOf(participant).setStatus(Status.ONLINE);
+
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+
+        oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
+
+        oneOf(participant).getUserName();
+        will(returnValue(userId));
+
+        atLeast(2).of(participant).getUserName();
+        will(returnValue(userId));
+        
+      }
+    });
+
+    conversation.addParticipant(participant);
+    context.assertIsSatisfied();
+    assertFalse(conversation.isValidUserName(USER_NAME1));
+  }
 }
