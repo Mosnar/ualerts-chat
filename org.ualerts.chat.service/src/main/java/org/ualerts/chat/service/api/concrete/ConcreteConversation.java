@@ -43,23 +43,23 @@ import org.ualerts.chat.service.api.UserIdentifier;
 
 public class ConcreteConversation implements Conversation {
 
-  private static final Logger logger = 
-      LoggerFactory.getLogger(ConcreteConversation.class);
+  private static final Logger logger = LoggerFactory
+      .getLogger(ConcreteConversation.class);
   private static final String BROADCAST_MESSAGE = "all";
 
   private Set<Participant> participants = new HashSet<Participant>();
   private DateTimeService dateTimeService;
-  
+
   private String name;
 
   @Override
-  public void addParticipant(Participant participant) {    
+  public void addParticipant(Participant participant) {
     if (participant == null)
       return;
-    
+
     this.participants.add(participant);
     participant.setConversation(this);
-    
+
     String name = participant.getChatClient().getUserName();
 
     // send a message to all participants announcing user joining
@@ -74,8 +74,8 @@ public class ConcreteConversation implements Conversation {
       if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
         if (!thisParticipant.getUserName().matches(name)) {
           replyMessage =
-              getRosterContentMessage(thisParticipant.getUserName()
-                  .getName(), name);
+              getRosterContentMessage(
+                  thisParticipant.getUserName().getName(), name);
           deliverMessage(replyMessage);
         }
       }
@@ -87,11 +87,10 @@ public class ConcreteConversation implements Conversation {
     if (participants.contains(participant)) {
       participants.remove(participant);
     }
-    
+
     String userName = participant.getChatClient().getUserName();
-    
-    Message message =
-        getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
+
+    Message message = getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
     deliverMessage(message);
   }
 
@@ -109,11 +108,13 @@ public class ConcreteConversation implements Conversation {
       deliverParticipantMessage(fromParticipant, message);
     }
   }
-  
-  protected void deliverParticipantMessage(Participant participant, Message message) {
-    if(participant != null && participant.getUserName() != UserIdentifier.NULL_USER
+
+  protected void deliverParticipantMessage(Participant participant,
+      Message message) {
+    if (participant != null
+        && participant.getUserName() != UserIdentifier.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
-        participant.deliverMessage(message);
+      participant.deliverMessage(message);
     }
   }
 
@@ -131,7 +132,7 @@ public class ConcreteConversation implements Conversation {
   private Participant findParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
-      if (participant.getUserName() == UserIdentifier.NULL_USER) 
+      if (participant.getUserName() == UserIdentifier.NULL_USER)
         continue;
 
       if (participant.getUserName().matches(name)) {
@@ -151,19 +152,19 @@ public class ConcreteConversation implements Conversation {
 
     return message;
   }
-  
+
   protected Message getRosterRemovedMessage(String from, String to) {
     RosterRemovedMessage message = new RosterRemovedMessage();
     setRosterMessageAttributes(from, to, message);
-    
+
     return message;
   }
-  
+
   protected Message getRosterContentMessage(String from, String to) {
     RosterContentMessage message = new RosterContentMessage();
     setRosterMessageAttributes(from, to, message);
     message.setUserName(from);
-   
+
     return message;
   }
 
@@ -173,8 +174,6 @@ public class ConcreteConversation implements Conversation {
     message.setTo(to);
     message.setMessageDate(dateTimeService.getCurrentDate());
   }
-  
-  
 
   @Override
   public Set<Participant> getParticipants() {
@@ -185,11 +184,11 @@ public class ConcreteConversation implements Conversation {
   public void setDateTimeService(DateTimeService dateTimeService) {
     this.dateTimeService = dateTimeService;
   }
-  
+
   public String getName() {
     return name;
   }
-  
+
   public void setName(String name) {
     this.name = name;
   }

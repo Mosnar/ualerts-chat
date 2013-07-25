@@ -45,21 +45,26 @@ public class ConcreteConversationTest {
   private static final String USER_NAME2 = "testname2";
   private static final String DOMAIN = "ualerts.org";
   private static final String BROADCAST = "all";
- 
+
+  private static final UserIdentifier userId = new UserIdentifier(USER_NAME1,
+      DOMAIN);
+  private static final UserIdentifier userId2 = new UserIdentifier(USER_NAME2,
+      DOMAIN);
+
   @Before
   public void setUp() throws Exception {
     context = new Mockery();
     conversation = new ConcreteConversation();
     conversation.setDateTimeService(dateTimeService);
     conversation.setName(DOMAIN);
+
   }
 
   @Test
   public void testAddParticipantMe() {
     final Participant participant = context.mock(Participant.class);
     final ChatClient chatClient = context.mock(ChatClient.class);
-    final UserIdentifier userId = new UserIdentifier(USER_NAME1, DOMAIN);
-    
+
     context.checking(new Expectations() {
       {
         oneOf(participant).setConversation(conversation);
@@ -68,15 +73,15 @@ public class ConcreteConversationTest {
         oneOf(chatClient).getUserName();
         will(returnValue(USER_NAME1));
         oneOf(participant).setStatus(Status.ONLINE);
-        
+
         oneOf(participant).getStatus();
         will(returnValue(Status.ONLINE));
-        
+
         oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
-        
+
         oneOf(participant).getUserName();
         will(returnValue(userId));
-        
+
         exactly(2).of(participant).getUserName();
         will(returnValue(userId));
       }
@@ -88,4 +93,70 @@ public class ConcreteConversationTest {
     assertTrue(participants.contains(participant));
     context.assertIsSatisfied();
   }
+
+  @Test
+  public void testAddParticipantNotMe() {
+    final Participant participant = context.mock(Participant.class, "one");
+    final Participant participant2 = context.mock(Participant.class, "two");
+    final ChatClient chatClient = context.mock(ChatClient.class);
+
+    context.checking(new Expectations() {
+      {
+        // Participant 1
+        oneOf(participant).setConversation(conversation);
+        oneOf(participant).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME1));
+        oneOf(participant).setStatus(Status.ONLINE);
+
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+
+        oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
+
+        oneOf(participant).getUserName();
+        will(returnValue(userId));
+
+        exactly(2).of(participant).getUserName();
+        will(returnValue(userId));
+        
+        
+        // Participant 2
+        oneOf(participant2).setConversation(conversation);
+        oneOf(participant2).getChatClient();
+        will(returnValue(chatClient));
+        oneOf(chatClient).getUserName();
+        will(returnValue(USER_NAME2));
+        oneOf(participant2).setStatus(Status.ONLINE);
+
+        atLeast(1).of(participant2).getStatus();
+        will(returnValue(Status.ONLINE));
+        atLeast(1).of(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+
+        atLeast(1).of(participant2).deliverMessage(with(any(RosterMessage.class)));
+        atLeast(1).of(participant).deliverMessage(with(any(RosterMessage.class)));
+
+        oneOf(participant2).getUserName();
+        will(returnValue(userId2));
+
+        atLeast(2).of(participant2).getUserName();
+        will(returnValue(userId2));
+        
+        atLeast(1).of(participant).getUserName();
+        will(returnValue(userId));
+        
+      }
+    });
+
+    conversation.addParticipant(participant);
+    conversation.addParticipant(participant2);
+    Set<Participant> participants = conversation.getParticipants();
+    assertEquals(2, participants.size());
+    assertTrue(participants.contains(participant));
+    assertTrue(participants.contains(participant2));
+    context.assertIsSatisfied();
+  }
+
 }
