@@ -43,11 +43,4 @@ public interface ChatService {
    *        to the Conversation
    */
   void joinConversation(UserIdentifier userIdentifier);
-  
-  /**
-   * Add a Conversation to the collection of Conversations
-   * @param userIdentifier The full UserIdentifier to create a Conversation
-   *        whose name is that of the UserIdentifier's domain
-   */
-  Conversation addConversation(UserIdentifier userIdentifier);
 }
