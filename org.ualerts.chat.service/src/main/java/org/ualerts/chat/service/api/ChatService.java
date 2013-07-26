@@ -30,7 +30,7 @@ public interface ChatService {
   
   /**
    * Get a conversation whose name is the domain portion of the passed in
-   * UserIdentifier
+   * UserIdentifier. This returns null if the conversation does not exist.
    * @param userIdentifier The full UserIdentifier to get the Conversation
    *        whose name is that of the UserIdentifier's domain
    * @return a conversation
@@ -38,7 +38,8 @@ public interface ChatService {
   Conversation getConversation(UserIdentifier userIdentifier);
   
   /**
-   * Join the user to a conversation
+   * Join the user to a conversation.
+   * Create and join a new conversation if the conversation does not exist.
    * @param userIdentifier The full userIdentifier of the Participant to join
    *        to the Conversation
    */
