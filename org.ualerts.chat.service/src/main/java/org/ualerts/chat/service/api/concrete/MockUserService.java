@@ -61,7 +61,7 @@ public class MockUserService implements UserService {
     if (this.findClient(userName) != null) {
       return userName + "@" + DEFAULT_DOMAIN;
     }
-    chatService.findDefaultConversation().addParticipant(this.chatClientContext.getParticipant());
+    chatService.joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN));
     chatClients.add(this.chatClientContext);
     return userName + "@" + DEFAULT_DOMAIN;
   }
@@ -71,9 +71,10 @@ public class MockUserService implements UserService {
    */
   @Override
   public void logout() {
-    chatService.findDefaultConversation().removeParticipant(this.chatClientContext.getParticipant());
+    String userName = this.chatClientContext.getParticipant().getUserName().getName();
+    chatService.getConversation(new UserIdentifier(userName, DEFAULT_DOMAIN)).removeParticipant(this.chatClientContext.getParticipant());
     chatClients.remove(this.chatClientContext);  
-    }
+  }
 
   /**
    * {@inheritDoc}

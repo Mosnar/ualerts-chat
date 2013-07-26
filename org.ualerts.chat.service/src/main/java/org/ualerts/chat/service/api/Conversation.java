@@ -67,4 +67,6 @@ public interface Conversation {
 	 * @param dateTimeService
 	 */
 	void setDateTimeService(DateTimeService dateTimeService);
+	
+	String getName();
 }
