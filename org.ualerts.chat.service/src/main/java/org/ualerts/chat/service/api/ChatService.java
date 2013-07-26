@@ -27,13 +27,6 @@ package org.ualerts.chat.service.api;
  *
  */
 public interface ChatService {
-	
-//	/**
-//	 * Provides a default Conversation
-//	 * @return the default Conversation
-//	 * @throws ConversationNotFoundException
-//	 */
-//	Conversation findDefaultConversation();
   
   /**
    * Get a conversation whose name is the domain portion of the passed in
