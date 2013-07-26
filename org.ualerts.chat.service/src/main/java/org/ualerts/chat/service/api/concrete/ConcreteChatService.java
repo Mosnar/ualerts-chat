@@ -61,7 +61,6 @@ public class ConcreteChatService implements ChatService {
         return conversation;
       }
     }
-    addConversation(userIdentifier);
     return null;
   }
 
