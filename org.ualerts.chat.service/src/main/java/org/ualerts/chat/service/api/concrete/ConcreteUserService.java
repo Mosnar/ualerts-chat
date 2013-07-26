@@ -35,7 +35,7 @@ import org.ualerts.chat.service.api.UserService;
  * @author Ransom Robersom
  * @author Brandon Foster
  */
-public class MockUserService implements UserService {
+public class ConcreteUserService implements UserService {
   private ChatClient chatClientContext;
   private Set<ChatClient> chatClients = new HashSet<ChatClient>();
   private ChatService chatService;
