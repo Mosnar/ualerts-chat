@@ -71,7 +71,7 @@ public class ConcreteChatService implements ChatService {
   public void joinConversation(UserIdentifier userIdentifier) {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation == null) {
-      conversation = addConversation(userIdentifier);
+      conversation = createConversation(userIdentifier);
     }
       Participant participant = new ConcreteParticipant();
       participant.setUserName(userIdentifier);
@@ -81,9 +81,9 @@ public class ConcreteChatService implements ChatService {
   }
 
   /**
-   * {@inheritDoc}
+   * Creates a new conversation.
    */
-  private Conversation addConversation(UserIdentifier userIdentifier) {
+  private Conversation createConversation(UserIdentifier userIdentifier) {
     ConcreteConversation conversation = new ConcreteConversation();
     conversation.setDateTimeService(this.dateTimeService);
     conversation.setName(userIdentifier.getDomain());
