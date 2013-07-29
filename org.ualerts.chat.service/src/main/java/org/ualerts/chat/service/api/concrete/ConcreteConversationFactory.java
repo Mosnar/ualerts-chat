@@ -20,6 +20,7 @@
 package org.ualerts.chat.service.api.concrete;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.DateTimeService;
@@ -32,6 +33,7 @@ import org.ualerts.chat.service.api.UserService;
  * @author Ransom Roberson
  * @author Brandon Foster
  */
+@Service
 public class ConcreteConversationFactory implements ConversationFactory {
 
   private DateTimeService dateTimeService;

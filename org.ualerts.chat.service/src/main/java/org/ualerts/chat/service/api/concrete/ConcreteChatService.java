@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserIdentifier;
@@ -36,27 +37,27 @@ import org.ualerts.chat.service.api.UserService;
  * @author Billy Coleman
  * @author Ransom Roberson
  * @author Brandon Foster
- *
+ * 
  */
 @Service
 public class ConcreteChatService implements ChatService {
-  
-	private Set<Conversation> conversations = new HashSet<Conversation>();
-	private DateTimeService dateTimeService;
-	private UserService userService;
-	
-  
-	@Autowired
-	public ConcreteChatService(DateTimeService dateTimeService) {
-	  this.dateTimeService = dateTimeService;
-	}
+
+  private Set<Conversation> conversations = new HashSet<Conversation>();
+  private DateTimeService dateTimeService;
+  private UserService userService;
+  private ConversationFactory conversationFactory;
+
+  @Autowired
+  public ConcreteChatService(DateTimeService dateTimeService) {
+    this.dateTimeService = dateTimeService;
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
   public Conversation getConversation(UserIdentifier userIdentifier) {
-    for (Conversation conversation: conversations) {
+    for (Conversation conversation : conversations) {
       if (conversation.getName().equals(userIdentifier.getDomain())) {
         return conversation;
       }
@@ -73,26 +74,33 @@ public class ConcreteChatService implements ChatService {
     if (conversation == null) {
       conversation = createConversation(userIdentifier);
     }
-      Participant participant = new ConcreteParticipant();
-      participant.setUserName(userIdentifier);
-      participant.setConversation(conversation);
-      participant.setChatClient(this.userService.findClient(userIdentifier.getName()));
-      conversation.addParticipant(participant);
+    Participant participant = new ConcreteParticipant();
+    participant.setUserName(userIdentifier);
+    participant.setConversation(conversation);
+    participant.setChatClient(this.userService.findClient(userIdentifier
+        .getName()));
+    conversation.addParticipant(participant);
   }
-
+  
   /**
-   * Creates a new conversation.
+   * Create a new conversation and adds it to the collection
+   * @param userIdentifier
+   * @return The created conversation
    */
-  private Conversation createConversation(UserIdentifier userIdentifier) {
-    ConcreteConversation conversation = new ConcreteConversation();
-    conversation.setDateTimeService(this.dateTimeService);
-    conversation.setName(userIdentifier.getDomain());
+  public Conversation createConversation(UserIdentifier userIdentifier) {
+    Conversation conversation = conversationFactory.createConversation(userIdentifier);
     conversations.add(conversation);
     return conversation;
   }
-  
+
   @Autowired
-  public void getUserService(UserService userService) {
+  public void setUserService(UserService userService) {
     this.userService = userService;
+  }
+
+  @Autowired
+  public void setConcreteConversationFactory(
+      ConversationFactory conversationFactory) {
+    this.conversationFactory = conversationFactory;
   }
 }

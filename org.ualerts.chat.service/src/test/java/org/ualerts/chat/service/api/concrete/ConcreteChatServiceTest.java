@@ -20,37 +20,98 @@
 package org.ualerts.chat.service.api.concrete;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 
+import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.ualerts.chat.service.api.ChatService;
+import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.DateTimeService;
-import org.ualerts.chat.service.api.concrete.ConcreteChatService;
-import org.ualerts.chat.service.api.concrete.ConcreteConversation;
+import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.UserIdentifier;
 
 public class ConcreteChatServiceTest {
 
   private Mockery context;
+  private ConcreteChatService chatService;
+  private UserIdentifier userIdentity;
+
   @Before
   public void setUp() throws Exception {
-    context = new Mockery();
+
   }
-	
-	@Test
-	public void testArgConstructor() {
-		Conversation conversation = new ConcreteConversation();
-		ChatService chatService = new ConcreteChatService(conversation);
-		assertSame(conversation, chatService.findDefaultConversation());		
-	}
-	
-	@Test
-	public void testNoArgConstructor() {
-	  final DateTimeService dateTimeService = context.mock(DateTimeService.class);
-		ChatService chatService = new ConcreteChatService(dateTimeService);
-		Conversation conversation = chatService.findDefaultConversation();
-		assertNotNull(conversation);
-	}
+
+  @Test
+  public void testJoinConversationNoConversation() {
+    context = new Mockery();
+    userIdentity = new UserIdentifier("name", "ualerts.org");
+    final DateTimeService dateTimeService =
+        context.mock(DateTimeService.class);
+    final ConversationFactory convoFactory =
+        context.mock(ConversationFactory.class);
+    final ChatClient chatClient = context.mock(ChatClient.class);
+    final Conversation conversation = context.mock(Conversation.class);
+
+    
+    context.checking(new Expectations() {
+      {
+        exactly(1).of(convoFactory).createConversation(
+            with(any(UserIdentifier.class)));
+        will(returnValue(conversation));        
+        exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
+        atLeast(0).of(conversation).getName();
+        will(returnValue(userIdentity.getDomain()));
+      }
+    });
+
+    chatService = new ConcreteChatService(dateTimeService);
+    chatService.setConcreteConversationFactory(convoFactory);
+    ConcreteUserService userService = new ConcreteUserService();
+
+    userService.setChatClientContext(chatClient);
+    userService.setChatService(chatService);
+    chatService.setUserService(userService);
+
+    chatService.joinConversation(userIdentity);
+    context.assertIsSatisfied();
+    assertNotNull(chatService.getConversation(userIdentity));
+  }
+  
+  @Test
+  public void testJoinConversationWithConversation() {
+    context = new Mockery();
+    userIdentity = new UserIdentifier("name", "ualerts.org");
+    final DateTimeService dateTimeService =
+        context.mock(DateTimeService.class);
+    final ConversationFactory convoFactory =
+        context.mock(ConversationFactory.class);
+    final ChatClient chatClient = context.mock(ChatClient.class);
+    final Conversation conversation = context.mock(Conversation.class, "one");
+    final Conversation conversation2 = context.mock(Conversation.class, "two");
+    
+    context.checking(new Expectations() {
+      {
+        exactly(1).of(convoFactory).createConversation(
+            with(any(UserIdentifier.class)));
+        will(returnValue(conversation));        
+        exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
+        atLeast(0).of(conversation).getName();
+        will(returnValue(userIdentity.getDomain()));
+      }
+    });
+
+    chatService = new ConcreteChatService(dateTimeService);
+    chatService.setConcreteConversationFactory(convoFactory);
+    ConcreteUserService userService = new ConcreteUserService();
+
+    userService.setChatClientContext(chatClient);
+    userService.setChatService(chatService);
+    chatService.setUserService(userService);
+    chatService.createConversation(userIdentity);
+    chatService.joinConversation(userIdentity);
+    context.assertIsSatisfied();
+    assertNotNull(chatService.getConversation(userIdentity));
+  }
 }
