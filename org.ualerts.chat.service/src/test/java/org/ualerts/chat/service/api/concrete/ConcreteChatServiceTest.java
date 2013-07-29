@@ -40,13 +40,12 @@ public class ConcreteChatServiceTest {
 
   @Before
   public void setUp() throws Exception {
-
+    context = new Mockery();
+    userIdentity = new UserIdentifier("name", "ualerts.org");
   }
 
   @Test
   public void testJoinConversationNoConversation() {
-    context = new Mockery();
-    userIdentity = new UserIdentifier("name", "ualerts.org");
     final DateTimeService dateTimeService =
         context.mock(DateTimeService.class);
     final ConversationFactory convoFactory =
@@ -81,8 +80,6 @@ public class ConcreteChatServiceTest {
   
   @Test
   public void testJoinConversationWithConversation() {
-    context = new Mockery();
-    userIdentity = new UserIdentifier("name", "ualerts.org");
     final DateTimeService dateTimeService =
         context.mock(DateTimeService.class);
     final ConversationFactory convoFactory =
