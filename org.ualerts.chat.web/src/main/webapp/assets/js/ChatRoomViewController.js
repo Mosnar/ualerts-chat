@@ -4,7 +4,6 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
 	this.$uiDom = "";
-	
 	this.windowFocus = true;
 	this.missedMessage = true;
 	
@@ -28,7 +27,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
+		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + parseUserName(self.name) + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
 		   		+ '<div>'
@@ -56,6 +55,16 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 		$(".chat-holder").append(self.$uiDom);
 	}
 	
+	function parseUserName(name){
+		var idx = name.indexOf('@');
+		if(idx != -1) {
+			return name.substring(0,idx);
+		}
+		else{
+			return name;
+		}
+	}
+	
 	/**
 	 * This function will check if there are unread messages and modify the
 	 * one-on-one chat boxes accordingly
@@ -78,16 +87,9 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	    	}
 	    });
 	}
-	
-	if (chatRoomName == 'all') {
-		this.$uiDom = $('<div id="chatbox"></div>');
-		$('#messageForm').before(this.$uiDom);
-	}
 
-	if (chatRoomName != 'all') {
-		setUpUi(self);
-		onMessageSend(self);
-	}
+	setUpUi(self);
+	onMessageSend(self);	
 }
 
 /**
@@ -115,16 +117,14 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 		return dateString;
 	}
 	
-	if (message.to == "all") {
-		$chatbox = $('#chatbox');
-	} else {
+	
 		$chatbox = this.$uiDom.find(".chatroom-chat");
 		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
 		{
 			this.missedMessage = true;
 			this.$uiDom.find(".chatroom-title").addClass("unread");
 		}
-	}
+
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
