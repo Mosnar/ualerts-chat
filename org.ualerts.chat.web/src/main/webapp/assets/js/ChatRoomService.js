@@ -14,18 +14,15 @@ ChatRoomService.prototype.onMessage = function(message) {
 	if (message.type != "chat" || this.chatRoomViewControllerManager.size() == 0) {
 		return;
 	}
-	
+
 	switch(message.to) {
 	case this.username: // to me, from <User1>
 		chatRoomName = message.from;
 		break;
-	case "all":
-		chatRoomName = "all";
-		break;
 	default:
 		chatRoomName = message.to;
 	}
-	
+
 	room = this.getChatRoomViewController(chatRoomName);
 	if (room == false) {
 		room = this.createChatRoomViewController(chatRoomName);
@@ -38,6 +35,10 @@ ChatRoomService.prototype.onMessage = function(message) {
 
 ChatRoomService.prototype.setUsername = function(username) {
 	this.username = username;
+};
+
+ChatRoomService.prototype.setDomain = function(domain) {
+	this.domain = domain;
 };
 
 ChatRoomService.prototype.createChatRoomViewController = function(chatRoomName) {

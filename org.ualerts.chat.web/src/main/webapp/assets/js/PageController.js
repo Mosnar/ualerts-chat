@@ -6,6 +6,7 @@
 function PageController(remoteService, chatRoomService) {
     this.service = remoteService;
     this.username = "";
+    this.domain = "";
     this.connectedUsers = new Array();
     this.chatRoomService = chatRoomService;
 }
@@ -80,14 +81,27 @@ PageController.prototype.handleNameSubmit = function() {
         	setUpUi();
         }
         
-        self.service.login();
-        self.chatRoomService.setUsername($username);
-        self.chatRoomService.createChatRoomViewController("all");
+        self.service.login(self,self.parseUserIdentifier);
     });
     
     this.service.connect();
 };
 
+PageController.prototype.parseUserIdentifier = function(self,fullyQualifiedName) {
+		var idx = fullyQualifiedName.indexOf("@");
+		if (idx != -1) {
+			var domain = fullyQualifiedName.substring(idx + 1);
+			self.chatRoomService.setUsername(fullyQualifiedName);
+			self.chatRoomService.setDomain(domain);
+			self.chatRoomService.createChatRoomViewController("all"+"@"+domain);
+			self.updateDomain(domain);
+		};
+	};
+
+PageController.prototype.updateDomain = function(domain) {
+    this.domain = domain;
+};
+	
 /**
  * Set the username property for the PageController class
  *
@@ -127,7 +141,8 @@ PageController.prototype.handleMessageSubmit = function() {
     $('#messageButton').click(function() {
         if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
-            self.service.sendMessage("<b>" + self.username + "</b>", "all", "chat", clientMessage);
+            var allChat = 'all@'+self.domain;
+            self.service.sendMessage("<b>" + self.username + "</b>", allChat, "chat", clientMessage);
             $messageField.val('');
         }
     });
@@ -160,6 +175,7 @@ PageController.prototype.addToRoster = function(user) {
 	function addChatClickHandler() {
 		$('#connected-users > tbody tr:first .add-chat').click(function() {
 			var contact = $.trim($(this).parent().text());
+			contact = contact + "@"+self.domain;
 			if (self.chatRoomService.getChatRoomViewController(contact) == false) {
 				self.chatRoomService.createChatRoomViewController(contact);
 			}
