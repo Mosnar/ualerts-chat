@@ -35,6 +35,7 @@ import org.ualerts.chat.service.api.UserIdentifier;
 public class ConcreteConversationFactoryTest {
   private Mockery context;
   private ConversationFactory convoFactory;
+  private UserIdentifier userIdentity;
   private Conversation conversation;
 
   @Before
@@ -42,6 +43,7 @@ public class ConcreteConversationFactoryTest {
     context = new Mockery();
     convoFactory =
         context.mock(ConversationFactory.class);
+    userIdentity = new UserIdentifier("name", "ualerts.org");
     conversation = context.mock(Conversation.class);
   }
   
@@ -55,5 +57,8 @@ public class ConcreteConversationFactoryTest {
         will(returnValue(conversation));    
       }
     });
+    
+    convoFactory.createConversation(userIdentity);
+    context.assertIsSatisfied();
   }
 }
