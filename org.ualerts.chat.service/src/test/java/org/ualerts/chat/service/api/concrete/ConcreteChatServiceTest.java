@@ -37,23 +37,37 @@ public class ConcreteChatServiceTest {
   private Mockery context;
   private ConcreteChatService chatService;
   private UserIdentifier userIdentity;
+  private DateTimeService dateTimeService;
+  private ConversationFactory convoFactory;
+  private ChatClient chatClient;
+  private Conversation conversation;
+  private ConcreteUserService userService;
+
 
   @Before
   public void setUp() throws Exception {
     context = new Mockery();
     userIdentity = new UserIdentifier("name", "ualerts.org");
+    
+    dateTimeService =
+        context.mock(DateTimeService.class);
+    convoFactory =
+        context.mock(ConversationFactory.class);
+    chatClient = context.mock(ChatClient.class);
+    conversation = context.mock(Conversation.class);
+    
+    chatService = new ConcreteChatService(dateTimeService);
+    chatService.setConcreteConversationFactory(convoFactory);
+    userService = new ConcreteUserService();
+    
+    userService.setChatClientContext(chatClient);
+    userService.setChatService(chatService);
+    chatService.setUserService(userService);
   }
 
   @Test
   public void testJoinConversationNoConversation() {
-    final DateTimeService dateTimeService =
-        context.mock(DateTimeService.class);
-    final ConversationFactory convoFactory =
-        context.mock(ConversationFactory.class);
-    final ChatClient chatClient = context.mock(ChatClient.class);
-    final Conversation conversation = context.mock(Conversation.class);
 
-    
     context.checking(new Expectations() {
       {
         exactly(1).of(convoFactory).createConversation(
@@ -64,14 +78,6 @@ public class ConcreteChatServiceTest {
         will(returnValue(userIdentity.getDomain()));
       }
     });
-
-    chatService = new ConcreteChatService(dateTimeService);
-    chatService.setConcreteConversationFactory(convoFactory);
-    ConcreteUserService userService = new ConcreteUserService();
-
-    userService.setChatClientContext(chatClient);
-    userService.setChatService(chatService);
-    chatService.setUserService(userService);
 
     chatService.joinConversation(userIdentity);
     context.assertIsSatisfied();
@@ -80,13 +86,7 @@ public class ConcreteChatServiceTest {
   
   @Test
   public void testJoinConversationWithConversation() {
-    final DateTimeService dateTimeService =
-        context.mock(DateTimeService.class);
-    final ConversationFactory convoFactory =
-        context.mock(ConversationFactory.class);
-    final ChatClient chatClient = context.mock(ChatClient.class);
     final Conversation conversation = context.mock(Conversation.class, "one");
-    final Conversation conversation2 = context.mock(Conversation.class, "two");
     
     context.checking(new Expectations() {
       {
@@ -99,13 +99,6 @@ public class ConcreteChatServiceTest {
       }
     });
 
-    chatService = new ConcreteChatService(dateTimeService);
-    chatService.setConcreteConversationFactory(convoFactory);
-    ConcreteUserService userService = new ConcreteUserService();
-
-    userService.setChatClientContext(chatClient);
-    userService.setChatService(chatService);
-    chatService.setUserService(userService);
     chatService.createConversation(userIdentity);
     chatService.joinConversation(userIdentity);
     context.assertIsSatisfied();

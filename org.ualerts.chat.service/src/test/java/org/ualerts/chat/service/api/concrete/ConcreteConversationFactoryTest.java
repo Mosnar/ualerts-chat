@@ -34,18 +34,19 @@ import org.ualerts.chat.service.api.UserIdentifier;
  */
 public class ConcreteConversationFactoryTest {
   private Mockery context;
+  private ConversationFactory convoFactory;
+  private Conversation conversation;
 
   @Before
   public void setUp() throws Exception {
-    // intentionally left blank
+    context = new Mockery();
+    convoFactory =
+        context.mock(ConversationFactory.class);
+    conversation = context.mock(Conversation.class);
   }
   
   @Test
   public void createConversationTest() {
-    context = new Mockery();
-    final ConversationFactory convoFactory =
-        context.mock(ConversationFactory.class);
-    final Conversation conversation = context.mock(Conversation.class);
     
     context.checking(new Expectations() {
       {
