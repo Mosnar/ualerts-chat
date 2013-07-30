@@ -69,7 +69,7 @@ public class ConcreteParticipantTest {
 
   @Test
   public void testSetAndGetUserNameNotNull() {
-    UserIdentifier userName = new UserIdentifier("TestName");
+    UserIdentifier userName = new UserIdentifier("TestName", "ualerts.org");
     participant.setUserName(userName);
     assertSame(userName, participant.getUserName());
   }
