@@ -25,8 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.ualerts.chat.service.api.UserNameConflictException;
-import org.ualerts.chat.service.api.UserService;
+import org.springframework.web.util.HtmlUtils;
+import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.UserIdentifier;
+import org.ualerts.chat.web.context.ChatClientContext;
 
 /**
  * Controller used to determine if a user name is available for use
@@ -37,28 +41,33 @@ import org.ualerts.chat.service.api.UserService;
 
 @Controller
 public class NameCheckController {
-
+  
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
-
-  private UserService userService;
-
-  @RequestMapping(value = "/checkName", method = RequestMethod.POST)
+  
+  private ChatClientContext chatClientContext;
+  private ChatClient chatClient;
+  
+  @RequestMapping(value="/checkName", method = RequestMethod.POST)
   @ResponseBody
   public String checkName(@RequestParam("name") String name) {
 
-    try {
-      userService.setUserName(name);
-      return VALID;
-    }
-    catch (UserNameConflictException e) {
-      return INVALID;
-    }
+      chatClient = chatClientContext.getChatClient();
+      Participant participant = chatClient.getParticipant();
+      Conversation conversation = participant.getConversation();
+      
+      if(conversation.isValidUserName(name.trim())) {
+        UserIdentifier userName = new UserIdentifier(HtmlUtils.htmlEscape(name.trim()));
+        participant.setUserName(userName);
+        return VALID;
+      }
+    return INVALID;
   }
 
   @Autowired
-  public void setUserService(UserService userService) {
-    this.userService = userService;
+  public void setChatClientContext(ChatClientContext chatClientContext) {
+    this.chatClientContext = chatClientContext;
   }
-
+  
+  
 }

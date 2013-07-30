@@ -33,7 +33,7 @@ import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
@@ -76,7 +76,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     {
       participant = new ConcreteParticipant();
       participant.setChatClient(chatClient);
-      participant.setUserName(UserName.NULL_USER);
+      participant.setUserName(UserIdentifier.NULL_USER);
       participant.setStatus(Status.SETUP);
       chatClient.setParticipant(participant);
     }

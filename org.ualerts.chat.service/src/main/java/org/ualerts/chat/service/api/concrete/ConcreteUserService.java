@@ -23,38 +23,35 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatClient;
-import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.ChatService;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserNameConflictException;
 import org.ualerts.chat.service.api.UserService;
 
 /**
- * A mock implementation of the UserService interface.
- *
+ * An implementation of the UserService interface. Manages ChatClients
+ * 
  * @author Ransom Robersom
  * @author Brandon Foster
  */
-@Service
-public class MockUserService implements UserService {
-  private ChatClientContext chatClientContext;
+public class ConcreteUserService implements UserService {
+  private ChatClient chatClientContext;
   private Set<ChatClient> chatClients = new HashSet<ChatClient>();
   private ChatService chatService;
   private static String DEFAULT_DOMAIN = "ualerts.org";
-  
+
   /**
    * {@inheritDoc}
    */
   @Override
-  public void setUserName(String name) throws UserNameConflictException /*throws UserNameConflictException*/ {
+  public void setUserName(String name, String domain)
+      throws UserNameConflictException {
     if (this.findClient(name) != null) {
       throw new UserNameConflictException("Name already in use");
     }
-    ChatClient chatClient;
-    chatClient = chatClientContext.getChatClient();
-    chatClient.getParticipant().setUserName(new UserName(name));
+    this.chatClientContext.getParticipant().setUserName(
+        new UserIdentifier(name, DEFAULT_DOMAIN));
   }
 
   /**
@@ -62,14 +59,14 @@ public class MockUserService implements UserService {
    */
   @Override
   public String login() {
-    ChatClient  chatClient = chatClientContext.getChatClient();
-    String userName = chatClient.getParticipant().getUserName().getName();
+    String userName =
+        this.chatClientContext.getParticipant().getUserName().getName();
     if (this.findClient(userName) != null) {
       return userName + "@" + DEFAULT_DOMAIN;
     }
-    chatClients.add(chatClient);
-    chatClient.getParticipant().setConversation(chatService.findDefaultConversation());
-    chatService.findDefaultConversation().finalizeRegisterParticipant(userName);
+    chatService
+        .joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN));
+    chatClients.add(this.chatClientContext);
     return userName + "@" + DEFAULT_DOMAIN;
   }
 
@@ -78,10 +75,11 @@ public class MockUserService implements UserService {
    */
   @Override
   public void logout() {
-    ChatClient  chatClient = chatClientContext.getChatClient();
-    chatClients.remove(chatClient);
-    String userName = chatClient.getParticipant().getUserName().getName();
-    chatService.findDefaultConversation().finalizeRemoveParticipant(userName);
+    String userName =
+        this.chatClientContext.getParticipant().getUserName().getName();
+    chatService.getConversation(new UserIdentifier(userName, DEFAULT_DOMAIN))
+        .removeParticipant(this.chatClientContext.getParticipant());
+    chatClients.remove(this.chatClientContext);
   }
 
   /**
@@ -89,7 +87,7 @@ public class MockUserService implements UserService {
    */
   @Override
   public ChatClient findClient(String name) {
-    for (ChatClient client: chatClients) {
+    for (ChatClient client : chatClients) {
       if (client.getParticipant().getUserName().getName().equals(name)) {
         return client;
       }
@@ -102,7 +100,7 @@ public class MockUserService implements UserService {
    */
   @Override
   public ChatClient findClientById(String id) {
-    for (ChatClient client: chatClients) {
+    for (ChatClient client : chatClients) {
       if (client.getParticipant().getUserName().getName().equals(id)) {
         return client;
       }
@@ -110,15 +108,14 @@ public class MockUserService implements UserService {
     return null;
   }
 
- 
-  public void setChatClientContext(ChatClientContext chatClientContext) {
+  @Autowired
+  public void setChatClientContext(ChatClient chatClientContext) {
     this.chatClientContext = chatClientContext;
   }
-  
-  
+
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
   }
-  
+
 }
