@@ -85,9 +85,7 @@ public class ConcreteChatServiceTest {
   }
   
   @Test
-  public void testJoinConversationWithConversation() {
-    final Conversation conversation = context.mock(Conversation.class, "one");
-    
+  public void testJoinConversationWithConversation() {    
     context.checking(new Expectations() {
       {
         exactly(1).of(convoFactory).createConversation(
