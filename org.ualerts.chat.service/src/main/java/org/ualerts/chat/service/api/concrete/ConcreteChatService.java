@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.ConversationFactory;
@@ -74,12 +75,13 @@ public class ConcreteChatService implements ChatService {
     if (conversation == null) {
       conversation = createConversation(userIdentifier);
     }
+    ChatClient chatClient = this.userService.findClient(userIdentifier.getName());
     Participant participant = new ConcreteParticipant();
     participant.setUserName(userIdentifier);
     participant.setConversation(conversation);
-    participant.setChatClient(this.userService.findClient(userIdentifier
-        .getName()));
+    participant.setChatClient(chatClient);
     conversation.addParticipant(participant);
+    chatClient.setParticipant(participant);
   }
   
   /**

@@ -58,4 +58,5 @@ public interface UserService {
    * @return ChatClient found
    */
   public ChatClient findClientById(String id);
+  
 }

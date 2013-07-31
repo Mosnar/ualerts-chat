@@ -45,7 +45,7 @@ public class ConcreteConversation implements Conversation {
 
   private static final Logger logger = LoggerFactory
       .getLogger(ConcreteConversation.class);
-  private static final String BROADCAST_MESSAGE = "all";
+  private static final String BROADCAST_MESSAGE = "all@";
 
   private Set<Participant> participants = new HashSet<Participant>();
   private DateTimeService dateTimeService;
@@ -61,10 +61,11 @@ public class ConcreteConversation implements Conversation {
     participant.setConversation(this);
 
     String name = participant.getChatClient().getUserName();
-
+    String fullyQualifiedName = participant.getUserName().getFullIdentifier();
+    
     // send a message to all participants announcing user joining
     participant.setStatus(Status.ONLINE);
-    Message rosterMessage = getRosterAddedMessage(name, BROADCAST_MESSAGE);
+    Message rosterMessage = getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE+this.name);
     deliverMessage(rosterMessage);
 
     // send a message to the newly joined user announcing the presence of the
@@ -75,7 +76,7 @@ public class ConcreteConversation implements Conversation {
         if (!thisParticipant.getUserName().matches(name)) {
           replyMessage =
               getRosterContentMessage(
-                  thisParticipant.getUserName().getName(), name);
+                  thisParticipant.getUserName().getFullIdentifier(), fullyQualifiedName); 
           deliverMessage(replyMessage);
         }
       }
@@ -90,25 +91,31 @@ public class ConcreteConversation implements Conversation {
 
     String userName = participant.getChatClient().getUserName();
 
-    Message message = getRosterRemovedMessage(userName, BROADCAST_MESSAGE);
+    Message message = getRosterRemovedMessage(userName, BROADCAST_MESSAGE+this.name);
     deliverMessage(message);
   }
 
   @Override
   public void deliverMessage(Message message) {
-    if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE)) {
+    if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE+this.name)) {
       for (Participant participant : getParticipants()) {
         deliverParticipantMessage(participant, message);
       }
     }
     else {
-      Participant toParticipant = findParticipant(message.getTo());
-      Participant fromParticipant = findParticipant(message.getFrom());
+      
+      Participant toParticipant = findParticipant(parseName(message.getTo()));
+      Participant fromParticipant = findParticipant(parseName(message.getFrom()));
       deliverParticipantMessage(toParticipant, message);
       deliverParticipantMessage(fromParticipant, message);
     }
   }
 
+  protected String parseName(String fullyQualifiedName) {
+    int idx = fullyQualifiedName.indexOf("@");
+    return fullyQualifiedName.substring(0,idx);
+  }
+  
   protected void deliverParticipantMessage(Participant participant,
       Message message) {
     if (participant != null

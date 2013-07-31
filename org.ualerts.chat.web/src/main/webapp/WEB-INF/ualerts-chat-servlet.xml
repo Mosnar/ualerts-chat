@@ -22,11 +22,13 @@
 		<bean factory-bean="chatClientFactoryBean" factory-method="getInterceptor" />
 	</mvc:interceptors>
 
-	<bean id="chatClientFactoryBean" class="org.ualerts.chat.web.context.ChatClientContextInterceptorFactoryBean" />
+	<bean id="chatClientFactoryBean" class="org.ualerts.chat.web.context.ChatClientContextInterceptorFactoryBean">
+	  <property name="chatClientContext" ref="chatClientContext"/>
+	</bean>
 
-	<bean id="chatClientContext" 
+<!-- 	<bean id="chatClientContext" 
 		factory-bean="chatClientFactoryBean" factory-method="getInterceptor" />
-
+ -->
 	<bean
 		class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
 		<property name="location">
@@ -82,9 +84,10 @@
 		</property>
 	</bean>
   
-	<bean id="userService" class="org.ualerts.chat.service.api.concrete.MockUserService" >
+<!-- 	<bean id="userService" class="org.ualerts.chat.service.api.concrete.ConcreteUserService" >
     	<property name="chatClientContext" ref="chatClientContext"/>
    </bean> 
+ -->   
 
 	<!-- bean class="org.springframework.context.support.ResourceBundleMessageSource" 
 		id="messageSource"> <property name="basenames"> <list> <value>spring/error_codes</value> 

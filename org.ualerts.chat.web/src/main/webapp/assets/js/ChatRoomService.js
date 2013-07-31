@@ -1,11 +1,14 @@
 function ChatRoomService(remoteService) {
   this.username = null;
+  this.domain = null;
   this.remoteService = remoteService;
   this.hiddenChatRoomViewController = new HiddenChatRoomViewController();
   this.chatRoomViewControllerManager = new ChatRoomViewControllerManager(this.hiddenChatRoomViewController);
   
   this.hiddenChatRoomViewController.addListener(new Callback(this.chatRoomViewControllerManager.focusOnChatRoom, this.chatRoomViewControllerManager));
 }
+
+const ALL_ATCHAR = 'all@';
 
 ChatRoomService.prototype.onMessage = function(message) {
 	var chatRoomName = "";
@@ -14,10 +17,13 @@ ChatRoomService.prototype.onMessage = function(message) {
 	if (message.type != "chat" || this.chatRoomViewControllerManager.size() == 0) {
 		return;
 	}
-
+	var allChat = ALL_ATCHAR+this.domain;
 	switch(message.to) {
 	case this.username: // to me, from <User1>
 		chatRoomName = message.from;
+		break;
+	case allChat:
+		chatRoomName = allChat;
 		break;
 	default:
 		chatRoomName = message.to;

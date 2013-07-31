@@ -23,8 +23,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.ChatService;
+import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserNameConflictException;
 import org.ualerts.chat.service.api.UserService;
@@ -35,8 +38,9 @@ import org.ualerts.chat.service.api.UserService;
  * @author Ransom Robersom
  * @author Brandon Foster
  */
+@Service
 public class ConcreteUserService implements UserService {
-  private ChatClient chatClientContext;
+  private ChatClientContext chatClientContext;
   private Set<ChatClient> chatClients = new HashSet<ChatClient>();
   private ChatService chatService;
   private static String DEFAULT_DOMAIN = "ualerts.org";
@@ -50,8 +54,11 @@ public class ConcreteUserService implements UserService {
     if (this.findClient(name) != null) {
       throw new UserNameConflictException("Name already in use");
     }
-    this.chatClientContext.getParticipant().setUserName(
+    ChatClient chatClient;
+    chatClient = chatClientContext.getChatClient();
+    chatClient.getParticipant().setUserName(
         new UserIdentifier(name, DEFAULT_DOMAIN));
+    chatClient.setUserName(name);
   }
 
   /**
@@ -59,14 +66,15 @@ public class ConcreteUserService implements UserService {
    */
   @Override
   public String login() {
-    String userName =
-        this.chatClientContext.getParticipant().getUserName().getName();
+    ChatClient chatClient = chatClientContext.getChatClient();
+    String userName = chatClient.getParticipant().getUserName().getName();
     if (this.findClient(userName) != null) {
       return userName + "@" + DEFAULT_DOMAIN;
     }
+    chatClients.add(chatClient);
     chatService
         .joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN));
-    chatClients.add(this.chatClientContext);
+    
     return userName + "@" + DEFAULT_DOMAIN;
   }
 
@@ -75,11 +83,11 @@ public class ConcreteUserService implements UserService {
    */
   @Override
   public void logout() {
-    String userName =
-        this.chatClientContext.getParticipant().getUserName().getName();
+    ChatClient chatClient = chatClientContext.getChatClient();
+    String userName = chatClient.getParticipant().getUserName().getName();
     chatService.getConversation(new UserIdentifier(userName, DEFAULT_DOMAIN))
-        .removeParticipant(this.chatClientContext.getParticipant());
-    chatClients.remove(this.chatClientContext);
+        .removeParticipant(chatClient.getParticipant());
+    chatClients.remove(chatClient);
   }
 
   /**
@@ -107,9 +115,9 @@ public class ConcreteUserService implements UserService {
     }
     return null;
   }
-
+  
   @Autowired
-  public void setChatClientContext(ChatClient chatClientContext) {
+  public void setChatClientContext(ChatClientContext chatClientContext) {
     this.chatClientContext = chatClientContext;
   }
 

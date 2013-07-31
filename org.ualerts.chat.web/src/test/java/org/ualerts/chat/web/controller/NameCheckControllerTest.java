@@ -25,12 +25,8 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.util.HtmlUtils;
-import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.UserIdentifier;
-import org.ualerts.chat.web.context.ChatClientContext;
-import org.ualerts.chat.web.sockjs.SockJsChatClient;
+import org.ualerts.chat.service.api.UserNameConflictException;
+import org.ualerts.chat.service.api.UserService;
 /**
 * This test will validate the NameCheckController
 *
@@ -42,7 +38,8 @@ public class NameCheckControllerTest {
 
   private final String USER_NAME1 = "Test1";
   private final String VALID = "{\"result\":\"valid\"}";
-  private final String INVALID = "{\"result\":\"invalid\"}";;
+  private final String INVALID = "{\"result\":\"invalid\"}";
+  private final String DOMAIN = "@ualerts.chat";
 
   @Before
   public void setUp() throws Exception {
@@ -51,64 +48,34 @@ public class NameCheckControllerTest {
   }
 
   @Test
-  public void testCheckNameValid() throws Exception {
-     final ChatClientContext chatClientContext = context.mock(ChatClientContext.class);
-     final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
-     final Participant participant1 = context.mock(Participant.class);
-     final Conversation conversation = context.mock(Conversation.class);
+  public void testChatNameValid() throws Exception {
+    final UserService userService = context.mock(UserService.class);
 
-     context.checking(new Expectations() {
+    context.checking(new Expectations() {
       {
-        oneOf(chatClientContext).getChatClient();
-        will(returnValue(chatClient));
-        
-        oneOf(chatClient).getParticipant();
-        will(returnValue(participant1));
-        
-        oneOf(participant1).getConversation();
-        will(returnValue(conversation));
-        
-        oneOf(conversation).isValidUserName(USER_NAME1);
-        will(returnValue(true));
-        
-        UserIdentifier userName = new UserIdentifier(HtmlUtils.htmlEscape(USER_NAME1.trim()));
-        oneOf(participant1).setUserName(with(equal(userName)));
+        oneOf(userService).setUserName(USER_NAME1,DOMAIN);
       }
-    });
-    nameCheckController.setChatClientContext(chatClientContext);
 
-    assertEquals(VALID,
-        nameCheckController.checkName(USER_NAME1));
+    });
+    nameCheckController.setUserService(userService);
+    assertEquals(VALID, nameCheckController.checkName(USER_NAME1));
     context.assertIsSatisfied();
   }
- 
+
   @Test
   public void testCheckNameInvalid() throws Exception {
-     final ChatClientContext chatClientContext = context.mock(ChatClientContext.class);
-     final SockJsChatClient chatClient = context.mock(SockJsChatClient.class);
-     final Participant participant1 = context.mock(Participant.class);
-     final Conversation conversation = context.mock(Conversation.class);
+    final UserService userService = context.mock(UserService.class);
 
-     context.checking(new Expectations() {
+    context.checking(new Expectations() {
       {
-        oneOf(chatClientContext).getChatClient();
-        will(returnValue(chatClient));
-        
-        oneOf(chatClient).getParticipant();
-        will(returnValue(participant1));
-        
-        oneOf(participant1).getConversation();
-        will(returnValue(conversation));
-        
-        oneOf(conversation).isValidUserName(USER_NAME1);
-        will(returnValue(false));
+        oneOf(userService).setUserName(USER_NAME1,DOMAIN);
+        will(throwException(new UserNameConflictException("error")));
       }
-    });
-    nameCheckController.setChatClientContext(chatClientContext);
 
-    assertEquals(INVALID,
-        nameCheckController.checkName(USER_NAME1));
+    });
+    nameCheckController.setUserService(userService);
+    assertEquals(INVALID, nameCheckController.checkName(USER_NAME1),DOMAIN);
     context.assertIsSatisfied();
   }
- 
+
 }

@@ -88,8 +88,15 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	    });
 	}
 
-	setUpUi(self);
-	onMessageSend(self);	
+	if (chatRoomName == 'all@ualerts.org') {
+		this.$uiDom = $('<div id="chatbox"></div>');
+		$('#messageForm').before(this.$uiDom);
+		}
+
+		if (chatRoomName != 'all@ualerts.org') {
+		setUpUi(self);
+		onMessageSend(self);
+		}	
 }
 
 /**
@@ -117,13 +124,16 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 		return dateString;
 	}
 	
-	
+	if (message.to == "all@ualerts.org") {
+		$chatbox = $('#chatbox');
+	} else {
 		$chatbox = this.$uiDom.find(".chatroom-chat");
 		if (message.from != this.username && !this.windowFocus && !this.missedMessage)
 		{
 			this.missedMessage = true;
 			this.$uiDom.find(".chatroom-title").addClass("unread");
 		}
+	}
 
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
