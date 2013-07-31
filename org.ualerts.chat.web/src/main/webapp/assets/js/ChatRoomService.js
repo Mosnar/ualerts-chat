@@ -17,6 +17,7 @@ ChatRoomService.prototype.onMessage = function(message) {
 	if (message.type != "chat" || this.chatRoomViewControllerManager.size() == 0) {
 		return;
 	}
+
 	var allChat = ALL_ATCHAR+this.domain;
 	switch(message.to) {
 	case this.username: // to me, from <User1>

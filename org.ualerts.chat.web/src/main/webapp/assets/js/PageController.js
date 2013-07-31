@@ -90,6 +90,7 @@ PageController.prototype.handleNameSubmit = function() {
 };
 
 PageController.prototype.parseUserIdentifier = function(self,fullyQualifiedName) {
+
 		var idx = fullyQualifiedName.indexOf(ATCHAR);
 		if (idx != -1) {
 			var domain = fullyQualifiedName.substring(idx + 1);
