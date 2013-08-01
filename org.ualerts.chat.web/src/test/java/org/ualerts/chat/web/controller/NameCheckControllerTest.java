@@ -53,7 +53,7 @@ public class NameCheckControllerTest {
 
     context.checking(new Expectations() {
       {
-        oneOf(userService).setUserName(USER_NAME1,DOMAIN);
+        oneOf(userService).setUserName(USER_NAME1,"");
       }
 
     });
@@ -68,13 +68,13 @@ public class NameCheckControllerTest {
 
     context.checking(new Expectations() {
       {
-        oneOf(userService).setUserName(USER_NAME1,DOMAIN);
+        oneOf(userService).setUserName(USER_NAME1,"");
         will(throwException(new UserNameConflictException("error")));
       }
 
     });
     nameCheckController.setUserService(userService);
-    assertEquals(INVALID, nameCheckController.checkName(USER_NAME1),DOMAIN);
+    assertEquals(INVALID, nameCheckController.checkName(USER_NAME1));
     context.assertIsSatisfied();
   }
 
