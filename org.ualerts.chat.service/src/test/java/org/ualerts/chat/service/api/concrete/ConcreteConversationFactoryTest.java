@@ -1,5 +1,5 @@
 /*
- * File created on Jul 5, 2013
+ * File created on Jul 29, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,47 +17,48 @@
  *
  */
 
-package org.ualerts.chat.web.controller;
-
-import static org.junit.Assert.assertEquals;
+package org.ualerts.chat.service.api.concrete;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
-import org.ualerts.chat.service.api.UserService;
+import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.ConversationFactory;
+import org.ualerts.chat.service.api.UserIdentifier;
 
 /**
-* This test will validate the RosterAddedController functionality
-*
-* @author Ransom Roberson
-*/
-public class RosterAddedControllerTest {
+ *
+ * @author Ransom Roberson
+ * @author Brandon Foster
+ */
+public class ConcreteConversationFactoryTest {
   private Mockery context;
-  private RosterAddedController rosterAddedController;
-
-  private final String USER_NAME = "Test1@org.ualerts.chat";
+  private ConversationFactory convoFactory;
+  private UserIdentifier userIdentity;
+  private Conversation conversation;
 
   @Before
   public void setUp() throws Exception {
     context = new Mockery();
-    rosterAddedController = new RosterAddedController();
+    convoFactory =
+        context.mock(ConversationFactory.class);
+    userIdentity = new UserIdentifier("name", "ualerts.org");
+    conversation = context.mock(Conversation.class);
   }
-
+  
   @Test
-  public void testLogin() throws Exception {
-    final UserService userService = context.mock(UserService.class);
-
+  public void createConversationTest() {
+    
     context.checking(new Expectations() {
       {
-        oneOf(userService).login();
-        will(returnValue(USER_NAME));
+        exactly(1).of(convoFactory).newConversation(
+            with(any(UserIdentifier.class)));
+        will(returnValue(conversation));    
       }
-
     });
-    rosterAddedController.setUserService(userService);
-    assertEquals(USER_NAME, rosterAddedController.login());
+    
+    convoFactory.newConversation(userIdentity);
     context.assertIsSatisfied();
   }
-
 }

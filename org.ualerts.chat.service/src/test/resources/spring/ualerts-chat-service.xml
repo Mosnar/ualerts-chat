@@ -21,8 +21,4 @@
 		</property>
 	</bean>
   
-  <bean id="userService" class="org.ualerts.chat.service.api.concrete.MockUserService" >
-		<property name="chatClientContext" ref="chatClientContext"/>
-	</bean>
-  
 </beans>

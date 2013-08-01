@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatClientContext;
@@ -37,7 +38,8 @@ import org.ualerts.chat.service.api.ChatClientContext;
  * @author Michael Irwin (mikesir87)
  */
 public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
-    implements ChatClientContext, DisposableBean {
+    implements DisposableBean {
+  private ChatClientContext chatClientContext;
   
   private static final ThreadLocal<HttpSession> sessionHolder =
       new ThreadLocal<HttpSession>() { };
@@ -45,30 +47,29 @@ public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
   private static final String CHAT_CLIENT_SESSION_ATTR = 
       "org.ualerts.chat.web.chatClient";
   
+  @Override
   public boolean preHandle(HttpServletRequest request, 
       HttpServletResponse response, Object handler) throws Exception {
-    
-    sessionHolder.set((HttpSession) request.getSession());
+    ChatClient chatClient = (ChatClient)request.getSession().getAttribute(CHAT_CLIENT_SESSION_ATTR);
+    if (chatClient != null) {
+      chatClientContext.setChatClient(chatClient);
+    }
     return true;
   };
-  
   /**
    * {@inheritDoc}
    */
   @Override
-  public ChatClient getChatClient() {
-    return (ChatClient) 
-        sessionHolder.get().getAttribute(CHAT_CLIENT_SESSION_ATTR);
+  public void postHandle(HttpServletRequest request,
+      HttpServletResponse response, Object handler, ModelAndView modelAndView)
+      throws Exception {
+    super.postHandle(request, response, handler, modelAndView);
+    if (chatClientContext.getChatClient() != null) {
+      request.getSession().setAttribute(CHAT_CLIENT_SESSION_ATTR,
+          chatClientContext.getChatClient());
+    }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void setChatClient(ChatClient chatClient) {
-    sessionHolder.get().setAttribute(CHAT_CLIENT_SESSION_ATTR, chatClient);
-  }
-  
+    
   /**
    * {@inheritDoc}
    */
@@ -77,4 +78,11 @@ public class ChatClientContextInterceptor extends HandlerInterceptorAdapter
     sessionHolder.set(null);
   }
   
+  /**
+   * Sets the {@code chatClientContext} property.
+   * @param chatClientContext the value to set
+   */
+  public void setChatClientContext(ChatClientContext chatClientContext) {
+    this.chatClientContext = chatClientContext;
+  }
 }

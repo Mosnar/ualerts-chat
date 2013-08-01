@@ -1,5 +1,5 @@
 /*
- * File created on Jun 26, 2013
+ * File created on Jul 30, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,31 +17,33 @@
  *
  */
 
-package org.ualerts.chat.web.context;
+package org.ualerts.chat.service.api.concrete.context;
 
-import org.ualerts.chat.service.api.ChatClientContext;
+import org.ualerts.chat.service.api.ChatClient;
+
 
 /**
- * Container for a ChatClientContextInterceptor
+ * Provides a reference to a ChatClient
  *
- * @author Michael Irwin
+ * @author Brian Early
  */
-public class ChatClientContextInterceptorFactoryBean {
-  private static ChatClientContextInterceptor interceptor = new ChatClientContextInterceptor();
-  
+public class ChatClientStorage {
+  private ChatClient chatClient;
+
   /**
-   * Gets the {@code interceptor} property.
+   * Gets the {@code chatClient} property.
    * @return property value
    */
-  public ChatClientContextInterceptor getInterceptor() {
-    return interceptor;
+  public ChatClient getChatClient() {
+    return chatClient;
   }
-  
+
   /**
-   * Sets the {@code chatClientContext} property.
-   * @param chatClientContext the value to set
+   * Sets the {@code chatClient} property.
+   * @param chatClient the value to set
    */
-  public void setChatClientContext(ChatClientContext chatClientContext) {
-    interceptor.setChatClientContext(chatClientContext);
+  public void setChatClient(ChatClient chatClient) {
+    this.chatClient = chatClient;
   }
+
 }

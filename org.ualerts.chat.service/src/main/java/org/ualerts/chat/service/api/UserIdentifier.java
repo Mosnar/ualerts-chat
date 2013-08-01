@@ -19,67 +19,75 @@
 
 package org.ualerts.chat.service.api;
 
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Represents a user name
- *
+ * 
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class UserName {
-  
-  public static final UserName NULL_USER = new UserName();
-  
+public class UserIdentifier {
+
+  public static final UserIdentifier NULL_USER = new UserIdentifier();
+
   private String name;
-  
-  public UserName(String userName){
-    if(userName == null || userName.trim().isEmpty())
-    {
+  private String domain;
+
+  public UserIdentifier(String userName, String domainName) {
+    if (StringUtils.isBlank(userName) || StringUtils.isBlank(domainName)) {
       throw new IllegalArgumentException();
     }
     this.name = userName;
+    this.domain = domainName;
   }
-  
-  protected UserName() {
+
+  protected UserIdentifier() {
 
   }
 
   public String getName() {
     return name;
   }
-  
+
+  public String getDomain() {
+    return domain;
+  }
+
+  public String getFullIdentifier() {
+    return name + "@" + domain;
+  }
+
   /**
-   * Determines if this name's value is the same as
-   * the argument's value (trims and ignores case)
-   * @param name the name to comapare to this
+   * Determines if this name's value is the same as the argument's value (trims
+   * and ignores case)
+   * @param name the name to compare to this
    * @return boolean
    */
-  public boolean matches(String name)
-  {
-    if(this != NULL_USER) {
-      if(this.name.trim().equalsIgnoreCase(name.trim()))
+  public boolean matches(String name) {
+    if (this != NULL_USER) {
+      if (this.name.trim().equalsIgnoreCase(name.trim()))
         return true;
-    }   
-    
+    }
+
     return false;
   }
-  
+
   /**
-   * Determines if an object is equal to the UserName object based on its
-   * name field.
+   * Determines if an object is equal to the UserName object based on its name
+   * field.
    * @param Object to compare against
    * @return boolean
    */
-  public boolean equals(Object obj)
-  {
-    if (!obj.getClass().isAssignableFrom(UserName.class))
+  public boolean equals(Object obj) {
+    if (!obj.getClass().isAssignableFrom(UserIdentifier.class))
       return false;
-    UserName username = (UserName) obj;
-    if (this.name.trim().equals(username.getName().trim()))
-    {
+    UserIdentifier username = (UserIdentifier) obj;
+    if (this.name.trim().equals(username.getName().trim())
+        && this.domain.trim().equals(username.getDomain().trim())) {
       return true;
     }
     return false;
   }
-    
+
 }

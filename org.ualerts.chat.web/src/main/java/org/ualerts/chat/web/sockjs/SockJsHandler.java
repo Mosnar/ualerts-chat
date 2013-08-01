@@ -27,13 +27,12 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
 import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.ChatClientContext;
-import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.UserName;
+import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
 
 /**
@@ -44,7 +43,6 @@ import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
  */
 public class SockJsHandler extends TextWebSocketHandlerAdapter {
   
-  private ChatService chatService;
   private ObjectMapper mapper = new ObjectMapper();
   private SockJsChatClient chatClient;
   private ChatClientContext chatClientContext;
@@ -57,26 +55,24 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     super.afterConnectionEstablished(session);
 
     chatClient = getChatClient();
-    chatClient.setSession(session);
-    Conversation conversation = chatService.findDefaultConversation();
-    conversation.addParticipant(getParticipant());
-    participant.setConversation(conversation);
-  }
-  
-  private SockJsChatClient getChatClient() {
-    if (chatClientContext.getChatClient() == null) {
-      chatClientContext.setChatClient(new ConcreteChatClient());
+    if(chatClient.getParticipant() == null)
+    {
+      participant = getParticipant();
+      participant.setChatClient(chatClient);
+      participant.setUserName(UserIdentifier.NULL_USER);
+      participant.setStatus(Status.SETUP);
+      chatClient.setParticipant(participant);
     }
-    return (SockJsChatClient) chatClientContext.getChatClient();
+    chatClient.setSession(session);
   }
   
-  private Participant getParticipant() {
+private Participant getParticipant() {
     
     if(chatClient.getParticipant() == null)
     {
       participant = new ConcreteParticipant();
       participant.setChatClient(chatClient);
-      participant.setUserName(UserName.NULL_USER);
+      participant.setUserName(UserIdentifier.NULL_USER);
       participant.setStatus(Status.SETUP);
       chatClient.setParticipant(participant);
     }
@@ -84,9 +80,16 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     {
       participant = chatClient.getParticipant();
     }
-    
     return participant;
+}
+  private SockJsChatClient getChatClient() {
+    if (chatClientContext.getChatClient() == null) {
+      chatClientContext.setChatClient(new ConcreteChatClient());
+    }
+    return (SockJsChatClient) chatClientContext.getChatClient();
   }
+  
+  
 
   @Override
   public void handleTextMessage(WebSocketSession session, TextMessage message)
@@ -95,7 +98,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
         mapper.readValue(message.getPayload(), ChatTextMessage.class);
     chatMessage.setMessageDate(dateTimeService.getCurrentDate());
     chatMessage.setText( HtmlUtils.htmlEscape(chatMessage.getText()) );
-    this.participant.getConversation().deliverMessage(chatMessage);
+    chatClient.getParticipant().getConversation().deliverMessage(chatMessage);
   }
 
   @Override
@@ -103,14 +106,9 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     chatClient.setSession(session);
     participant = chatClient.getParticipant();
     Conversation conversation = participant.getConversation();
-    conversation.finalizeRemoveParticipant(participant.getUserName().getName());
+    conversation.removeParticipant(participant);
   }
   
-  @Autowired
-  public void setChatService(ChatService chatService) {
-    this.chatService = chatService;
-  }
-
   /**
    * Sets the {@code chatClientContext} property.
    * @param chatClientContext the value to set

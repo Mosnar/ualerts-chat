@@ -48,7 +48,7 @@ public class NameCheckController {
   public String checkName(@RequestParam("name") String name) {
 
     try {
-      userService.setUserName(name);
+      userService.setUserName(name,"");
       return VALID;
     }
     catch (UserNameConflictException e) {
@@ -62,3 +62,4 @@ public class NameCheckController {
   }
 
 }
+

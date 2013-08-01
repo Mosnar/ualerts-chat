@@ -5,17 +5,20 @@ function HiddenChatRoomViewController() {
 	this.$uiDom = $("#overflow-chatroom-button");
 	this.$uiDom.on('click', '.dropdown-menu li', function() {
 		var name = $(this).text();
-		self.notifyListeners(name);
+		var fullyQualified = $(this).attr('fully-qualified');
+		self.notifyListeners(fullyQualified);
 	});
 }
+const ATCHAR = '@';
+const ALL_ATCHAR = 'all@';
 
 HiddenChatRoomViewController.prototype.addListener = function(callback) {
 	this.listeners.push(callback);
 };
 
-HiddenChatRoomViewController.prototype.notifyListeners = function(name) {
+HiddenChatRoomViewController.prototype.notifyListeners = function(fullyQualified) {
 	for (var i = 0; i < this.listeners.length; i++) {
-		this.listeners[i].execute(name);
+		this.listeners[i].execute(fullyQualified);
 	}
 };
 
@@ -38,11 +41,12 @@ HiddenChatRoomViewController.prototype.show = function() {
 };
 
 HiddenChatRoomViewController.prototype.addElement = function(name, uniqueId) {
-	if (name == 'all') {
+	var allChat = ALL_ATCHAR + this.getDomain(name);
+	if (name == allChat) {
 		return;
 	}
-	var listEntry = $('<li id="hidden-' + uniqueId + '">' + name + '</li>');
-	var listEntryId = this.$uiDom.find('.dropdown-menu li:contains(' + name + ')').attr('id');
+	var listEntry = $('<li fully-qualified="' + name +'" id="hidden-' + uniqueId + '">' + this.getName(name) + '</li>');
+	var listEntryId = this.$uiDom.find('.dropdown-menu li:contains(' + this.getName(name) + ')').attr('id');
 	if (listEntryId != "hidden-" + uniqueId) {
 		this.$uiDom.find('.dropdown-menu').append(listEntry);
 		this.updateButtonCount();
@@ -51,7 +55,8 @@ HiddenChatRoomViewController.prototype.addElement = function(name, uniqueId) {
 };
 
 HiddenChatRoomViewController.prototype.removeElement = function(name, uniqueId) {
-	if (name == 'all') {
+	var allChat = ALL_ATCHAR + this.getDomain(name);
+	if (name == allChat) {
 		return;
 	}
 	this.$uiDom.find('.dropdown-menu li#hidden-' + uniqueId).remove();
@@ -66,10 +71,21 @@ HiddenChatRoomViewController.prototype.updateButtonCount = function() {
 
 
 HiddenChatRoomViewController.prototype.contains = function(name) {
-	if (this.$uiDom.find('.dropdown-menu li:contains(' + name + ')').length == 1) {
+	
+	if (this.$uiDom.find('.dropdown-menu li[fully-qualified="' + name + '"]').length == 1) {
 		return true;
 	}
 	else {
 		return false;
 	}
+};
+
+HiddenChatRoomViewController.prototype.getDomain = function(fullyQualifiedName) {
+	var idx = fullyQualifiedName.indexOf(ATCHAR);
+	return fullyQualifiedName.substring(idx+1);
+};
+
+HiddenChatRoomViewController.prototype.getName = function(fullyQualifiedName) {
+	var idx = fullyQualifiedName.indexOf(ATCHAR);
+	return fullyQualifiedName.substring(0,idx);
 };

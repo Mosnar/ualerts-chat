@@ -6,10 +6,13 @@
 function PageController(remoteService, chatRoomService) {
     this.service = remoteService;
     this.username = "";
+    this.domain = "";
     this.connectedUsers = new Array();
     this.chatRoomService = chatRoomService;
 }
 
+const ATCHAR = '@';
+const ALL_ATCHAR = 'all@';
 /**
  * Set up the chat.
  */
@@ -80,14 +83,28 @@ PageController.prototype.handleNameSubmit = function() {
         	setUpUi();
         }
         
-        self.service.submitName();
-        self.chatRoomService.setUsername($username);
-        self.chatRoomService.createChatRoomViewController("all");
+        self.service.login(self,self.parseUserIdentifier);
     });
     
     this.service.connect();
 };
 
+PageController.prototype.parseUserIdentifier = function(self,fullyQualifiedName) {
+
+		var idx = fullyQualifiedName.indexOf(ATCHAR);
+		if (idx != -1) {
+			var domain = fullyQualifiedName.substring(idx + 1);
+			self.chatRoomService.setUsername(fullyQualifiedName);
+			self.chatRoomService.setDomain(domain);
+			self.chatRoomService.createChatRoomViewController(ALL_ATCHAR+domain);
+			self.updateDomain(domain);
+		};
+	};
+
+PageController.prototype.updateDomain = function(domain) {
+    this.domain = domain;
+};
+	
 /**
  * Set the username property for the PageController class
  *
@@ -127,7 +144,9 @@ PageController.prototype.handleMessageSubmit = function() {
     $('#messageButton').click(function() {
         if ($.trim($messageField.val()) != "") {
             var clientMessage = $messageField.val();
-            self.service.sendMessage("<b>" + self.username + "</b>", "all", "chat", clientMessage);
+            var allChat = ALL_ATCHAR+self.domain;
+            var userFrom = self.username+ATCHAR+self.domain;
+            self.service.sendMessage("<b>" + userFrom + "</b>", allChat, "chat", clientMessage);
             $messageField.val('');
         }
     });
@@ -152,7 +171,7 @@ PageController.prototype.addToRoster = function(user) {
 	
 	function addUser() {
 		self.connectedUsers.push(user);
-		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user
+		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + self.getName(user)
 			+ '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
 		$('#connected-users > tbody').prepend(htmlString);
 	}
@@ -160,6 +179,7 @@ PageController.prototype.addToRoster = function(user) {
 	function addChatClickHandler() {
 		$('#connected-users > tbody tr:first .add-chat').click(function() {
 			var contact = $.trim($(this).parent().text());
+			contact = contact + ATCHAR + self.domain;
 			if (self.chatRoomService.getChatRoomViewController(contact) == false) {
 				self.chatRoomService.createChatRoomViewController(contact);
 			}
@@ -202,7 +222,7 @@ PageController.prototype.onMessage = function(message) {
     if (message.type == "ROSTER") {
     	switch(message.subType) {
     	case "ADDED":
-    		$chatbox.append('<p>' + '(' + buildDateString() + ') ' + message.from + ' has entered the chat.<p>');
+    		$chatbox.append('<p>' + '(' + buildDateString() + ') ' + this.getName(message.from) + ' has entered the chat.<p>');
     		this.addToRoster(message.from);
     		break;
     	case "REMOVED":
@@ -251,4 +271,9 @@ PageController.prototype.handleValidity = function(jsonObj, storedUsername) {
         $('#nameButton').attr('disabled', 'disabled');
 
     };
+};
+
+PageController.prototype.getName = function(user){
+	var idx = user.indexOf(ATCHAR);
+	return user.substring(0,idx);
 };

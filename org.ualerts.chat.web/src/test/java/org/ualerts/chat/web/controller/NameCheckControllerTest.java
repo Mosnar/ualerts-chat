@@ -27,19 +27,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ualerts.chat.service.api.UserNameConflictException;
 import org.ualerts.chat.service.api.UserService;
-
 /**
- * This test will validate the NameCheckController
- * 
- * @author Ransom Roberson
- */
+* This test will validate the NameCheckController
+*
+* @author Ransom Roberson
+*/
 public class NameCheckControllerTest {
   private Mockery context;
   private NameCheckController nameCheckController;
 
   private final String USER_NAME1 = "Test1";
   private final String VALID = "{\"result\":\"valid\"}";
-  private final String INVALID = "{\"result\":\"invalid\"}";;
+  private final String INVALID = "{\"result\":\"invalid\"}";
+  private final String DOMAIN = "@ualerts.chat";
 
   @Before
   public void setUp() throws Exception {
@@ -53,7 +53,7 @@ public class NameCheckControllerTest {
 
     context.checking(new Expectations() {
       {
-        oneOf(userService).setUserName(USER_NAME1);
+        oneOf(userService).setUserName(USER_NAME1,"");
       }
 
     });
@@ -68,7 +68,7 @@ public class NameCheckControllerTest {
 
     context.checking(new Expectations() {
       {
-        oneOf(userService).setUserName(USER_NAME1);
+        oneOf(userService).setUserName(USER_NAME1,"");
         will(throwException(new UserNameConflictException("error")));
       }
 

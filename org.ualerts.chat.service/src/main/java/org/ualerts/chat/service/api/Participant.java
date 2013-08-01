@@ -48,13 +48,13 @@ public interface Participant {
    * Represents a participant's screen name
    * @param userName
    */
-  void setUserName(UserName userName);
+  void setUserName(UserIdentifier userName);
   
   /**
    * Retrieve a participant's user name
    * @return
    */
-  UserName getUserName();
+  UserIdentifier getUserName();
   
   /**
    * Provide a reference to a participant's chat session

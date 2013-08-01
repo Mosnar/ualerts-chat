@@ -1,5 +1,5 @@
 /*
- * File created on Jun 26, 2013
+ * File created on Jul 30, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,31 +17,34 @@
  *
  */
 
-package org.ualerts.chat.web.context;
+package org.ualerts.chat.service.api.concrete.context;
 
+import org.springframework.stereotype.Service;
+import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatClientContext;
 
 /**
- * Container for a ChatClientContextInterceptor
+ * Implementation of ChatClientContext
  *
- * @author Michael Irwin
+ * @author Brian Early
  */
-public class ChatClientContextInterceptorFactoryBean {
-  private static ChatClientContextInterceptor interceptor = new ChatClientContextInterceptor();
+@Service("chatClientContext")
+public class ConcreteChatClientContext implements ChatClientContext {
   
   /**
-   * Gets the {@code interceptor} property.
-   * @return property value
+   * {@inheritDoc}
    */
-  public ChatClientContextInterceptor getInterceptor() {
-    return interceptor;
+  @Override
+  public void setChatClient(ChatClient chatClient) {
+    ChatClientHolder.getChatClientStorage().setChatClient(chatClient);
   }
-  
+
   /**
-   * Sets the {@code chatClientContext} property.
-   * @param chatClientContext the value to set
+   * {@inheritDoc}
    */
-  public void setChatClientContext(ChatClientContext chatClientContext) {
-    interceptor.setChatClientContext(chatClientContext);
+  @Override
+  public ChatClient getChatClient() {
+    return ChatClientHolder.getChatClientStorage().getChatClient();
   }
+
 }
