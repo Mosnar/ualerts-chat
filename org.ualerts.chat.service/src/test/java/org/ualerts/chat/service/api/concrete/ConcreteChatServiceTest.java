@@ -32,6 +32,8 @@ import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserIdentifier;
+import org.ualerts.chat.service.api.UserService;
+import org.ualerts.chat.service.api.concrete.context.ConcreteChatClientContext;
 
 public class ConcreteChatServiceTest {
 
@@ -43,7 +45,7 @@ public class ConcreteChatServiceTest {
   private ChatClient chatClient;
   private ChatClientContext chatClientContext;
   private Conversation conversation;
-  private ConcreteUserService userService;
+  private UserService userService;
 
 
   @Before
@@ -60,16 +62,14 @@ public class ConcreteChatServiceTest {
     
     chatService = new ConcreteChatService(dateTimeService);
     chatService.setConcreteConversationFactory(convoFactory);
-    userService = new ConcreteUserService();
-    
-    userService.setChatClientContext(chatClientContext);
-    userService.setChatService(chatService);
+    userService = context.mock(UserService.class);
+    chatClientContext = new ConcreteChatClientContext();
     chatService.setUserService(userService);
   }
 
   @Test
   public void testJoinConversationNoConversation() {
-
+    
     context.checking(new Expectations() {
       {
         exactly(1).of(convoFactory).newConversation(
@@ -78,6 +78,9 @@ public class ConcreteChatServiceTest {
         exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
         atLeast(0).of(conversation).getName();
         will(returnValue(userIdentity.getDomain()));
+        oneOf(userService).findClient(with(any(String.class)));
+        will(returnValue(chatClient));
+        oneOf(chatClient).setParticipant(with(any(Participant.class)));
       }
     });
 
@@ -87,7 +90,8 @@ public class ConcreteChatServiceTest {
   }
   
   @Test
-  public void testJoinConversationWithConversation() {    
+  public void testJoinConversationWithConversation() {  
+   
     context.checking(new Expectations() {
       {
         exactly(1).of(convoFactory).newConversation(
@@ -96,9 +100,12 @@ public class ConcreteChatServiceTest {
         exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
         atLeast(0).of(conversation).getName();
         will(returnValue(userIdentity.getDomain()));
+        oneOf(userService).findClient(with(any(String.class)));
+        will(returnValue(chatClient));
+        oneOf(chatClient).setParticipant(with(any(Participant.class)));
       }
     });
-
+    
     chatService.createConversation(userIdentity);
     chatService.joinConversation(userIdentity);
     context.assertIsSatisfied();

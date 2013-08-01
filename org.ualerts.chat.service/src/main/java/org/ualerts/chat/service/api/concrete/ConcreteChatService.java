@@ -75,11 +75,6 @@ public class ConcreteChatService implements ChatService {
     if (conversation == null) {
       conversation = createConversation(userIdentifier);
     }
-    System.out.println("userService is null: " + (this.userService == null));
-    System.out.println("userIdentifier is null: " + (userIdentifier == null));
-    System.out.println("userIdentifier.getName() is null: " + (userIdentifier.getName() == null));
-    System.out.println("this.userService.findClient(userIdentifier.getName()) is null: " + (this.userService.findClient(userIdentifier.getName()) == null));
-    System.out.println("userIdentifier.getName(): " + userIdentifier.getName());
 
     ChatClient chatClient = this.userService.findClient(userIdentifier.getName());
     Participant participant = new ConcreteParticipant();

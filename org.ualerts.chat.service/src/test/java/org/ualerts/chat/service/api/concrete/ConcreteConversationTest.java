@@ -80,10 +80,7 @@ public class ConcreteConversationTest {
 
         oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
 
-        oneOf(participant).getUserName();
-        will(returnValue(userId));
-
-        exactly(2).of(participant).getUserName();
+        atLeast(1).of(participant).getUserName();
         will(returnValue(userId));
       }
     });
