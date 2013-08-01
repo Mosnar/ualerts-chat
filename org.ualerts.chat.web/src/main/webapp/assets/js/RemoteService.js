@@ -102,3 +102,13 @@ RemoteService.prototype.login = function(pageControllerReference,callback) {
         callback(pageControllerReference,data);
     });
 };
+
+RemoteService.prototype.createChatRoom = function(chatRoomName) {
+	$.ajax({
+		type: "POST",
+		url: window.location.href + "createNewConversation",
+		data: {conversationName: chatRoomName}
+	}).done(function(data) {
+		console.log('RemoteService.createChatRoom succeeded: ' + data);
+	});
+};

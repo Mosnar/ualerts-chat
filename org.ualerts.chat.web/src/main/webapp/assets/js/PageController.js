@@ -22,6 +22,7 @@ PageController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
+    this.handleNewConversationSubmit();
     $('#usernameField').focus();
 };
 
@@ -91,16 +92,30 @@ PageController.prototype.handleNameSubmit = function() {
 
 PageController.prototype.parseUserIdentifier = function(self,fullyQualifiedName) {
 
-		var idx = fullyQualifiedName.indexOf(ATCHAR);
-		if (idx != -1) {
-			var domain = fullyQualifiedName.substring(idx + 1);
-			self.chatRoomService.setUsername(fullyQualifiedName);
-			self.chatRoomService.setDomain(domain);
-			self.chatRoomService.createChatRoomViewController(ALL_ATCHAR+domain);
-			self.updateDomain(domain);
-		};
+	var idx = fullyQualifiedName.indexOf(ATCHAR);
+	if (idx != -1) {
+		var domain = fullyQualifiedName.substring(idx + 1);
+		self.chatRoomService.setUsername(fullyQualifiedName);
+		self.chatRoomService.setDomain(domain);
+		self.chatRoomService.createChatRoomViewController(ALL_ATCHAR+domain);
+		self.updateDomain(domain);
 	};
+};
 
+PageController.prototype.handleNewConversationSubmit = function() {
+	
+	var self = this;
+	
+	$('#new-conversation-button').click(function() {
+		var $newChatRoomName = $('#new-conversation-field').val();
+		$newChatRoomName = self.htmlEncode($newChatRoomName);
+		
+		if ($.trim($newChatRoomName) != "") {
+			self.service.createChatRoom($newChatRoomName);
+		}
+	});
+};
+	
 PageController.prototype.updateDomain = function(domain) {
     this.domain = domain;
 };
