@@ -26,6 +26,7 @@ import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.DateTimeService;
@@ -40,6 +41,7 @@ public class ConcreteChatServiceTest {
   private DateTimeService dateTimeService;
   private ConversationFactory convoFactory;
   private ChatClient chatClient;
+  private ChatClientContext chatClientContext;
   private Conversation conversation;
   private ConcreteUserService userService;
 
@@ -60,7 +62,7 @@ public class ConcreteChatServiceTest {
     chatService.setConcreteConversationFactory(convoFactory);
     userService = new ConcreteUserService();
     
-    userService.setChatClientContext(chatClient);
+    userService.setChatClientContext(chatClientContext);
     userService.setChatService(chatService);
     chatService.setUserService(userService);
   }
