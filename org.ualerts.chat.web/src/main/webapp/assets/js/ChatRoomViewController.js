@@ -1,6 +1,7 @@
-function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId) {
+function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, domain) {
 	this.name = chatRoomName;
 	this.username = username;
+	this.domain = domain;
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
 	this.$uiDom = "";
@@ -8,8 +9,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	this.missedMessage = true;
 	
 	var self = this;
-	
-	
+	 
 	// On page focus
 	$(window).focus(function() {
 		self.windowFocus = true;
@@ -87,13 +87,14 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 	    	}
 	    });
 	}
-
-	if (chatRoomName == 'all@ualerts.org') {
+	var allChat = 'all@'+self.domain;
+	
+	if (chatRoomName == allChat) {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
 		}
 
-		if (chatRoomName != 'all@ualerts.org') {
+		if (chatRoomName != allChat) {
 		setUpUi(self);
 		onMessageSend(self);
 		}
@@ -108,7 +109,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId)
 ChatRoomViewController.prototype.displayChatMessage = function(message) {
 
 	var $chatbox = "";
-	
+	var allChat = 'all@'+this.domain;
 	/**
 	 * Build a string to be displayed with the chat message text
 	 * 
@@ -125,8 +126,12 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 		return dateString;
 	}
 	
-
-	if (message.to == "all@ualerts.org") {
+	function getDisplayName(name) {
+		idx = name.indexOf('@');
+		return name.substring(0,idx);
+	}
+	
+	if (message.to == allChat) {
 		$chatbox = $('#chatbox');
 	} else {
 
@@ -141,7 +146,7 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 
 
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
-			message.from + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
+			getDisplayName(message.from) + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
 };
 
