@@ -26,9 +26,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * DESCRIBE THE TYPE HERE.
+ * Controller used to create a new Conversation
  *
- * @author billysc
+ * @author Billy Coleman
+ * @author Brandon Foster
  */
 @Controller
 public class CreateConversationController {
@@ -38,8 +39,14 @@ public class CreateConversationController {
   
   @RequestMapping (value = "/createNewConversation", method = RequestMethod.POST)
   @ResponseBody
+  /**
+   * Create a new Conversation 
+   * @param the name of the new Conversation
+   * @return json String indicating result
+   */
   public String createConversation(@RequestParam("conversationName") String conversationName) {
     if (true) {
+      //@TODO  Implementation to follow in later task ACE-72
       System.out.println("in createConversation");
       return this.VALID;
     }
