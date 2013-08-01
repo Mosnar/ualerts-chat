@@ -52,13 +52,13 @@ public class ConcreteConversationFactoryTest {
     
     context.checking(new Expectations() {
       {
-        exactly(1).of(convoFactory).createConversation(
+        exactly(1).of(convoFactory).newConversation(
             with(any(UserIdentifier.class)));
         will(returnValue(conversation));    
       }
     });
     
-    convoFactory.createConversation(userIdentity);
+    convoFactory.newConversation(userIdentity);
     context.assertIsSatisfied();
   }
 }

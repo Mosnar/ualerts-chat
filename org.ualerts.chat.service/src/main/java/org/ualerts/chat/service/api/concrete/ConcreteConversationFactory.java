@@ -48,7 +48,7 @@ public class ConcreteConversationFactory implements ConversationFactory {
    * {@inheritDoc}
    */
   @Override
-  public Conversation createConversation(UserIdentifier userIdentifier) {
+  public Conversation newConversation(UserIdentifier userIdentifier) {
     ConcreteConversation conversation = new ConcreteConversation();
     conversation.setDateTimeService(this.dateTimeService);
     conversation.setName(userIdentifier.getDomain());

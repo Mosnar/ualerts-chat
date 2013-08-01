@@ -19,6 +19,8 @@
 
 package org.ualerts.chat.service.api;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Represents a user name
  * 
@@ -33,8 +35,7 @@ public class UserIdentifier {
   private String domain;
 
   public UserIdentifier(String userName, String domainName) {
-    if (userName == null || userName.trim().isEmpty() || domainName == null
-        || domainName.trim().isEmpty()) {
+    if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(domainName)) {
       throw new IllegalArgumentException();
     }
     this.name = userName;
