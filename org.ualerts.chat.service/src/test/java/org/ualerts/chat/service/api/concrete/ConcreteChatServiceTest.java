@@ -72,7 +72,7 @@ public class ConcreteChatServiceTest {
 
     context.checking(new Expectations() {
       {
-        exactly(1).of(convoFactory).createConversation(
+        exactly(1).of(convoFactory).newConversation(
             with(any(UserIdentifier.class)));
         will(returnValue(conversation));        
         exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
@@ -90,7 +90,7 @@ public class ConcreteChatServiceTest {
   public void testJoinConversationWithConversation() {    
     context.checking(new Expectations() {
       {
-        exactly(1).of(convoFactory).createConversation(
+        exactly(1).of(convoFactory).newConversation(
             with(any(UserIdentifier.class)));
         will(returnValue(conversation));        
         exactly(1).of(conversation).addParticipant(with(any(Participant.class)));

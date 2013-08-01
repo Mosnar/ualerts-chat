@@ -96,7 +96,7 @@ public class ConcreteChatService implements ChatService {
    * @return The created conversation
    */
   public Conversation createConversation(UserIdentifier userIdentifier) {
-    Conversation conversation = conversationFactory.createConversation(userIdentifier);
+    Conversation conversation = conversationFactory.newConversation(userIdentifier);
     conversations.add(conversation);
     return conversation;
   }
