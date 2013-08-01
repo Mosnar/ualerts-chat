@@ -36,17 +36,18 @@ public class CreateConversationController {
   
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
-  
-  @RequestMapping (value = "/createNewConversation", method = RequestMethod.POST)
-  @ResponseBody
+ 
   /**
    * Create a new Conversation 
    * @param the name of the new Conversation
    * @return json String indicating result
    */
+  
+  @RequestMapping (value = "/createNewConversation", method = RequestMethod.POST)
+  @ResponseBody
   public String createConversation(@RequestParam("conversationName") String conversationName) {
     if (true) {
-      //@TODO  Implementation to follow in later task ACE-72
+      //TODO  Implementation to follow in later task ACE-72
       System.out.println("in createConversation");
       return this.VALID;
     }
