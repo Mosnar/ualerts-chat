@@ -41,8 +41,7 @@ public class CreateConversationController {
    * Create a new Conversation 
    * @param the name of the new Conversation
    * @return json String indicating result
-   */
-  
+   */  
   @RequestMapping (value = "/createNewConversation", method = RequestMethod.POST)
   @ResponseBody
   public String createConversation(@RequestParam("conversationName") String conversationName) {
