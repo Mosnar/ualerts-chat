@@ -18,8 +18,8 @@
  */
 
 /**
- * DESCRIBE THE TYPE HERE.
+ * Package provided to wrap ThreadLocal which holds a ConcreteChatClientContext
  *
- * @author Brian Early
+ * @author Billy Coleman
  */
 package org.ualerts.chat.service.api.concrete.context;
