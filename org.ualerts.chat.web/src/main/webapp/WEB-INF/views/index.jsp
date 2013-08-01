@@ -30,7 +30,7 @@
     
     	<div class="row">
     		<div class="span12">
-         		<a href="#new-conversation" role="button" class="btn btn-success" data-toggle="modal">Create new conversation</a>
+         		<a href="#new-conversation" role="button" class="btn btn-success" data-toggle="modal">Start a Conversation</a>
 		    	<div id="new-conversation" class="modal hide fade">
 			    	<div class="modal-body">
 			    		<div class="modal-header">
@@ -41,7 +41,7 @@
 			    			<input id="new-conversation-field" type="text" value="" name="conversationName" placeholder="Conversation name" />
 					    	<div class="modal-footer">
 					    		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-								<button id="new-conversation-button" class="btn btn-primary">Save changes</button>
+								<button id="new-conversation-button" class="btn btn-primary">Submit</button>
 					    	</div>
 			    		</form>
 			    	</div>

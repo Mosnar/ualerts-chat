@@ -112,7 +112,8 @@ PageController.prototype.handleNewConversationSubmit = function() {
 		
 		if ($.trim($newChatRoomName) != "") {
 			self.service.createChatRoom($newChatRoomName);
-		}
+		    $('#new-conversation').modal('hide');
+		};
 	});
 };
 	
