@@ -35,7 +35,7 @@ public class UserIdentifier {
   private String domain;
 
   public UserIdentifier(String userName, String domainName) {
-    if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(domainName)) {
+    if (StringUtils.isBlank(userName) || StringUtils.isBlank(domainName)) {
       throw new IllegalArgumentException();
     }
     this.name = userName;
