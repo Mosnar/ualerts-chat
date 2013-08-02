@@ -206,7 +206,7 @@ PageController.prototype.addToRoster = function(user) {
 	
 	function addUser() {
 		self.connectedUsers.push(user);
-		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user
+		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + self.getName(user)
 			+ '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
 		$('#connected-users > tbody').prepend(htmlString);
 	}

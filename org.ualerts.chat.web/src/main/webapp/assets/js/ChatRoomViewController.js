@@ -27,7 +27,8 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + self.name + '<i class="icon-minus pull-right"></i></p>'
+		   		+   '<p class="chatroom-title unread">&nbsp;&nbsp;(' + self.domain + ')</>'
+		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + parseUserName(self.name) + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
 		   		+ '<div>'

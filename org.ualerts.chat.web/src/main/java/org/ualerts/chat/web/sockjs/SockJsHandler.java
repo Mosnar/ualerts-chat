@@ -27,6 +27,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
 import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.ChatClientContext;
+import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
@@ -48,7 +49,7 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
   private ChatClientContext chatClientContext;
   private DateTimeService dateTimeService;
   private Participant participant;
-
+  private ChatService chatService;
   @Override
   public void afterConnectionEstablished(final WebSocketSession session)
       throws Exception {
@@ -98,9 +99,16 @@ private Participant getParticipant() {
         mapper.readValue(message.getPayload(), ChatTextMessage.class);
     chatMessage.setMessageDate(dateTimeService.getCurrentDate());
     chatMessage.setText( HtmlUtils.htmlEscape(chatMessage.getText()) );
-    chatClient.getParticipant().getConversation().deliverMessage(chatMessage);
+    Conversation conversation = chatService.getConversation(getUserIdentifier(chatMessage.getFrom()));
+    conversation.deliverMessage(chatMessage);
   }
-
+  
+  private UserIdentifier getUserIdentifier(String from) {
+    int idx = from.indexOf("@");
+    return new UserIdentifier(from.substring(0,idx), from.substring(idx+1));
+    
+  }
+  
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
     chatClient.setSession(session);
@@ -125,5 +133,9 @@ private Participant getParticipant() {
   @Autowired
   public void setDateTimeService(DateTimeService dateTimeService) {
     this.dateTimeService = dateTimeService;
+  }
+  @Autowired
+  public void setChatService(ChatService chatService) {
+    this.chatService = chatService;
   }
 }
