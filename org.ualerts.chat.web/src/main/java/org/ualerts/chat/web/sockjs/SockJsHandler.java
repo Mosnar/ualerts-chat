@@ -43,21 +43,21 @@ import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
  * @author Ransom Roberson
  */
 public class SockJsHandler extends TextWebSocketHandlerAdapter {
-  
+
   private ObjectMapper mapper = new ObjectMapper();
   private SockJsChatClient chatClient;
   private ChatClientContext chatClientContext;
   private DateTimeService dateTimeService;
   private Participant participant;
   private ChatService chatService;
+
   @Override
   public void afterConnectionEstablished(final WebSocketSession session)
       throws Exception {
     super.afterConnectionEstablished(session);
 
     chatClient = getChatClient();
-    if(chatClient.getParticipant() == null)
-    {
+    if (chatClient.getParticipant() == null) {
       participant = getParticipant();
       participant.setChatClient(chatClient);
       participant.setUserName(UserIdentifier.NULL_USER);
@@ -66,57 +66,61 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     }
     chatClient.setSession(session);
   }
-  
-private Participant getParticipant() {
-    
-    if(chatClient.getParticipant() == null)
-    {
+
+  private Participant getParticipant() {
+
+    if (chatClient.getParticipant() == null) {
       participant = new ConcreteParticipant();
       participant.setChatClient(chatClient);
       participant.setUserName(UserIdentifier.NULL_USER);
       participant.setStatus(Status.SETUP);
       chatClient.setParticipant(participant);
     }
-    else
-    {
+    else {
       participant = chatClient.getParticipant();
     }
     return participant;
-}
+  }
+
   private SockJsChatClient getChatClient() {
     if (chatClientContext.getChatClient() == null) {
       chatClientContext.setChatClient(new ConcreteChatClient());
     }
     return (SockJsChatClient) chatClientContext.getChatClient();
   }
-  
-  
 
   @Override
   public void handleTextMessage(WebSocketSession session, TextMessage message)
       throws Exception {
-    ChatTextMessage chatMessage = 
+    ChatTextMessage chatMessage =
         mapper.readValue(message.getPayload(), ChatTextMessage.class);
     chatMessage.setMessageDate(dateTimeService.getCurrentDate());
-    chatMessage.setText( HtmlUtils.htmlEscape(chatMessage.getText()) );
-    Conversation conversation = chatService.getConversation(getUserIdentifier(chatMessage.getFrom()));
+    chatMessage.setText(HtmlUtils.htmlEscape(chatMessage.getText()));
+    Conversation conversation =
+        chatService.getConversation(getUserIdentifier(chatMessage.getFrom()));
     conversation.deliverMessage(chatMessage);
   }
-  
+
+  /**
+   * Get a UserIdentifier based on a message from address
+   * @param the fullyQualified from address
+   * @return a UserIdentifier
+   */
   private UserIdentifier getUserIdentifier(String from) {
     int idx = from.indexOf("@");
-    return new UserIdentifier(from.substring(0,idx), from.substring(idx+1));
-    
+    return new UserIdentifier(from.substring(0, idx), from.substring(idx + 1));
+
   }
-  
+
   @Override
-  public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+  public void afterConnectionClosed(WebSocketSession session,
+      CloseStatus status) throws Exception {
     chatClient.setSession(session);
     participant = chatClient.getParticipant();
     Conversation conversation = participant.getConversation();
     conversation.removeParticipant(participant);
   }
-  
+
   /**
    * Sets the {@code chatClientContext} property.
    * @param chatClientContext the value to set
@@ -134,6 +138,7 @@ private Participant getParticipant() {
   public void setDateTimeService(DateTimeService dateTimeService) {
     this.dateTimeService = dateTimeService;
   }
+
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
