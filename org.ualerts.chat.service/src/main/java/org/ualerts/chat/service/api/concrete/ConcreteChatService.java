@@ -70,10 +70,10 @@ public class ConcreteChatService implements ChatService {
    * {@inheritDoc}
    */
   @Override
-  public void joinConversation(UserIdentifier userIdentifier) {
+  public void joinConversation(UserIdentifier userIdentifier, boolean isDefaultConversation) {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation == null) {
-      conversation = createConversation(userIdentifier);
+      conversation = createConversation(userIdentifier, isDefaultConversation);
     }
 
     ChatClient chatClient = this.userService.findClient(userIdentifier.getName());
@@ -90,8 +90,8 @@ public class ConcreteChatService implements ChatService {
    * @param userIdentifier
    * @return The created conversation
    */
-  public Conversation createConversation(UserIdentifier userIdentifier) {
-    Conversation conversation = conversationFactory.newConversation(userIdentifier);
+  public Conversation createConversation(UserIdentifier userIdentifier, boolean isDefaultConversation) {
+    Conversation conversation = conversationFactory.newConversation(userIdentifier, isDefaultConversation);
     conversations.add(conversation);
     return conversation;
   }

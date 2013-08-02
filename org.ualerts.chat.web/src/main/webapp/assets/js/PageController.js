@@ -22,6 +22,7 @@ PageController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
+    this.handleModalFocus();
     this.handleNewConversationSubmit();
     $('#usernameField').focus();
 };
@@ -43,6 +44,7 @@ PageController.prototype.messageDisable = function() {
     $field.attr('readonly', 'readonly');
     $field.attr('placeholder', 'Please enter a username');
     $button.attr('disabled', 'disabled');
+    $('#conversation-modal').hide();
 };
 
 /**
@@ -85,6 +87,8 @@ PageController.prototype.handleNameSubmit = function() {
         }
         
         self.service.login(self,self.parseUserIdentifier);
+        
+        $('#conversation-modal').show();
     });
     
     this.service.connect();
@@ -111,13 +115,21 @@ PageController.prototype.handleNewConversationSubmit = function() {
 		$newChatRoomName = self.htmlEncode($newChatRoomName);
 		
 		if ($.trim($newChatRoomName) != "") {
-			self.service.createChatRoom($newChatRoomName);
+			self.service.createChatRoom($newChatRoomName,self.username,self,self.newConversation);
 		    $('#new-conversation').modal('hide');
 		    $('#new-conversation-field').val("");
 		};
 	});
 };
+
+PageController.prototype.newConversation = function(self, newChatRoomName) {
+	var fullyQualifiedName = self.username+ATCHAR+newChatRoomName+"."+self.domain;
+	self.chatRoomService.setUsername(fullyQualifiedName);
+	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
+	self.chatRoomService.createChatRoomViewController(fullyQualifiedName);
 	
+};
+
 PageController.prototype.updateDomain = function(domain) {
     this.domain = domain;
 };
@@ -169,6 +181,14 @@ PageController.prototype.handleMessageSubmit = function() {
     });
 };
 
+PageController.prototype.handleModalFocus = function() {
+	$('#new-conversation').on('show', function() {
+		alert('firing');
+		$('#new-conversation-field').focus();
+		//$('#new-conversation').find('input:text')[0].focus();
+	});
+};
+
 /**
  * Make HTML to append the user to the connected users table, if the user is not
  * already a connected user
@@ -188,7 +208,7 @@ PageController.prototype.addToRoster = function(user) {
 	
 	function addUser() {
 		self.connectedUsers.push(user);
-		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + self.getName(user)
+		var htmlString = '<tr><td class="online"><i class="icon-user"></i>&nbsp;&nbsp;' + user
 			+ '<span class="add-chat pull-right"><i class="icon-plus"></i></span></td></tr>';
 		$('#connected-users > tbody').prepend(htmlString);
 	}
