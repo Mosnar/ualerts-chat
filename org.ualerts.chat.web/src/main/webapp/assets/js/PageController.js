@@ -182,10 +182,8 @@ PageController.prototype.handleMessageSubmit = function() {
 };
 
 PageController.prototype.handleModalFocus = function() {
-	$('#new-conversation').on('show', function() {
-		alert('firing');
+	$('#new-conversation').on('shown', function() {
 		$('#new-conversation-field').focus();
-		//$('#new-conversation').find('input:text')[0].focus();
 	});
 };
 
