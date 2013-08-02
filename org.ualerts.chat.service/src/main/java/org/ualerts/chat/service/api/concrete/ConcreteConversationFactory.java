@@ -48,11 +48,11 @@ public class ConcreteConversationFactory implements ConversationFactory {
    * {@inheritDoc}
    */
   @Override
-  public Conversation newConversation(UserIdentifier userIdentifier, boolean isDefaultConversation) {
+  public Conversation newConversation(UserIdentifier userIdentifier, boolean defaultConversation) {
     ConcreteConversation conversation = new ConcreteConversation();
     conversation.setDateTimeService(this.dateTimeService);
     conversation.setName(userIdentifier.getDomain());
-    conversation.setDefaultConversation(isDefaultConversation);
+    conversation.setDefaultConversation(defaultConversation);
     return conversation;
   }
 

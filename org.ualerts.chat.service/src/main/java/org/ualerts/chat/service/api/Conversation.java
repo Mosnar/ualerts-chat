@@ -85,5 +85,5 @@ public interface Conversation {
 	/**
 	 * Set the default conversation indicator
 	 */
-	void setDefaultConversation(boolean isDefaultConversation);
+	void setDefaultConversation(boolean defaultConversation);
 }

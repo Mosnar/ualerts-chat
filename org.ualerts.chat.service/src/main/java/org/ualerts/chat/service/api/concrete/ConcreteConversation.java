@@ -51,7 +51,7 @@ public class ConcreteConversation implements Conversation {
   private DateTimeService dateTimeService;
 
   private String name;
-  private boolean isDefaultConversation;
+  private boolean defaultConversation;
 
   @Override
   public void addParticipant(Participant participant) {
@@ -66,7 +66,7 @@ public class ConcreteConversation implements Conversation {
 
     // send a message to all participants announcing user joining
     participant.setStatus(Status.ONLINE);
-    if (isDefaultConversation) {
+    if (defaultConversation) {
       Message rosterMessage =
           getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE
               + this.name);
@@ -75,7 +75,7 @@ public class ConcreteConversation implements Conversation {
 
     // send a message to the newly joined user announcing the presence of the
     // other users
-    if (isDefaultConversation) {
+    if (defaultConversation) {
       Message replyMessage;
       for (Participant thisParticipant : participants) {
         if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
@@ -214,15 +214,15 @@ public class ConcreteConversation implements Conversation {
    */
   @Override
   public boolean isDefaultConversation() {
-    return this.isDefaultConversation;
+    return this.defaultConversation;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void setDefaultConversation(boolean isDefaultConversation) {
-    this.isDefaultConversation = isDefaultConversation;
+  public void setDefaultConversation(boolean defaultConversation) {
+    this.defaultConversation = defaultConversation;
   }
 
 }

@@ -98,7 +98,10 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
     chatMessage.setText(HtmlUtils.htmlEscape(chatMessage.getText()));
     Conversation conversation =
         chatService.getConversation(getUserIdentifier(chatMessage.getFrom()));
-    conversation.deliverMessage(chatMessage);
+    if (conversation != null) {
+      conversation.deliverMessage(chatMessage);
+    }
+
   }
 
   /**

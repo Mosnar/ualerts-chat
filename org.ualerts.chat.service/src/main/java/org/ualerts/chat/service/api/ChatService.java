@@ -43,5 +43,5 @@ public interface ChatService {
    * @param userIdentifier The full userIdentifier of the Participant to join
    *        to the Conversation
    */
-  void joinConversation(UserIdentifier userIdentifier, boolean isDefaultConversation);
+  void joinConversation(UserIdentifier userIdentifier, boolean defaultConversation);
 }
