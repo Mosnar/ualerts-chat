@@ -175,7 +175,7 @@ PageController.prototype.handleMessageSubmit = function() {
             var clientMessage = $messageField.val();
             var allChat = ALL_ATCHAR+self.domain;
             var userFrom = self.username+ATCHAR+self.domain;
-            self.service.sendMessage("<b>" + userFrom + "</b>", allChat, "chat", clientMessage);
+            self.service.sendMessage(userFrom, allChat, "chat", clientMessage);
             $messageField.val('');
         }
     });
