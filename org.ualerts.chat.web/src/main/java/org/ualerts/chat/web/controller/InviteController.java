@@ -41,6 +41,11 @@ public class InviteController {
   
   private ChatService chatService;
   
+  /**
+   * Invites a user to a converesation based on a generated user ID
+   * @param userIdentifier
+   * @return valid or invalid JSON POST response
+   */
   @RequestMapping(value = "/sendInvite", method = RequestMethod.POST)
   @ResponseBody
   public String sendInvite(@RequestParam("userIdentifier") String userIdentifier) {
