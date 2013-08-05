@@ -51,6 +51,7 @@ public class ConcreteConversation implements Conversation {
   private DateTimeService dateTimeService;
 
   private String name;
+  private boolean defaultConversation;
 
   @Override
   public void addParticipant(Participant participant) {
@@ -62,22 +63,28 @@ public class ConcreteConversation implements Conversation {
 
     String name = participant.getChatClient().getUserName();
     String fullyQualifiedName = participant.getUserName().getFullIdentifier();
-    
+
     // send a message to all participants announcing user joining
     participant.setStatus(Status.ONLINE);
-    Message rosterMessage = getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE+this.name);
-    deliverMessage(rosterMessage);
+    if (defaultConversation) {
+      Message rosterMessage =
+          getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE
+              + this.name);
+      deliverMessage(rosterMessage);
+    }
 
     // send a message to the newly joined user announcing the presence of the
     // other users
-    Message replyMessage;
-    for (Participant thisParticipant : participants) {
-      if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
-        if (!thisParticipant.getUserName().matches(name)) {
-          replyMessage =
-              getRosterContentMessage(
-                  thisParticipant.getUserName().getFullIdentifier(), fullyQualifiedName); 
-          deliverMessage(replyMessage);
+    if (defaultConversation) {
+      Message replyMessage;
+      for (Participant thisParticipant : participants) {
+        if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
+          if (!thisParticipant.getUserName().matches(name)) {
+            replyMessage =
+                getRosterContentMessage(thisParticipant.getUserName()
+                    .getFullIdentifier(), fullyQualifiedName);
+            deliverMessage(replyMessage);
+          }
         }
       }
     }
@@ -91,21 +98,23 @@ public class ConcreteConversation implements Conversation {
 
     String userName = participant.getChatClient().getUserName();
 
-    Message message = getRosterRemovedMessage(userName, BROADCAST_MESSAGE+this.name);
+    Message message =
+        getRosterRemovedMessage(userName, BROADCAST_MESSAGE + this.name);
     deliverMessage(message);
   }
 
   @Override
   public void deliverMessage(Message message) {
-    if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE+this.name)) {
+    if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE + this.name)) {
       for (Participant participant : getParticipants()) {
         deliverParticipantMessage(participant, message);
       }
     }
     else {
-      
+
       Participant toParticipant = findParticipant(parseName(message.getTo()));
-      Participant fromParticipant = findParticipant(parseName(message.getFrom()));
+      Participant fromParticipant =
+          findParticipant(parseName(message.getFrom()));
       deliverParticipantMessage(toParticipant, message);
       deliverParticipantMessage(fromParticipant, message);
     }
@@ -113,9 +122,9 @@ public class ConcreteConversation implements Conversation {
 
   protected String parseName(String fullyQualifiedName) {
     int idx = fullyQualifiedName.indexOf("@");
-    return fullyQualifiedName.substring(0,idx);
+    return fullyQualifiedName.substring(0, idx);
   }
-  
+
   protected void deliverParticipantMessage(Participant participant,
       Message message) {
     if (participant != null
@@ -198,6 +207,22 @@ public class ConcreteConversation implements Conversation {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isDefaultConversation() {
+    return this.defaultConversation;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setDefaultConversation(boolean defaultConversation) {
+    this.defaultConversation = defaultConversation;
   }
 
 }

@@ -75,10 +75,10 @@ public class ConcreteConversationTest {
         will(returnValue(USER_NAME1));
         oneOf(participant).setStatus(Status.ONLINE);
 
-        oneOf(participant).getStatus();
+        allowing(participant).getStatus();
         will(returnValue(Status.ONLINE));
 
-        oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
+        allowing(participant).deliverMessage(with(any(RosterMessage.class)));
 
         atLeast(1).of(participant).getUserName();
         will(returnValue(userId));
@@ -97,7 +97,7 @@ public class ConcreteConversationTest {
     final Participant participant = context.mock(Participant.class, "one");
     final Participant participant2 = context.mock(Participant.class, "two");
     final ChatClient chatClient = context.mock(ChatClient.class);
-
+    conversation.setDefaultConversation(true);
     context.checking(new Expectations() {
       {
         // Participant 1
@@ -126,23 +126,23 @@ public class ConcreteConversationTest {
         will(returnValue(chatClient));
         oneOf(chatClient).getUserName();
         will(returnValue(USER_NAME2));
-        oneOf(participant2).setStatus(Status.ONLINE);
+        allowing(participant2).setStatus(Status.ONLINE);
 
-        atLeast(1).of(participant2).getStatus();
+        allowing(participant2).getStatus();
         will(returnValue(Status.ONLINE));
-        atLeast(1).of(participant).getStatus();
+        allowing(participant).getStatus();
         will(returnValue(Status.ONLINE));
 
-        atLeast(1).of(participant2).deliverMessage(with(any(RosterMessage.class)));
-        atLeast(1).of(participant).deliverMessage(with(any(RosterMessage.class)));
+        allowing(participant2).deliverMessage(with(any(RosterMessage.class)));
+        allowing(participant).deliverMessage(with(any(RosterMessage.class)));
 
-        oneOf(participant2).getUserName();
+        allowing(participant2).getUserName();
         will(returnValue(userId2));
 
-        atLeast(2).of(participant2).getUserName();
+        allowing(participant2).getUserName();
         will(returnValue(userId2));
         
-        atLeast(1).of(participant).getUserName();
+        allowing(participant).getUserName();
         will(returnValue(userId));
         
       }
@@ -163,7 +163,7 @@ public class ConcreteConversationTest {
     final Participant participant = context.mock(Participant.class, "one");
     final Participant participant2 = context.mock(Participant.class, "two");
     final ChatClient chatClient = context.mock(ChatClient.class);
-
+    conversation.setDefaultConversation(true);
     context.checking(new Expectations() {
       {
         // Participant 1
@@ -244,7 +244,7 @@ public class ConcreteConversationTest {
   public void testIsValidUserNameFalse() {
     final Participant participant = context.mock(Participant.class);
     final ChatClient chatClient = context.mock(ChatClient.class);
-
+    conversation.setDefaultConversation(true);
     context.checking(new Expectations() {
       {
         oneOf(participant).setConversation(conversation);

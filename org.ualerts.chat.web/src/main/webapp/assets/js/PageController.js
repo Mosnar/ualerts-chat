@@ -22,6 +22,7 @@ PageController.prototype.init = function() {
     this.messageDisable();
     this.handleNameSubmit();
     this.handleMessageSubmit();
+    this.handleModalFocus();
     this.handleNewConversationSubmit();
     $('#usernameField').focus();
 };
@@ -43,6 +44,7 @@ PageController.prototype.messageDisable = function() {
     $field.attr('readonly', 'readonly');
     $field.attr('placeholder', 'Please enter a username');
     $button.attr('disabled', 'disabled');
+    $('#conversation-modal').hide();
 };
 
 /**
@@ -85,6 +87,8 @@ PageController.prototype.handleNameSubmit = function() {
         }
         
         self.service.login(self,self.parseUserIdentifier);
+        
+        $('#conversation-modal').show();
     });
     
     this.service.connect();
@@ -111,13 +115,21 @@ PageController.prototype.handleNewConversationSubmit = function() {
 		$newChatRoomName = self.htmlEncode($newChatRoomName);
 		
 		if ($.trim($newChatRoomName) != "") {
-			self.service.createChatRoom($newChatRoomName);
+			self.service.createChatRoom($newChatRoomName,self.username,self,self.newConversation);
 		    $('#new-conversation').modal('hide');
 		    $('#new-conversation-field').val("");
 		};
 	});
 };
+
+PageController.prototype.newConversation = function(self, newChatRoomName) {
+	var fullyQualifiedName = self.username+ATCHAR+newChatRoomName+"."+self.domain;
+	self.chatRoomService.setUsername(fullyQualifiedName);
+	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
+	self.chatRoomService.createChatRoomViewController(fullyQualifiedName);
 	
+};
+
 PageController.prototype.updateDomain = function(domain) {
     this.domain = domain;
 };
@@ -163,10 +175,16 @@ PageController.prototype.handleMessageSubmit = function() {
             var clientMessage = $messageField.val();
             var allChat = ALL_ATCHAR+self.domain;
             var userFrom = self.username+ATCHAR+self.domain;
-            self.service.sendMessage("<b>" + userFrom + "</b>", allChat, "chat", clientMessage);
+            self.service.sendMessage(userFrom, allChat, "chat", clientMessage);
             $messageField.val('');
         }
     });
+};
+
+PageController.prototype.handleModalFocus = function() {
+	$('#new-conversation').on('shown', function() {
+		$('#new-conversation-field').focus();
+	});
 };
 
 /**

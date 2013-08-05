@@ -59,4 +59,10 @@ public interface UserService {
    */
   public ChatClient findClientById(String id);
   
+  /**
+   * Returns the default domain
+   * @return the default domain
+   */
+  public String getDefaultDomain();
+  
 }

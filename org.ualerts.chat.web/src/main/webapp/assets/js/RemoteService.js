@@ -98,17 +98,18 @@ RemoteService.prototype.login = function(pageControllerReference,callback) {
         url: window.location.href + "login",
         data: {}
     }).done(function(data) {
-        console.log('The data returned from the RemoteService.submitname() POST: ' + data);
         callback(pageControllerReference,data);
     });
 };
 
-RemoteService.prototype.createChatRoom = function(chatRoomName) {
+RemoteService.prototype.createChatRoom = function(chatRoomName, username,pageControllerReference,callback) {
 	$.ajax({
 		type: "POST",
 		url: window.location.href + "createNewConversation",
-		data: {conversationName: chatRoomName}
-	}).done(function(data) {
-		console.log('RemoteService.createChatRoom succeeded: ' + data);
+		data: {conversationName: chatRoomName, username: username}
+	}).done(function(jsonObj) {
+		 if (JSON.parse(jsonObj).result == "valid" ){
+			 callback(pageControllerReference,chatRoomName);
+		 };		
 	});
 };

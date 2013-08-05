@@ -68,5 +68,22 @@ public interface Conversation {
 	 */
 	void setDateTimeService(DateTimeService dateTimeService);
 	
+	/**
+	 * Return domain name
+	 * @return the Conversation's Domain
+	 */
 	String getName();
+	
+	/**
+	 * Indicates whether a Conversation is
+	 * the default 'all' conversation
+	 * @return boolean indicating default 
+	 *         conversation
+	 */
+	boolean isDefaultConversation();
+	
+	/**
+	 * Set the default conversation indicator
+	 */
+	void setDefaultConversation(boolean defaultConversation);
 }

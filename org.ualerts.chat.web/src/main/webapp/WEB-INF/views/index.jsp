@@ -29,8 +29,8 @@
     <div class="container">
     
     	<div class="row">
-    		<div class="span12">
-         		<a href="#new-conversation" role="button" class="btn btn-success" data-toggle="modal">Start a Conversation</a>
+    		<div id="conversation-modal" class="span12">
+         		<a id="start-a-conversation" href="#new-conversation" role="button" class="btn btn-success" data-toggle="modal">Start a Conversation</a>
 		    	<div id="new-conversation" class="modal hide fade">
 			    	<div class="modal-body">
 			    		<div class="modal-header">
@@ -38,7 +38,7 @@
 			    		</div>
 			    		<form action="" method="POST">
 			    			<br />
-			    			<input id="new-conversation-field" type="text" value="" name="conversationName" placeholder="Conversation name" />
+			    			<input id="new-conversation-field" type="text" value="" name="conversationName" placeholder="Conversation name" tabindex="1"/>
 					    	<div class="modal-footer">
 					    		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 								<button id="new-conversation-button" class="btn btn-primary">Submit</button>

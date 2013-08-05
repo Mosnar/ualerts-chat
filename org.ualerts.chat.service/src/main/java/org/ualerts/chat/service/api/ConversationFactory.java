@@ -26,5 +26,5 @@ package org.ualerts.chat.service.api;
  * @author Brandon Foster
  */
 public interface ConversationFactory {
-  public Conversation newConversation(UserIdentifier userIdentifier);
+  public Conversation newConversation(UserIdentifier userIdentifier,boolean defaultConversation);
 }

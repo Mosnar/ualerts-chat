@@ -73,7 +73,7 @@ public class ConcreteUserService implements UserService {
     }
     chatClients.add(chatClient);
     chatService
-        .joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN));
+        .joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN),true);
     
     return userName + "@" + DEFAULT_DOMAIN;
   }
@@ -114,6 +114,14 @@ public class ConcreteUserService implements UserService {
       }
     }
     return null;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getDefaultDomain() {
+    return DEFAULT_DOMAIN;
   }
   
   @Autowired
