@@ -33,6 +33,13 @@ import org.ualerts.chat.service.api.UserIdentifier;
 public class UserIdentifierTest {
 
   @Test
+  public void testUserIdentifierFullConstructorValid() {
+    UserIdentifier userName = new UserIdentifier("Test@ualerts.org");
+    assertEquals("Test", userName.getName());
+    assertEquals("ualerts.org", userName.getDomain());
+  }
+  
+  @Test
   public void testUserNameNotNull() {
     UserIdentifier userName = new UserIdentifier("Test", "ualerts.org");
     assertFalse(userName == UserIdentifier.NULL_USER);
@@ -103,6 +110,19 @@ public class UserIdentifierTest {
     
     try {
       UserIdentifier userName = new UserIdentifier(null, null);
+    }
+    catch (Exception e) {
+      exception = e;
+    }
+    assertTrue(exception instanceof IllegalArgumentException);
+  }
+  
+  @Test
+  public void testFailedConstructor2() {
+    Exception exception = null;
+    
+    try {
+      UserIdentifier userName = new UserIdentifier("username");
     }
     catch (Exception e) {
       exception = e;
