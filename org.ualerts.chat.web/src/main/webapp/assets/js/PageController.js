@@ -11,8 +11,8 @@ function PageController(remoteService, chatRoomService) {
     this.chatRoomService = chatRoomService;
 }
 
-const ATCHAR = '@';
-const ALL_ATCHAR = 'all@';
+var ATCHAR = '@';
+var ALL_ATCHAR = 'all@';
 /**
  * Set up the chat.
  */
@@ -101,7 +101,7 @@ PageController.prototype.parseUserIdentifier = function(self,fullyQualifiedName)
 		var domain = fullyQualifiedName.substring(idx + 1);
 		self.chatRoomService.setUsername(fullyQualifiedName);
 		self.chatRoomService.setDomain(domain);
-		self.chatRoomService.createChatRoomViewController(ALL_ATCHAR+domain);
+		self.chatRoomService.createChatRoomViewController(ALL_ATCHAR+domain,'default');
 		self.updateDomain(domain);
 	};
 };
@@ -126,7 +126,7 @@ PageController.prototype.newConversation = function(self, newChatRoomName) {
 	var fullyQualifiedName = self.username+ATCHAR+newChatRoomName+"."+self.domain;
 	self.chatRoomService.setUsername(fullyQualifiedName);
 	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
-	self.chatRoomService.createChatRoomViewController(fullyQualifiedName);
+	self.chatRoomService.createChatRoomViewController(fullyQualifiedName,'newConversation');
 	
 };
 

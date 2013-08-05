@@ -1,7 +1,8 @@
-function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, domain) {
+function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, domain, roomType) {
 	this.name = chatRoomName;
 	this.username = username;
 	this.domain = domain;
+	this.roomType = roomType;
 	this.remoteService = remoteService;
 	this.uniqueId = uniqueId;
 	this.$uiDom = "";
@@ -24,10 +25,17 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 	 * .chat-holder
 	 */
 	function setUpUi(self) {
+		
+		var inviteElement = "";
+		
+		if (self.roomType == "newConversation") {
+			inviteElement = '<i id="invite-button" class="icon-plus-sign pull-right"></i>';
+		}
+		console.log("roomType: " + roomType);
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+   '<p class="chatroom-title unread">&nbsp;&nbsp;(' + self.domain + ')</>'
+		   		+   '<p class="chatroom-title unread">&nbsp;&nbsp;(' + self.domain + ')' + inviteElement + '</p>'
 		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + parseUserName(self.name) + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'

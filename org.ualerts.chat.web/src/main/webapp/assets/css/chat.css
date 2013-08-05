@@ -193,3 +193,7 @@ li[id^="hidden-room"] {
 .button-count {
 	
 }
+
+.icon-plus-sign {
+	cursor: pointer;
+}
