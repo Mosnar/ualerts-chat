@@ -73,7 +73,7 @@ public class ConcreteChatServiceTest {
     context.checking(new Expectations() {
       {
         exactly(1).of(convoFactory).newConversation(
-            with(any(UserIdentifier.class)));
+            with(any(UserIdentifier.class)),with(any(Boolean.class)));
         will(returnValue(conversation));        
         exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
         atLeast(0).of(conversation).getName();
@@ -84,7 +84,7 @@ public class ConcreteChatServiceTest {
       }
     });
 
-    chatService.joinConversation(userIdentity);
+    chatService.joinConversation(userIdentity,true);
     context.assertIsSatisfied();
     assertNotNull(chatService.getConversation(userIdentity));
   }
@@ -95,7 +95,7 @@ public class ConcreteChatServiceTest {
     context.checking(new Expectations() {
       {
         exactly(1).of(convoFactory).newConversation(
-            with(any(UserIdentifier.class)));
+            with(any(UserIdentifier.class)),with(any(Boolean.class)));
         will(returnValue(conversation));        
         exactly(1).of(conversation).addParticipant(with(any(Participant.class)));
         atLeast(0).of(conversation).getName();
@@ -106,8 +106,8 @@ public class ConcreteChatServiceTest {
       }
     });
     
-    chatService.createConversation(userIdentity);
-    chatService.joinConversation(userIdentity);
+    chatService.createConversation(userIdentity,true);
+    chatService.joinConversation(userIdentity,true);
     context.assertIsSatisfied();
     assertNotNull(chatService.getConversation(userIdentity));
   }
