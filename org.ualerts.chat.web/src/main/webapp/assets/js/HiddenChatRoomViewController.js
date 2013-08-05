@@ -9,8 +9,8 @@ function HiddenChatRoomViewController() {
 		self.notifyListeners(fullyQualified);
 	});
 }
-const ATCHAR = '@';
-const ALL_ATCHAR = 'all@';
+var ATCHAR = '@';
+var ALL_ATCHAR = 'all@';
 
 HiddenChatRoomViewController.prototype.addListener = function(callback) {
 	this.listeners.push(callback);

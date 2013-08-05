@@ -11,8 +11,8 @@ function PageController(remoteService, chatRoomService) {
     this.chatRoomService = chatRoomService;
 }
 
-const ATCHAR = '@';
-const ALL_ATCHAR = 'all@';
+var ATCHAR = '@';
+var ALL_ATCHAR = 'all@';
 /**
  * Set up the chat.
  */

@@ -8,7 +8,7 @@ function ChatRoomService(remoteService) {
   this.hiddenChatRoomViewController.addListener(new Callback(this.chatRoomViewControllerManager.focusOnChatRoom, this.chatRoomViewControllerManager));
 }
 
-const ALL_ATCHAR = 'all@';
+var ALL_ATCHAR = 'all@';
 
 ChatRoomService.prototype.onMessage = function(message) {
 	var chatRoomName = "";
