@@ -19,6 +19,8 @@
 
 package org.ualerts.chat.service.api;
 
+import org.omg.CORBA.UserException;
+
 
 /**
  * Provides a chat conversation
@@ -44,4 +46,11 @@ public interface ChatService {
    *        to the Conversation
    */
   void joinConversation(UserIdentifier userIdentifier, boolean defaultConversation);
+  
+  
+  /**
+   * Invites a user to a conversation
+   * @param userId of conversation to be invited to
+   */
+  public void inviteUser(UserIdentifier userId) throws UserException;
 }

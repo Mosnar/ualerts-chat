@@ -29,7 +29,9 @@ import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.DateTimeService;
+import org.ualerts.chat.service.api.InviteMessage;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserService;
 
@@ -94,6 +96,30 @@ public class ConcreteChatService implements ChatService {
     Conversation conversation = conversationFactory.newConversation(userIdentifier, defaultConversation);
     conversations.add(conversation);
     return conversation;
+  }
+  
+  /**
+   * 
+   * {@inheritDoc}
+   */
+  public void inviteUser(UserIdentifier userIdentifier) {
+    ChatClient chatClient = userService.findClient(userIdentifier.getName());
+    // For now, if we can't find the user, dismiss the problem
+    if (chatClient != null)
+    {
+      Participant participant = new ConcreteParticipant();
+      participant.setStatus(Status.INVITED);
+      participant.setChatClient(chatClient);
+      participant.setUserName(userIdentifier);
+      
+      InviteMessage invite = new InviteMessage();
+      invite.setFrom(userIdentifier.getName());
+      
+      UserIdentifier generalId = new UserIdentifier(userIdentifier.getName(), "all");
+      invite.setTo(generalId.getFullIdentifier());
+      invite.setUserIdentifier(userIdentifier.getFullIdentifier());
+      chatClient.deliverMessage(invite);
+    }
   }
 
   @Autowired
