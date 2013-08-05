@@ -48,8 +48,8 @@ ChatRoomService.prototype.setDomain = function(domain) {
 	this.domain = domain;
 };
 
-ChatRoomService.prototype.createChatRoomViewController = function(chatRoomName) {
-	return this.chatRoomViewControllerManager.addChatRoomViewController(chatRoomName, this.username, this.remoteService);
+ChatRoomService.prototype.createChatRoomViewController = function(chatRoomName, roomType) {
+	return this.chatRoomViewControllerManager.addChatRoomViewController(chatRoomName, this.username, this.remoteService, roomType);
 };
 
 ChatRoomService.prototype.removeChatRoomByName = function(name) {
