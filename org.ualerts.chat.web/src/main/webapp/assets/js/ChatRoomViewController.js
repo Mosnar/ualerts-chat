@@ -108,6 +108,9 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		onMessageSend(self);
 		}
 	
+	$('#invite-button').click(function() {
+		$('#invite').modal('show');
+	});
 }
 
 /**
