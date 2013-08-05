@@ -42,6 +42,24 @@ public class UserIdentifier {
     this.domain = domainName;
   }
 
+  /**
+   * Converts a full User ID string (user@domain) into a UserIdentifier object
+   * Constructs a new instance.
+   * @param fullUserId (user@domain)
+   */
+  public UserIdentifier(String fullUserId) {
+    if (StringUtils.isBlank(fullUserId)) {
+      throw new IllegalArgumentException();
+    }
+    String[] tokens = fullUserId.split("\\@", 2);
+    if (tokens.length == 2) {
+      this.name = tokens[0];
+      this.domain = tokens[1];
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
   protected UserIdentifier() {
 
   }
