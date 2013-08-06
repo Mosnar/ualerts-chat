@@ -34,6 +34,7 @@ PageController.prototype.init = function() {
 PageController.prototype.setUpListeners = function() {
 	var controller = this;
 	this.service.addListener(new Callback(controller.onMessage, controller));
+	this.service.addListener(new Callback(controller.onInvite, controller));
 };
 
 /**
@@ -290,6 +291,14 @@ PageController.prototype.onMessage = function(message) {
     		this.addToRoster(message.from);
     	}
     }
+};
+
+PageController.prototype.onInvite = function(message) {
+	if(message.type != "INVITE"){
+		return;
+	}
+	$('#invite-group-domain').text(message.subType);
+	$('#accept').modal('show');
 };
 
 /**
