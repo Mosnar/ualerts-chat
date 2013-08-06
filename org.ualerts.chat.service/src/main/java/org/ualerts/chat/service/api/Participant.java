@@ -28,7 +28,7 @@ package org.ualerts.chat.service.api;
 public interface Participant {
   
   public enum Status {
-    SETUP, ONLINE;
+    SETUP, ONLINE, INVITED;
   }
   
   /**
