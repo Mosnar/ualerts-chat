@@ -24,6 +24,7 @@ PageController.prototype.init = function() {
     this.handleMessageSubmit();
     this.handleModalFocus();
     this.handleNewConversationSubmit();
+    this.handleConversationInviteSubmit();
     $('#usernameField').focus();
 };
 
@@ -128,6 +129,23 @@ PageController.prototype.newConversation = function(self, newChatRoomName) {
 	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
 	self.chatRoomService.createChatRoomViewController(fullyQualifiedName,'newConversation');
 	
+};
+
+PageController.prototype.handleConversationInviteSubmit = function() {
+	
+	var self = this;
+	
+	$('#new-invitee-button').click(function() {
+		var $invitee = $('#invitee-username').val();
+		var groupDomain = $('#group-domain').text();
+		var fullyQualifiedName = $invitee + ATCHAR + groupDomain; 
+		if ($.trim($invitee) != "") {
+			console.log("PageController - fullyQualifiedName: " + fullyQualifiedName);
+			self.service.sendInvite(fullyQualifiedName);
+		    $('#invite').modal('hide');
+		    $('#invitee-username').val("");
+		};
+	});	
 };
 
 PageController.prototype.updateDomain = function(domain) {

@@ -50,6 +50,27 @@
 	        </div>
     	</div>
     	
+    	<div class="row">
+    		<div id="invite-modal" class="span12">
+		    	<div id="invite" class="modal hide fade">
+			    	<div class="modal-body">
+			    		<div class="modal-header">
+			    			<h3>Invite to chat at <span id="group-domain"></span></h3>
+			    		</div>
+			    		<form action="" method="POST">
+			    			<br />
+			    			<input id="invitee-username" type="text" value="" name="inviteeName" placeholder="Enter a user name" tabindex="1"/>
+					    	<div class="modal-footer">
+					    		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+								<button id="new-invitee-button" class="btn btn-primary">Submit</button>
+					    	</div>
+			    		</form>
+			    	</div>
+			    	
+		    	</div>
+	        </div>
+    	</div>
+    	
     	<br />
 
     	<div class="row">
