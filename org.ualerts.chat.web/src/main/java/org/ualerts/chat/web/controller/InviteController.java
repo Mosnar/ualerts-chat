@@ -43,7 +43,7 @@ public class InviteController {
   private ChatService chatService;
 
   /**
-   * Invites a user to a converesation based on a generated user ID
+   * Invites a user to a conversation based on a generated user ID
    * @param userIdentifier
    * @return valid or invalid JSON POST response
    */
