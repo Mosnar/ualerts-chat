@@ -128,7 +128,8 @@ public class ConcreteChatService implements ChatService {
             new UserIdentifier(userIdentifier.getName(), "ualerts.org");
         invite.setTo(generalId.getFullIdentifier());
         invite.setUserIdentifier(userIdentifier.getFullIdentifier());
-        chatClient.deliverMessage(invite);     
+        chatClient.deliverMessage(invite);  
+        
         conversation.addInvitedParticipant(participant);
       }
     }
