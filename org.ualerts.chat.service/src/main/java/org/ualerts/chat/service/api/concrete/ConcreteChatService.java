@@ -112,19 +112,25 @@ public class ConcreteChatService implements ChatService {
   public void inviteUser(UserIdentifier userIdentifier) throws UserException {
     ChatClient chatClient = userService.findClient(userIdentifier.getName());
     if (chatClient != null) {
-      Participant participant = new ConcreteParticipant();
-      participant.setStatus(Status.INVITED);
-      participant.setChatClient(chatClient);
-      participant.setUserName(userIdentifier);
+      Conversation conversation = getConversation(userIdentifier);
+      // TODO: Do something if the conversation is null. Throw error?
+      if (conversation != null) {
+        Participant participant = new ConcreteParticipant();
+        participant.setStatus(Status.INVITED);
+        participant.setChatClient(chatClient);
+        participant.setUserName(userIdentifier);
 
-      InviteMessage invite = new InviteMessage();
-      invite.setFrom(userIdentifier.getName());
+        InviteMessage invite = new InviteMessage();
+        invite.setFrom(userIdentifier.getName());
 
-      UserIdentifier generalId =
-          new UserIdentifier(userIdentifier.getName(), "ualerts.org");
-      invite.setTo(generalId.getFullIdentifier());
-      invite.setUserIdentifier(userIdentifier.getFullIdentifier());
-      chatClient.deliverMessage(invite);
+        UserIdentifier generalId =
+            new UserIdentifier(userIdentifier.getName(), "ualerts.org");
+        invite.setTo(generalId.getFullIdentifier());
+        invite.setUserIdentifier(userIdentifier.getFullIdentifier());
+        chatClient.deliverMessage(invite);
+
+        conversation.addInvitedParticipant(participant);
+      }
     }
     else {
       throw new UnknownUserException();

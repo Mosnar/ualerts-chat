@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.ChatService;
+import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.UserIdentifier;
+import org.ualerts.chat.service.api.UserService;
 
 /**
  * This controller will handle invitation delivery
@@ -41,6 +43,7 @@ public class InviteController {
   private final String INVALID = "{\"result\":\"invalid\"}";;
 
   private ChatService chatService;
+  private UserService userService;
 
   /**
    * Invites a user to a conversation based on a generated user ID
@@ -66,8 +69,32 @@ public class InviteController {
     }
   }
 
+  /**
+   * Moves a participant from the invited state to the active state
+   * @return VALID or INVALID
+   */
+  @RequestMapping(value = "/acceptInvite", method = RequestMethod.POST)
+  @ResponseBody
+  public String acceptInvite(
+      @RequestParam("userIdentifier") String userIdentifier) {
+    UserIdentifier userId = new UserIdentifier(userIdentifier);
+    Conversation conversation = chatService.getConversation(userId);
+    if (conversation != null) {
+      conversation.activateParticipant(userId);
+      return VALID;
+    }
+    else {
+      return INVALID;
+    }
+  }
+
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
+  }
+
+  @Autowired
+  public void setUserService(UserService userService) {
+    this.userService = userService;
   }
 }
