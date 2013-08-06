@@ -53,16 +53,14 @@ public class InviteController {
       @RequestParam("userIdentifier") String userIdentifier) {
     try {
       UserIdentifier userId = new UserIdentifier(userIdentifier);
-      try {
-        chatService.inviteUser(userId);
-        return VALID;
-      }
-      catch (UserException e) {
-        // User not found
-        return INVALID;
-      }
+      chatService.inviteUser(userId);
+      return VALID;
     }
     catch (IllegalArgumentException e) {
+      // User not found
+      return INVALID;
+    }
+    catch (UserException e) {
       // User ID didn't have proper format. (user@domain) Only 1 "@" symbol!
       return INVALID;
     }
