@@ -204,6 +204,10 @@ PageController.prototype.handleModalFocus = function() {
 	$('#new-conversation').on('shown', function() {
 		$('#new-conversation-field').focus();
 	});
+	
+	$('#invite').on('shown', function() {
+		$('#invitee-username').focus();
+	});
 };
 
 /**
