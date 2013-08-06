@@ -31,7 +31,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		if (self.roomType == "newConversation") {
 			inviteElement = '<i id="invite-button" class="icon-plus-sign pull-right"></i>';
 		}
-		console.log("roomType: " + roomType);
+
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'

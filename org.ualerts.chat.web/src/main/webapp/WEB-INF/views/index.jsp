@@ -70,8 +70,27 @@
 		    	</div>
 	        </div>
     	</div>
+
+		<div class="row">
+    		<div id="acceptance-modal" class="span12">
+		    	<div id="accept" class="modal hide fade">
+			    	<div class="modal-body">
+			    		<div class="modal-header">
+			    			<h3>Invited to chat at <span id="invite-group-domain"></span></h3>
+			    		</div>
+			    		<form action="" method="POST">
+					    	<div class="modal-footer">
+					    		<button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
+								<button id="acceptance-button" class="btn btn-primary">I Accept</button>
+					    	</div>
+			    		</form>
+			    	</div>
+			    	
+		    	</div>
+	        </div>
+    	</div>
     	
-    	<br />
+		<br />
 
     	<div class="row">
     		<div class="span3">
