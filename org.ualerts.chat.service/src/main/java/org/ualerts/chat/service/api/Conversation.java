@@ -39,8 +39,8 @@ public interface Conversation {
 	 * Adds an invited participant to the invited holding pen prior to true add
 	 * @param participant
 	 */
-	
 	void addInvitedParticipant(Participant participant);
+	
 	/**
 	 * Remove a chat participant from a conversation
 	 * @param chatClient
