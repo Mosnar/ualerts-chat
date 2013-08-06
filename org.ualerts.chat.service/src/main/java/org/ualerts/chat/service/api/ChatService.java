@@ -51,6 +51,7 @@ public interface ChatService {
   /**
    * Invites a user to a conversation
    * @param userId of conversation to be invited to
+   * @throws UserException if the ChatClient for the user could not be found
    */
   public void inviteUser(UserIdentifier userId) throws UserException;
 }
