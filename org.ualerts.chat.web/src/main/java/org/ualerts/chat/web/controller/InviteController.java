@@ -44,7 +44,7 @@ public class InviteController {
 
   private ChatService chatService;
   private UserService userService;
-  
+
   /**
    * Invites a user to a conversation based on a generated user ID
    * @param userIdentifier
@@ -75,22 +75,24 @@ public class InviteController {
    */
   @RequestMapping(value = "/acceptInvite", method = RequestMethod.POST)
   @ResponseBody
-  public String acceptInvite(@RequestParam("userIdentifier") String userIdentifier) {
+  public String acceptInvite(
+      @RequestParam("userIdentifier") String userIdentifier) {
     UserIdentifier userId = new UserIdentifier(userIdentifier);
     Conversation conversation = chatService.getConversation(userId);
     if (conversation != null) {
       conversation.activateParticipant(userId);
       return VALID;
-    } else {
+    }
+    else {
       return INVALID;
     }
   }
-  
+
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
   }
-  
+
   @Autowired
   public void setUserService(UserService userService) {
     this.userService = userService;

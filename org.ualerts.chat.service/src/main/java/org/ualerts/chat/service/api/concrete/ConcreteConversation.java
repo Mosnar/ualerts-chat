@@ -49,7 +49,7 @@ public class ConcreteConversation implements Conversation {
 
   private Set<Participant> participants = new HashSet<Participant>();
   private Set<Participant> invitedParticipants = new HashSet<Participant>();
-  
+
   private DateTimeService dateTimeService;
 
   private String name;
@@ -60,11 +60,13 @@ public class ConcreteConversation implements Conversation {
     if (participant == null)
       return;
 
-    Participant searchParticipant = findParticipant(participant.getUserName().getName());
+    Participant searchParticipant =
+        findParticipant(participant.getUserName().getName());
     if (searchParticipant == null) {
       this.participants.add(participant);
       participant.setConversation(this);
-    } else {
+    }
+    else {
       participant = searchParticipant;
     }
     String name = participant.getChatClient().getUserName();
@@ -95,7 +97,7 @@ public class ConcreteConversation implements Conversation {
       }
     }
   }
-  
+
   public void addInvitedParticipant(Participant participant) {
     if (participant == null)
       return;
@@ -106,7 +108,8 @@ public class ConcreteConversation implements Conversation {
    * Activates an invited participant in the conversation
    */
   public void activateParticipant(UserIdentifier userIdentifier) {
-    Participant participant = findInvitedParticipant(userIdentifier.getName());
+    Participant participant =
+        findInvitedParticipant(userIdentifier.getName());
     if (participant != null) {
       participant.setStatus(Status.SETUP);
       addParticipant(participant);
@@ -182,8 +185,7 @@ public class ConcreteConversation implements Conversation {
     }
     return thisParticipant;
   }
-  
-  
+
   /*
    * Find a specific invited participant by name
    */
