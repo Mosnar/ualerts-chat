@@ -19,6 +19,7 @@
 
 package org.ualerts.chat.web.controller;
 
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ import org.ualerts.chat.service.api.UserIdentifier;
 
 /**
  * This controller will handle invitation delivery
- *
+ * 
  * @author Ransom Roberson
  */
 @Controller
@@ -38,9 +39,9 @@ public class InviteController {
 
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
-  
+
   private ChatService chatService;
-  
+
   /**
    * Invites a user to a converesation based on a generated user ID
    * @param userIdentifier
@@ -48,17 +49,25 @@ public class InviteController {
    */
   @RequestMapping(value = "/sendInvite", method = RequestMethod.POST)
   @ResponseBody
-  public String sendInvite(@RequestParam("userIdentifier") String userIdentifier) {
+  public String sendInvite(
+      @RequestParam("userIdentifier") String userIdentifier) {
     try {
       UserIdentifier userId = new UserIdentifier(userIdentifier);
-    } catch (IllegalArgumentException e) {
+      try {
+        chatService.inviteUser(userId);
+        return VALID;
+      }
+      catch (UserException e) {
+        // User not found
+        return INVALID;
+      }
+    }
+    catch (IllegalArgumentException e) {
       // User ID didn't have proper format. (user@domain) Only 1 "@" symbol!
       return INVALID;
     }
-    chatService.inviteUser(userId);
-    return VALID;
   }
-  
+
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
