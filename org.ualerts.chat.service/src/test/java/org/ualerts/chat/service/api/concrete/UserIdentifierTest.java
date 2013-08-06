@@ -33,6 +33,13 @@ import org.ualerts.chat.service.api.UserIdentifier;
 public class UserIdentifierTest {
 
   @Test
+  public void testUserIdentifierFullConstructorValid() {
+    UserIdentifier userName = new UserIdentifier("Test@ualerts.org");
+    assertEquals("Test", userName.getName());
+    assertEquals("ualerts.org", userName.getDomain());
+  }
+
+  @Test
   public void testUserNameNotNull() {
     UserIdentifier userName = new UserIdentifier("Test", "ualerts.org");
     assertFalse(userName == UserIdentifier.NULL_USER);
@@ -43,7 +50,7 @@ public class UserIdentifierTest {
     UserIdentifier userName = UserIdentifier.NULL_USER;
     assertTrue(userName == UserIdentifier.NULL_USER);
   }
-  
+
   @Test
   public void testNullUser() {
     UserIdentifier userName = UserIdentifier.NULL_USER;
@@ -68,45 +75,42 @@ public class UserIdentifierTest {
     UserIdentifier userName2 = new UserIdentifier("Test", "ualerts.org");
     assertEquals(userName, userName2);
   }
-  
+
   @Test
   public void testEqualsFalse() {
     UserIdentifier userName = new UserIdentifier("Test", "ualerts.org");
     UserIdentifier userName2 = new UserIdentifier("Test2", "ualerts.org");
     assertNotEquals(userName, userName2);
   }
-  
+
   @Test
   public void testEqualsFalseDomain() {
     UserIdentifier userName = new UserIdentifier("Test", "ualerts.org");
     UserIdentifier userName2 = new UserIdentifier("Test", "alerts.org");
-    assertNotEquals(userName, userName2);   
+    assertNotEquals(userName, userName2);
   }
-  
+
   @Test
   public void testEqualsFalseWrongType() {
     UserIdentifier userName = new UserIdentifier("Test", "ualerts.org");
     String userName2 = "Test";
-    assertNotEquals(userName, userName2);   
+    assertNotEquals(userName, userName2);
   }
-  
+
   @Test
   public void testGetFullIdentifier() {
     UserIdentifier userName = new UserIdentifier("Test", "ualerts.org");
     String expected = "Test@ualerts.org";
     assertEquals(expected, userName.getFullIdentifier());
   }
-  
-  @Test
+
+  @Test(expected = IllegalArgumentException.class)
   public void testFailedConstructor() {
-    Exception exception = null;
-    
-    try {
-      UserIdentifier userName = new UserIdentifier(null, null);
-    }
-    catch (Exception e) {
-      exception = e;
-    }
-    assertTrue(exception instanceof IllegalArgumentException);
+    UserIdentifier userName = new UserIdentifier(null, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testFailedConstructor2() {
+    UserIdentifier userName = new UserIdentifier("username");
   }
 }
