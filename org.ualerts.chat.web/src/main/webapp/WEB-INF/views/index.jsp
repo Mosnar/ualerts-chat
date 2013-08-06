@@ -55,7 +55,7 @@
 		    	<div id="invite" class="modal hide fade">
 			    	<div class="modal-body">
 			    		<div class="modal-header">
-			    			<h3>Invite to chat</h3>
+			    			<h3>Invite to chat at <span id="group-domain"></span></h3>
 			    		</div>
 			    		<form action="" method="POST">
 			    			<br />

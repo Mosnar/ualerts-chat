@@ -113,3 +113,13 @@ RemoteService.prototype.createChatRoom = function(chatRoomName, username,pageCon
 		 };		
 	});
 };
+
+RemoteService.prototype.sendInvite = function(userIdentifier) {
+	$.ajax({
+		type: "POST",
+		url: window.location.href + "sendInvite",
+		data: { userIdentifier: userIdentifier }
+	}).done(function(data) {
+		 console.log("sendInvite data: " + data);	
+	});
+};

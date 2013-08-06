@@ -35,7 +35,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		self.$uiDom = $(
 			'<div class="chatroom-container" id="' + self.uniqueId + '">'
 		   		+ '<div class="chatroom-title-wrapper">'
-		   		+   '<p class="chatroom-title unread">&nbsp;&nbsp;(' + self.domain + ')' + inviteElement + '</p>'
+		   		+   '<p id="domainIdentifier" class="chatroom-title unread">&nbsp;&nbsp;(' + self.domain + ')' + inviteElement + '</p>'
 		   		+ 	'<p class="chatroom-title unread"><i class="icon-user"></i>&nbsp;&nbsp;' + parseUserName(self.name) + '<i class="icon-minus pull-right"></i></p>'
 		   		+ '</div>'
 		   		+ '<div class="chatroom-chat"></div>'
@@ -109,7 +109,8 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		}
 	
 	$('#invite-button').click(function() {
-		$('#invite').modal('show');
+		$('#group-domain').text(self.domain);
+		$('#invite').modal('show');		
 	});
 }
 
