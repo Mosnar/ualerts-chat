@@ -40,7 +40,7 @@
 			    			<br />
 			    			<input id="new-conversation-field" type="text" value="" name="conversationName" placeholder="Conversation name" tabindex="1"/>
 					    	<div class="modal-footer">
-					    		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+					    		<a class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
 								<button id="new-conversation-button" class="btn btn-primary">Submit</button>
 					    	</div>
 			    		</form>
