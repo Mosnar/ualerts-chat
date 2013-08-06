@@ -61,7 +61,7 @@
 			    			<br />
 			    			<input id="invitee-username" type="text" value="" name="inviteeName" placeholder="Enter a user name" tabindex="1"/>
 					    	<div class="modal-footer">
-					    		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+					    		<a class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
 								<button id="new-invitee-button" class="btn btn-primary">Submit</button>
 					    	</div>
 			    		</form>
