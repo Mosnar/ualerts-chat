@@ -25,7 +25,7 @@ package org.ualerts.chat.service.api;
  * @author Ransom Roberson
  */
 public class InviteMessage extends Message {
-  private final String TYPE = "INVITE";
+  private static final String TYPE = "INVITE";
   private String userIdentifier;
   @Override
   public String getType() {

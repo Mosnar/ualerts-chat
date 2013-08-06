@@ -22,6 +22,8 @@ package org.ualerts.chat.service.api.concrete;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.omg.CORBA.UnknownUserException;
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatClient;
@@ -72,13 +74,15 @@ public class ConcreteChatService implements ChatService {
    * {@inheritDoc}
    */
   @Override
-  public void joinConversation(UserIdentifier userIdentifier, boolean defaultConversation) {
+  public void joinConversation(UserIdentifier userIdentifier,
+      boolean defaultConversation) {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation == null) {
       conversation = createConversation(userIdentifier, defaultConversation);
     }
 
-    ChatClient chatClient = this.userService.findClient(userIdentifier.getName());
+    ChatClient chatClient =
+        this.userService.findClient(userIdentifier.getName());
     Participant participant = new ConcreteParticipant();
     participant.setUserName(userIdentifier);
     participant.setConversation(conversation);
@@ -86,39 +90,44 @@ public class ConcreteChatService implements ChatService {
     conversation.addParticipant(participant);
     chatClient.setParticipant(participant);
   }
-  
+
   /**
    * Create a new conversation and adds it to the collection
    * @param userIdentifier
    * @return The created conversation
    */
-  public Conversation createConversation(UserIdentifier userIdentifier, boolean defaultConversation) {
-    Conversation conversation = conversationFactory.newConversation(userIdentifier, defaultConversation);
+  public Conversation createConversation(UserIdentifier userIdentifier,
+      boolean defaultConversation) {
+    Conversation conversation =
+        conversationFactory.newConversation(userIdentifier,
+            defaultConversation);
     conversations.add(conversation);
     return conversation;
   }
-  
+
   /**
    * 
    * {@inheritDoc}
    */
-  public void inviteUser(UserIdentifier userIdentifier) {
+  public void inviteUser(UserIdentifier userIdentifier) throws UserException {
     ChatClient chatClient = userService.findClient(userIdentifier.getName());
-    // For now, if we can't find the user, dismiss the problem
-    if (chatClient != null)
-    {
+    if (chatClient != null) {
       Participant participant = new ConcreteParticipant();
       participant.setStatus(Status.INVITED);
       participant.setChatClient(chatClient);
       participant.setUserName(userIdentifier);
-      
+
       InviteMessage invite = new InviteMessage();
       invite.setFrom(userIdentifier.getName());
-      
-      UserIdentifier generalId = new UserIdentifier(userIdentifier.getName(), "ualerts.org");
+
+      UserIdentifier generalId =
+          new UserIdentifier(userIdentifier.getName(), "ualerts.org");
       invite.setTo(generalId.getFullIdentifier());
       invite.setUserIdentifier(userIdentifier.getFullIdentifier());
       chatClient.deliverMessage(invite);
+    }
+    else {
+      throw new UnknownUserException();
     }
   }
 
