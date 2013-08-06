@@ -48,6 +48,8 @@ public class ConcreteConversation implements Conversation {
   private static final String BROADCAST_MESSAGE = "all@";
 
   private Set<Participant> participants = new HashSet<Participant>();
+  private Set<Participant> invitedParticipants = new HashSet<Participant>();
+  
   private DateTimeService dateTimeService;
 
   private String name;
@@ -58,9 +60,13 @@ public class ConcreteConversation implements Conversation {
     if (participant == null)
       return;
 
-    this.participants.add(participant);
-    participant.setConversation(this);
-
+    Participant searchParticipant = findParticipant(participant.getUserName().getName());
+    if (searchParticipant == null) {
+      this.participants.add(participant);
+      participant.setConversation(this);
+    } else {
+      participant = searchParticipant;
+    }
     String name = participant.getChatClient().getUserName();
     String fullyQualifiedName = participant.getUserName().getFullIdentifier();
 
@@ -87,6 +93,24 @@ public class ConcreteConversation implements Conversation {
           }
         }
       }
+    }
+  }
+  
+  public void addInvitedParticipant(Participant participant) {
+    if (participant == null)
+      return;
+    invitedParticipants.add(participant);
+  }
+
+  /**
+   * Activates an invited participant in the conversation
+   */
+  public void activateParticipant(UserIdentifier userIdentifier) {
+    Participant participant = findInvitedParticipant(userIdentifier.getName());
+    if (participant != null) {
+      participant.setStatus(Status.SETUP);
+      addParticipant(participant);
+      invitedParticipants.remove(participant);
     }
   }
 
@@ -148,6 +172,24 @@ public class ConcreteConversation implements Conversation {
   private Participant findParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
+      if (participant.getUserName() == UserIdentifier.NULL_USER)
+        continue;
+
+      if (participant.getUserName().matches(name)) {
+        thisParticipant = participant;
+        break;
+      }
+    }
+    return thisParticipant;
+  }
+  
+  
+  /*
+   * Find a specific invited participant by name
+   */
+  private Participant findInvitedParticipant(String name) {
+    Participant thisParticipant = null;
+    for (Participant participant : invitedParticipants) {
       if (participant.getUserName() == UserIdentifier.NULL_USER)
         continue;
 
