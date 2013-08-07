@@ -96,8 +96,8 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
         mapper.readValue(message.getPayload(), ChatTextMessage.class);
     chatMessage.setMessageDate(dateTimeService.getCurrentDate());
     chatMessage.setText(HtmlUtils.htmlEscape(chatMessage.getText()));
-    Conversation conversation =
-        chatService.getConversation(getUserIdentifier(chatMessage.getFrom()));
+    Conversation conversation = 
+        chatService.getConversation(getUserIdentifier(chatMessage.getFrom(), chatMessage.getTo()));
     if (conversation != null) {
       conversation.deliverMessage(chatMessage);
     }
@@ -109,9 +109,10 @@ public class SockJsHandler extends TextWebSocketHandlerAdapter {
    * @param the fullyQualified from address
    * @return a UserIdentifier
    */
-  private UserIdentifier getUserIdentifier(String from) {
+  private UserIdentifier getUserIdentifier(String from, String to) {
     int idx = from.indexOf("@");
-    return new UserIdentifier(from.substring(0, idx), from.substring(idx + 1));
+    int idx2 = to.indexOf("@");
+    return new UserIdentifier(from.substring(0, idx), to.substring(idx2 + 1));
 
   }
 

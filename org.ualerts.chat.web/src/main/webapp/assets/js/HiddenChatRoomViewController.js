@@ -10,7 +10,7 @@ function HiddenChatRoomViewController() {
 	});
 }
 var ATCHAR = '@';
-var ALL_ATCHAR = 'all@';
+var defaultChat = 'all@ualerts.org';
 
 HiddenChatRoomViewController.prototype.addListener = function(callback) {
 	this.listeners.push(callback);
@@ -41,8 +41,7 @@ HiddenChatRoomViewController.prototype.show = function() {
 };
 
 HiddenChatRoomViewController.prototype.addElement = function(name, uniqueId) {
-	var allChat = ALL_ATCHAR + this.getDomain(name);
-	if (name == allChat) {
+	if (name == defaultChat) {
 		return;
 	}
 	var listEntry = $('<li fully-qualified="' + name +'" id="hidden-' + uniqueId + '">' + this.getName(name) + '</li>');
@@ -55,8 +54,7 @@ HiddenChatRoomViewController.prototype.addElement = function(name, uniqueId) {
 };
 
 HiddenChatRoomViewController.prototype.removeElement = function(name, uniqueId) {
-	var allChat = ALL_ATCHAR + this.getDomain(name);
-	if (name == allChat) {
+	if (name == defaultChat) {
 		return;
 	}
 	this.$uiDom.find('.dropdown-menu li#hidden-' + uniqueId).remove();

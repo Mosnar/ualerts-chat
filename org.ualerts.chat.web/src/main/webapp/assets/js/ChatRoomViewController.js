@@ -8,7 +8,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 	this.$uiDom = "";
 	this.windowFocus = true;
 	this.missedMessage = true;
-	
+	this.defaultChat = 'all@ualerts.org';
 	var self = this;
 	 
 	// On page focus
@@ -96,8 +96,8 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 	    	}
 	    });
 	}
-	var allChat = 'all@'+self.domain;
-	
+
+	var allChat = self.defaultChat;
 	if (chatRoomName == allChat) {
 		this.$uiDom = $('<div id="chatbox"></div>');
 		$('#messageForm').before(this.$uiDom);
@@ -122,7 +122,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 ChatRoomViewController.prototype.displayChatMessage = function(message) {
 
 	var $chatbox = "";
-	var allChat = 'all@'+this.domain;
+	var allChat = this.defaultChat;
 	/**
 	 * Build a string to be displayed with the chat message text
 	 * 
