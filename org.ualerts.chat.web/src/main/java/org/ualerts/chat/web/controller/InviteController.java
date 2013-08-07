@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
+import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserService;
 
@@ -56,6 +57,14 @@ public class InviteController {
       @RequestParam("userIdentifier") String userIdentifier) {
     try {
       UserIdentifier userId = new UserIdentifier(userIdentifier);
+      
+      Conversation conversation = chatService.getConversation(userId);
+      for(Participant participant : conversation.getParticipants()) {
+        if(participant.getUserName().getName().matches(userId.getName())) {
+          return "INVALID";
+        }
+      }   
+      
       chatService.inviteUser(userId);
       return VALID;
     }
