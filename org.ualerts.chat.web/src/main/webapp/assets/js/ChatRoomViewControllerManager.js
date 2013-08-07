@@ -5,7 +5,7 @@ function ChatRoomViewControllerManager(hiddenChatRoomViewController) {
 }
 
 ChatRoomViewControllerManager.prototype.addChatRoomViewController = function(chatRoomName, username, remoteService, roomType) {
-	var uniqueId = 'room-' + this.uniqueIdNum;
+	var uniqueId = 'room-' + this.uniqueIdNum;console.log("addChatRoomViewContrller - chatRoomName: " + chatRoomName + "  username: " + username);
 	var domain = this.getDomain(chatRoomName);
 	var room = new ChatRoomViewController(chatRoomName, username, remoteService, uniqueId, domain, roomType);
 	this.uniqueIdNum++;

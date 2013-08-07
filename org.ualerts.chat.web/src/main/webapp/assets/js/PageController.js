@@ -25,6 +25,7 @@ PageController.prototype.init = function() {
     this.handleModalFocus();
     this.handleNewConversationSubmit();
     this.handleConversationInviteSubmit();
+    this.handleInviteAcceptSubmit();
     $('#usernameField').focus();
 };
 
@@ -125,10 +126,11 @@ PageController.prototype.handleNewConversationSubmit = function() {
 };
 
 PageController.prototype.newConversation = function(self, newChatRoomName) {
+	var allChat = ALL_ATCHAR+newChatRoomName+"."+self.domain;
 	var fullyQualifiedName = self.username+ATCHAR+newChatRoomName+"."+self.domain;
-	self.chatRoomService.setUsername(fullyQualifiedName);
-	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
-	self.chatRoomService.createChatRoomViewController(fullyQualifiedName,'newConversation');
+	//self.chatRoomService.setUsername(fullyQualifiedName);
+//	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
+	self.chatRoomService.createChatRoomViewController(allChat,'newConversation');
 	
 };
 
@@ -141,11 +143,26 @@ PageController.prototype.handleConversationInviteSubmit = function() {
 		var groupDomain = $('#group-domain').text();
 		var fullyQualifiedName = $invitee + ATCHAR + groupDomain; 
 		if ($.trim($invitee) != "") {
-			console.log("PageController - fullyQualifiedName: " + fullyQualifiedName);
 			self.service.sendInvite(fullyQualifiedName);
 		    $('#invite').modal('hide');
 		    $('#invitee-username').val("");
 		};
+	});	
+};
+
+PageController.prototype.handleInviteAcceptSubmit = function() {
+	
+	var self = this;
+	
+	$('#acceptance-button').click(function() {
+		var groupDomain = $('#invite-group-domain').text();
+		var allChat = ALL_ATCHAR+groupDomain;
+		var fullyQualifiedName = self.username + ATCHAR + groupDomain; 
+		console.log("PageController - handleInviteAcceptSubmit: fullyQualifiedName: " + fullyQualifiedName);
+		self.service.acceptInvite(fullyQualifiedName);
+		//self.chatRoomService.setUserName(fullyQualifiedName);
+	    $('#accept').modal('hide');
+	    self.chatRoomService.createChatRoomViewController(allChat,'newConversation');
 	});	
 };
 
@@ -195,6 +212,8 @@ PageController.prototype.handleMessageSubmit = function() {
             var allChat = ALL_ATCHAR+self.domain;
             var userFrom = self.username+ATCHAR+self.domain;
             self.service.sendMessage(userFrom, allChat, "chat", clientMessage);
+            console.log("PageController - userFrom: " + userFrom);
+            console.log("PageController - allChat: " + allChat);
             $messageField.val('');
         }
     });
