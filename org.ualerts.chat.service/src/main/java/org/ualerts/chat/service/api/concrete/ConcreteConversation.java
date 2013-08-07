@@ -54,7 +54,7 @@ public class ConcreteConversation implements Conversation {
 
   private String name;
   private boolean defaultConversation;
-
+  private boolean isPrivate;
   @Override
   public void addParticipant(Participant participant) {
     if (participant == null)
@@ -267,6 +267,20 @@ public class ConcreteConversation implements Conversation {
   @Override
   public void setDefaultConversation(boolean defaultConversation) {
     this.defaultConversation = defaultConversation;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void setPrivate(boolean state) {
+    this.isPrivate = state;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isPrivate() {
+    return this.isPrivate;
   }
 
 }

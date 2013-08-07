@@ -97,4 +97,14 @@ public interface Conversation {
 	 * Set the default conversation indicator
 	 */
 	void setDefaultConversation(boolean defaultConversation);
+	
+	/**
+	 * Sets the private indicator
+	 */
+	void setPrivate(boolean state);
+	
+	/**
+	 * Gets the private indicator
+	 */
+	boolean isPrivate();
 }
