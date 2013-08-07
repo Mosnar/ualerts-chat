@@ -133,9 +133,10 @@ public class ConcreteChatService implements ChatService {
       Conversation conversation = getConversation(userIdentifier);
       // TODO: Do something if the conversation is null. Throw error?
       if (conversation != null) {
-        // If the conversation exists and I'm in it, send the invite
-        if (((ConcreteConversation) conversation)
-            .findParticipant(chatClientContext.getChatClient().getUserName()) != null) {
+        // If the conversation exists, I'm in it, and I'm an admin or convo is public, send the invite
+        Participant participantOriginal = ((ConcreteConversation) conversation)
+        .findParticipant(chatClientContext.getChatClient().getUserName());
+        if (participantOriginal != null && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
           Participant participant = new ConcreteParticipant();
           participant.setStatus(Status.INVITED);
           participant.setChatClient(chatClient);
