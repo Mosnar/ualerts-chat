@@ -40,7 +40,7 @@ public class ConcreteParticipant implements Participant {
   private UserIdentifier userName;
   private ChatClient chatClient;
   private Status status;
-  private boolean isAdmin;
+  private boolean admin;
   
   /**
    * {@inheritDoc}
@@ -119,14 +119,14 @@ public class ConcreteParticipant implements Participant {
    * @return boolean
    */
   public boolean isAdmin() {
-    return this.isAdmin;
+    return this.admin;
   }
   
   /**
    * Sets whether the participant is an admin or not in the conversation
    * @param state boolean
    */
-  public void setIsAdmin(boolean state) {
-    this.isAdmin = state;
+  public void setAdmin(boolean state) {
+    this.admin = state;
   }
 }
