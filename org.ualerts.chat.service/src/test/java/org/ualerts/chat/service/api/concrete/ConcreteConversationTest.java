@@ -272,4 +272,36 @@ public class ConcreteConversationTest {
     context.assertIsSatisfied();
     assertFalse(conversation.isValidUserName(USER_NAME1));
   }
+  
+  @Test
+  public void testActivateParticipant() {
+    final Participant participant = context.mock(Participant.class);
+    final ChatClient chatClient = context.mock(ChatClient.class);
+    conversation.setDefaultConversation(true);
+    conversation.addInvitedParticipant(participant);
+    
+    context.checking(new Expectations() {
+      {    
+        oneOf(participant).setStatus(Status.SETUP);
+        
+        // Participant 1
+        oneOf(participant).setConversation(conversation);
+        oneOf(participant).getChatClient();
+        will(returnValue(chatClient));
+        atLeast(1).of(chatClient).getUserName();
+        will(returnValue(USER_NAME1));
+        oneOf(participant).setStatus(Status.ONLINE);
+
+        oneOf(participant).getStatus();
+        will(returnValue(Status.ONLINE));
+
+        oneOf(participant).deliverMessage(with(any(RosterMessage.class)));
+
+        atLeast(1).of(participant).getUserName();
+        will(returnValue(userId));
+      }
+    });
+    conversation.activateParticipant(participant.getUserName());
+    context.assertIsSatisfied();
+  }
 }
