@@ -120,7 +120,7 @@ RemoteService.prototype.sendInvite = function(userIdentifier) {
 		url: window.location.href + "sendInvite",
 		data: { userIdentifier: userIdentifier }
 	}).done(function(data) {
-		 console.log("sendInvite data: " + data);	
+		// console.log("sendInvite data: " + data);	
 	});
 };
 
@@ -130,6 +130,6 @@ RemoteService.prototype.acceptInvite = function(userIdentifier) {
 		url: window.location.href + "acceptInvite",
 		data: { userIdentifier: userIdentifier }
 	}).done(function(data) {
-		 console.log("acceptInvite data: " + data);	
+		 //console.log("acceptInvite data: " + data);	
 	});
 };

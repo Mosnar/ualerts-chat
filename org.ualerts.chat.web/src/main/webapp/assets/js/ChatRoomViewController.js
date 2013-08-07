@@ -92,8 +92,6 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 	    	if ($.trim($chatRoomMessageField.val()) != "") {
 	    		var clientMessage = $chatRoomMessageField.val();
 	    		self.remoteService.sendMessage(self.username, self.name, "chat", clientMessage);
-	    		console.log("CRVC - self.username (from): " + self.username);
-	    		console.log("CRVC - self.name (to): " + self.name);
 	    		$chatRoomMessageField.val('');
 	    	}
 	    });

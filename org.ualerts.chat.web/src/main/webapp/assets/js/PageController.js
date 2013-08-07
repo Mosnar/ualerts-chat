@@ -158,9 +158,7 @@ PageController.prototype.handleInviteAcceptSubmit = function() {
 		var groupDomain = $('#invite-group-domain').text();
 		var allChat = ALL_ATCHAR+groupDomain;
 		var fullyQualifiedName = self.username + ATCHAR + groupDomain; 
-		console.log("PageController - handleInviteAcceptSubmit: fullyQualifiedName: " + fullyQualifiedName);
 		self.service.acceptInvite(fullyQualifiedName);
-		//self.chatRoomService.setUserName(fullyQualifiedName);
 	    $('#accept').modal('hide');
 	    self.chatRoomService.createChatRoomViewController(allChat,'newConversation');
 	});	
@@ -212,8 +210,6 @@ PageController.prototype.handleMessageSubmit = function() {
             var allChat = ALL_ATCHAR+self.domain;
             var userFrom = self.username+ATCHAR+self.domain;
             self.service.sendMessage(userFrom, allChat, "chat", clientMessage);
-            console.log("PageController - userFrom: " + userFrom);
-            console.log("PageController - allChat: " + allChat);
             $messageField.val('');
         }
     });
