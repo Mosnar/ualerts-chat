@@ -37,6 +37,11 @@
 			    			<h3>New Conversation</h3>
 			    		</div>
 			    		<form action="" method="POST">
+			    			<div class="control-group">
+				                <div class="controls">
+				                    <label class="checkbox"><input id="private-checkbox" type="checkbox" />Private</label>
+				                </div>
+				            </div>
 			    			<br />
 			    			<input id="new-conversation-field" type="text" value="" name="conversationName" placeholder="Conversation name" tabindex="1"/>
 					    	<div class="modal-footer">
@@ -45,7 +50,6 @@
 					    	</div>
 			    		</form>
 			    	</div>
-			    	
 		    	</div>
 	        </div>
     	</div>
@@ -66,7 +70,6 @@
 					    	</div>
 			    		</form>
 			    	</div>
-			    	
 		    	</div>
 	        </div>
     	</div>
@@ -85,7 +88,6 @@
 					    	</div>
 			    		</form>
 			    	</div>
-			    	
 		    	</div>
 	        </div>
     	</div>

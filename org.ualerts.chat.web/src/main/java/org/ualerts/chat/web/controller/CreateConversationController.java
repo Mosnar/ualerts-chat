@@ -52,8 +52,8 @@ public class CreateConversationController {
   @RequestMapping (value = "/createNewConversation", method = RequestMethod.POST)
   @ResponseBody
   public String createConversation(@RequestParam("conversationName") String conversationName,
-      @RequestParam("username") String username) {
-    
+      @RequestParam("username") String username,  @RequestParam("privateFlag") String privateFlag) {
+
     UserIdentifier userIdentifier = 
         new UserIdentifier(username, conversationName+"."+userService.getDefaultDomain());
     Conversation conversation = chatService.getConversation(userIdentifier);

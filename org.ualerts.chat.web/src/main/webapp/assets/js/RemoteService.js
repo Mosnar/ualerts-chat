@@ -102,11 +102,11 @@ RemoteService.prototype.login = function(pageControllerReference,callback) {
     });
 };
 
-RemoteService.prototype.createChatRoom = function(chatRoomName, username,pageControllerReference,callback) {
+RemoteService.prototype.createChatRoom = function(chatRoomName, username,pageControllerReference,callback,privateFlag) {
 	$.ajax({
 		type: "POST",
 		url: window.location.href + "createNewConversation",
-		data: {conversationName: chatRoomName, username: username}
+		data: {conversationName: chatRoomName, username: username, privateFlag: privateFlag}
 	}).done(function(jsonObj) {
 		 if (JSON.parse(jsonObj).result == "valid" ){
 			 callback(pageControllerReference,chatRoomName);
