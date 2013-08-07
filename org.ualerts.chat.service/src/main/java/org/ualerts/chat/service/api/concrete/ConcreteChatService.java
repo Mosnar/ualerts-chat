@@ -27,6 +27,7 @@ import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatClient;
+import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.ChatService;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.ConversationFactory;
@@ -51,6 +52,7 @@ public class ConcreteChatService implements ChatService {
   private DateTimeService dateTimeService;
   private UserService userService;
   private ConversationFactory conversationFactory;
+  private ChatClientContext chatClientContext;
 
   @Autowired
   public ConcreteChatService(DateTimeService dateTimeService) {
@@ -115,22 +117,26 @@ public class ConcreteChatService implements ChatService {
       Conversation conversation = getConversation(userIdentifier);
       // TODO: Do something if the conversation is null. Throw error?
       if (conversation != null) {
-        Participant participant = new ConcreteParticipant();
-        participant.setStatus(Status.INVITED);
-        participant.setChatClient(chatClient);
-        participant.setUserName(userIdentifier);
+        // If the conversation exists and I'm in it, send the invite
+        if (((ConcreteConversation) conversation)
+            .findParticipant(chatClientContext.getChatClient().getUserName()) != null) {
+          Participant participant = new ConcreteParticipant();
+          participant.setStatus(Status.INVITED);
+          participant.setChatClient(chatClient);
+          participant.setUserName(userIdentifier);
 
-        InviteMessage invite = new InviteMessage();
-        invite.setFrom(userIdentifier.getName());
-        invite.setSubType(userIdentifier.getDomain());
-        
-        UserIdentifier generalId =
-            new UserIdentifier(userIdentifier.getName(), "ualerts.org");
-        invite.setTo(generalId.getFullIdentifier());
-        invite.setUserIdentifier(userIdentifier.getFullIdentifier());
-        chatClient.deliverMessage(invite);  
-        
-        conversation.addInvitedParticipant(participant);
+          InviteMessage invite = new InviteMessage();
+          invite.setFrom(userIdentifier.getName());
+          invite.setSubType(userIdentifier.getDomain());
+
+          UserIdentifier generalId =
+              new UserIdentifier(userIdentifier.getName(), "ualerts.org");
+          invite.setTo(generalId.getFullIdentifier());
+          invite.setUserIdentifier(userIdentifier.getFullIdentifier());
+          chatClient.deliverMessage(invite);
+
+          conversation.addInvitedParticipant(participant);
+        }
       }
     }
     else {
@@ -147,5 +153,10 @@ public class ConcreteChatService implements ChatService {
   public void setConcreteConversationFactory(
       ConversationFactory conversationFactory) {
     this.conversationFactory = conversationFactory;
+  }
+
+  @Autowired
+  public void setChatClientContext(ChatClientContext chatClientContext) {
+    this.chatClientContext = chatClientContext;
   }
 }

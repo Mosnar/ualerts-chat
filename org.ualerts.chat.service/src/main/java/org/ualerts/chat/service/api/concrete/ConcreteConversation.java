@@ -172,7 +172,7 @@ public class ConcreteConversation implements Conversation {
   /*
    * Find a specific participant by name
    */
-  private Participant findParticipant(String name) {
+  public Participant findParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
       if (participant.getUserName() == UserIdentifier.NULL_USER)
@@ -189,7 +189,7 @@ public class ConcreteConversation implements Conversation {
   /*
    * Find a specific invited participant by name
    */
-  private Participant findInvitedParticipant(String name) {
+  public Participant findInvitedParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : invitedParticipants) {
       if (participant.getUserName() == UserIdentifier.NULL_USER)
