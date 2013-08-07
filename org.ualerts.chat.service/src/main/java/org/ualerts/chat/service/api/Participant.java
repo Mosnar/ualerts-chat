@@ -86,5 +86,15 @@ public interface Participant {
    */
   Status getStatus();
   
+  /**
+   * Returns whether the participant is an admin in the conversation
+   * @return boolean
+   */
+  boolean isAdmin();
   
+  /**
+   * Sets whether the participant is and  admin in the conversation
+   * @param state
+   */
+  void setAdmin(boolean state);
 }
