@@ -77,11 +77,8 @@ public class ConcreteChatService implements ChatService {
    */
   @Override
   public void joinConversation(UserIdentifier userIdentifier,
-      boolean defaultConversation) {
+      boolean isAdmin) {
     Conversation conversation = getConversation(userIdentifier);
-    if (conversation == null) {
-      conversation = createConversation(userIdentifier, defaultConversation);
-    }
 
     ChatClient chatClient =
         this.userService.findClient(userIdentifier.getName());
@@ -91,6 +88,7 @@ public class ConcreteChatService implements ChatService {
     participant.setChatClient(chatClient);
     conversation.addParticipant(participant);
     chatClient.setParticipant(participant);
+    participant.setAdmin(isAdmin);
   }
 
   /**
@@ -99,13 +97,31 @@ public class ConcreteChatService implements ChatService {
    * @return The created conversation
    */
   public Conversation createConversation(UserIdentifier userIdentifier,
-      boolean defaultConversation) {
-    Conversation conversation =
-        conversationFactory.newConversation(userIdentifier,
-            defaultConversation);
-    conversations.add(conversation);
+      boolean defaultConversation, boolean isPrivate) {
+    Conversation conversation = getConversation(userIdentifier);
+    if (conversation == null) {
+      // No conversation exists, make a new one
+      conversation =
+          conversationFactory.newConversation(userIdentifier,
+              defaultConversation);
+      conversations.add(conversation);
+      conversation.setPrivate(isPrivate);
+      // Join the user to the conversation, making them an admin
+      joinConversation(userIdentifier, true);
+      return conversation;
+    } else {
+      joinConversation(userIdentifier, false);
+    }
+
     return conversation;
   }
+
+  /*
+   * public Conversation createConversation(UserIdentifier userIdentifier,
+   * boolean defaultConversation) { Conversation conversation =
+   * conversationFactory.newConversation(userIdentifier, defaultConversation);
+   * conversations.add(conversation); return conversation; }
+   */
 
   /**
    * 
