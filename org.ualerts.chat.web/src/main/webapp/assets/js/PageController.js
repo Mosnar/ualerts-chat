@@ -159,7 +159,7 @@ PageController.prototype.handleInviteAcceptSubmit = function() {
 		var fullyQualifiedName = self.username + ATCHAR + groupDomain; 
 		self.service.acceptInvite(fullyQualifiedName);
 	    $('#accept').modal('hide');
-	    self.chatRoomService.createChatRoomViewController(allChat,'newConversation');
+	    self.chatRoomService.createChatRoomViewController(allChat,'joinedConversation');
 	});	
 };
 
