@@ -115,10 +115,11 @@ PageController.prototype.handleNewConversationSubmit = function() {
 	
 	$('#new-conversation-button').click(function() {
 		var $newChatRoomName = $('#new-conversation-field').val();
+		var $private = $('#private-checkbox').is(':checked');
 		$newChatRoomName = self.htmlEncode($newChatRoomName);
 		
 		if ($.trim($newChatRoomName) != "") {
-			self.service.createChatRoom($newChatRoomName,self.username,self,self.newConversation);
+			self.service.createChatRoom($newChatRoomName,self.username,self,self.newConversation,$private);
 		    $('#new-conversation').modal('hide');
 		    $('#new-conversation-field').val("");
 		};
@@ -128,8 +129,6 @@ PageController.prototype.handleNewConversationSubmit = function() {
 PageController.prototype.newConversation = function(self, newChatRoomName) {
 	var allChat = ALL_ATCHAR+newChatRoomName+"."+self.domain;
 	var fullyQualifiedName = self.username+ATCHAR+newChatRoomName+"."+self.domain;
-	//self.chatRoomService.setUsername(fullyQualifiedName);
-//	self.chatRoomService.setDomain(newChatRoomName+"."+self.domain);
 	self.chatRoomService.createChatRoomViewController(allChat,'newConversation');
 	
 };
