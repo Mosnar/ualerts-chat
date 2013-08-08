@@ -115,16 +115,14 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE + this.name)) {
       for (Participant participant : getParticipants()) {
-        if (participant.getStatus() == Status.ONLINE) {
           deliverParticipantMessage(participant, message);
-        }
       }
     }
     else {
 
-      Participant toParticipant = findParticipant(new UserIdentifier(parseName(message.getTo()), null));
+      Participant toParticipant = findParticipant(new UserIdentifier(parseName(message.getTo()), ""));
       Participant fromParticipant =
-          findParticipant(new UserIdentifier(parseName(message.getFrom()), null));
+          findParticipant(new UserIdentifier(parseName(message.getFrom()), ""));
       deliverParticipantMessage(toParticipant, message);
       deliverParticipantMessage(fromParticipant, message);
     }
@@ -146,7 +144,7 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public boolean isValidUserName(String name) {
-    if (findParticipant(new UserIdentifier(name, null)) != null) {
+    if (findParticipant(new UserIdentifier(name, "")) != null) {
       return false;
     }
     return true;
