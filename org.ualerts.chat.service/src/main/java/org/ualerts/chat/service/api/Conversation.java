@@ -34,24 +34,13 @@ public interface Conversation {
 	 * @param chatClient
 	 */
 	void addParticipant(Participant participant);
-	
-	/**
-	 * Adds an invited participant to the invited holding pen prior to true add
-	 * @param participant
-	 */
-	void addInvitedParticipant(Participant participant);
-	
+
 	/**
 	 * Remove a chat participant from a conversation
 	 * @param chatClient
 	 */
 	void removeParticipant(Participant participant);
 	
-	/**
-	 * Attempts to activate an invited user on its conversation
-	 * @param userIdentifier
-	 */
-	void activateParticipant(UserIdentifier userIdentifier);
 	/**
 	 * Returns a Set of Participants associated with this Conversation
 	 * @return Set of Participant
