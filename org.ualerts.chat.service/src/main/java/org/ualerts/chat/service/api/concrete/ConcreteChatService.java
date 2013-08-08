@@ -76,19 +76,19 @@ public class ConcreteChatService implements ChatService {
    * {@inheritDoc}
    */
   @Override
-  public void joinConversation(UserIdentifier userIdentifier,
-      boolean isAdmin) {
+  public void joinConversation(UserIdentifier userIdentifier, boolean isAdmin) {
     Conversation conversation = getConversation(userIdentifier);
-
-    ChatClient chatClient =
-        this.userService.findClient(userIdentifier.getName());
-    Participant participant = new ConcreteParticipant();
-    participant.setUserName(userIdentifier);
-    participant.setConversation(conversation);
-    participant.setChatClient(chatClient);
-    conversation.addParticipant(participant);
-    chatClient.setParticipant(participant);
-    participant.setAdmin(isAdmin);
+    // If the conversation isn't private or the user is invited, connect them
+    Participant participant = ((ConcreteConversation) conversation)
+        .findParticipant(userIdentifier.getName());
+    if (!conversation.isPrivate()
+        || (participant != null && participant.getStatus() == Status.INVITED)) {
+      ChatClient chatClient =
+          this.userService.findClient(userIdentifier.getName());
+      participant.setStatus(Status.ONLINE);
+      chatClient.setParticipant(participant);
+      participant.setAdmin(isAdmin);
+    }
   }
 
   /**
@@ -109,7 +109,8 @@ public class ConcreteChatService implements ChatService {
       // Join the user to the conversation, making them an admin
       joinConversation(userIdentifier, true);
       return conversation;
-    } else {
+    }
+    else {
       joinConversation(userIdentifier, false);
     }
 
@@ -133,10 +134,14 @@ public class ConcreteChatService implements ChatService {
       Conversation conversation = getConversation(userIdentifier);
       // TODO: Do something if the conversation is null. Throw error?
       if (conversation != null) {
-        // If the conversation exists, I'm in it, and I'm an admin or convo is public, send the invite
-        Participant participantOriginal = ((ConcreteConversation) conversation)
-        .findParticipant(chatClientContext.getChatClient().getUserName());
-        if (participantOriginal != null && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
+        // If the conversation exists, I'm in it, and I'm an admin or convo is
+        // public, send the invite
+        Participant participantOriginal =
+            ((ConcreteConversation) conversation)
+                .findParticipant(chatClientContext.getChatClient()
+                    .getUserName());
+        if (participantOriginal != null
+            && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
           Participant participant = new ConcreteParticipant();
           participant.setStatus(Status.INVITED);
           participant.setChatClient(chatClient);
@@ -152,7 +157,7 @@ public class ConcreteChatService implements ChatService {
           invite.setUserIdentifier(userIdentifier.getFullIdentifier());
           chatClient.deliverMessage(invite);
 
-          conversation.addInvitedParticipant(participant);
+          conversation.addParticipant(participant);
         }
       }
     }
