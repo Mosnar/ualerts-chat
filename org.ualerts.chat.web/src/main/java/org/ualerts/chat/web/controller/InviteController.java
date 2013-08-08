@@ -80,7 +80,7 @@ public class InviteController {
     UserIdentifier userId = new UserIdentifier(userIdentifier);
     Conversation conversation = chatService.getConversation(userId);
     if (conversation != null) {
-      conversation.activateParticipant(userId);
+      chatService.joinConversation(userId, false);
       return VALID;
     }
     else {
