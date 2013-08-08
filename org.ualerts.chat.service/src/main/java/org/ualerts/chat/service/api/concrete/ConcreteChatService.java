@@ -84,6 +84,7 @@ public class ConcreteChatService implements ChatService {
       if (!conversation.isPrivate()
           || (participant != null && (participant.getStatus() == Status.INVITED || participant
               .isAdmin()))) {
+        // Move above condition to separate method
         ChatClient chatClient =
             this.userService.findClient(userIdentifier.getName());
         if (participant == null) {
@@ -152,18 +153,14 @@ public class ConcreteChatService implements ChatService {
           participant.setStatus(Status.INVITED);
           participant.setChatClient(chatClient);
           participant.setUserName(userIdentifier);
-
+          conversation.addParticipant(participant);
+          
           InviteMessage invite = new InviteMessage();
           invite.setFrom(userIdentifier.getName());
           invite.setSubType(userIdentifier.getDomain());
-
-          UserIdentifier generalId =
-              new UserIdentifier(userIdentifier.getName(), "ualerts.org");
-          invite.setTo(generalId.getFullIdentifier());
+          invite.setTo(userIdentifier.getFullIdentifier());
           invite.setUserIdentifier(userIdentifier.getFullIdentifier());
           chatClient.deliverMessage(invite);
-
-          conversation.addParticipant(participant);
         }
       }
     }

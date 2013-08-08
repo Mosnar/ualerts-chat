@@ -73,7 +73,7 @@ public class ConcreteUserService implements UserService {
     }
     chatClients.add(chatClient);
     chatService
-        .joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN),true);
+        .joinConversation(new UserIdentifier(userName, DEFAULT_DOMAIN), true);
     
     return userName + "@" + DEFAULT_DOMAIN;
   }
