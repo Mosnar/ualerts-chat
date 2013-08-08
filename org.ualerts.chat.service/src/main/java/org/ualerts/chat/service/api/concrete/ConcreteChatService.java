@@ -84,7 +84,7 @@ public class ConcreteChatService implements ChatService {
           conversation
               .findParticipant(userIdentifier);
       if (!conversation.isPrivate()
-          || (participant != null && participant.getStatus() == Status.INVITED)) {
+          || (participant != null && (participant.getStatus() == Status.INVITED || participant.isAdmin()))) {
         ChatClient chatClient =
             this.userService.findClient(userIdentifier.getName());
         participant.setStatus(Status.ONLINE);
