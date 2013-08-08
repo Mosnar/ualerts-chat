@@ -97,7 +97,7 @@ public interface Conversation {
 	 * @param name name of participant
 	 * @return participant or null
 	 */
-	Participant findParticipant(String name);
+	Participant findParticipant(UserIdentifier userIdentifier);
 	
 	/**
 	 * Gets the private indicator

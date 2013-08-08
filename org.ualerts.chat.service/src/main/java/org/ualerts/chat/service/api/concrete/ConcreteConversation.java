@@ -61,7 +61,7 @@ public class ConcreteConversation implements Conversation {
       return;
 
     Participant searchParticipant =
-        findParticipant(participant.getUserName().getName());
+        findParticipant(participant.getUserName());
     if (searchParticipant == null) {
       this.participants.add(participant);
       participant.setConversation(this);
@@ -122,9 +122,9 @@ public class ConcreteConversation implements Conversation {
     }
     else {
 
-      Participant toParticipant = findParticipant(parseName(message.getTo()));
+      Participant toParticipant = findParticipant(new UserIdentifier(parseName(message.getTo()), null));
       Participant fromParticipant =
-          findParticipant(parseName(message.getFrom()));
+          findParticipant(new UserIdentifier(parseName(message.getFrom()), null));
       deliverParticipantMessage(toParticipant, message);
       deliverParticipantMessage(fromParticipant, message);
     }
@@ -146,7 +146,7 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public boolean isValidUserName(String name) {
-    if (findParticipant(name) != null) {
+    if (findParticipant(new UserIdentifier(name, null)) != null) {
       return false;
     }
     return true;
@@ -155,13 +155,13 @@ public class ConcreteConversation implements Conversation {
   /*
    * Find a specific participant by name
    */
-  public Participant findParticipant(String name) {
+  public Participant findParticipant(UserIdentifier userId) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
       if (participant.getUserName() == UserIdentifier.NULL_USER)
         continue;
 
-      if (participant.getUserName().matches(name)) {
+      if (participant.getUserName().matches(userId.getName())) {
         thisParticipant = participant;
         break;
       }
