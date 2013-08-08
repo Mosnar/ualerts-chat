@@ -80,13 +80,17 @@ public class ConcreteChatService implements ChatService {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation != null) {
       // If the conversation isn't private or the user is invited, connect them
-      Participant participant =
-          conversation
-              .findParticipant(userIdentifier);
+      Participant participant = conversation.findParticipant(userIdentifier);
       if (!conversation.isPrivate()
-          || (participant != null && (participant.getStatus() == Status.INVITED || participant.isAdmin()))) {
+          || (participant != null && (participant.getStatus() == Status.INVITED || participant
+              .isAdmin()))) {
         ChatClient chatClient =
             this.userService.findClient(userIdentifier.getName());
+        if (participant == null) {
+          participant = new ConcreteParticipant();
+          participant.setChatClient(chatClient);
+          participant.setUserName(userIdentifier);
+        }
         participant.setStatus(Status.ONLINE);
         chatClient.setParticipant(participant);
         participant.setAdmin(isAdmin);
@@ -140,9 +144,8 @@ public class ConcreteChatService implements ChatService {
         // If the conversation exists, I'm in it, and I'm an admin or convo is
         // public, send the invite
         Participant participantOriginal =
-            conversation
-                .findParticipant(new UserIdentifier(chatClientContext.getChatClient()
-                    .getUserName(), null));
+            conversation.findParticipant(new UserIdentifier(chatClientContext
+                .getChatClient().getUserName(), ""));
         if (participantOriginal != null
             && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
           Participant participant = new ConcreteParticipant();
