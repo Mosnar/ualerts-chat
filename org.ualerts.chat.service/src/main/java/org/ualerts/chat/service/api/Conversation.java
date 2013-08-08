@@ -93,6 +93,13 @@ public interface Conversation {
 	void setPrivate(boolean state);
 	
 	/**
+	 * Attempts to find a participant in the conversation.
+	 * @param name name of participant
+	 * @return participant or null
+	 */
+	Participant findParticipant(String name);
+	
+	/**
 	 * Gets the private indicator
 	 */
 	boolean isPrivate();
