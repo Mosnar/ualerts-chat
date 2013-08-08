@@ -48,13 +48,13 @@ public class ConcreteConversation implements Conversation {
   private static final String BROADCAST_MESSAGE = "all@";
 
   private Set<Participant> participants = new HashSet<Participant>();
-  private Set<Participant> invitedParticipants = new HashSet<Participant>();
 
   private DateTimeService dateTimeService;
 
   private String name;
   private boolean defaultConversation;
   private boolean isPrivate;
+
   @Override
   public void addParticipant(Participant participant) {
     if (participant == null)
@@ -98,25 +98,6 @@ public class ConcreteConversation implements Conversation {
     }
   }
 
-  public void addInvitedParticipant(Participant participant) {
-    if (participant == null)
-      return;
-    invitedParticipants.add(participant);
-  }
-
-  /**
-   * Activates an invited participant in the conversation
-   */
-  public void activateParticipant(UserIdentifier userIdentifier) {
-    Participant participant =
-        findInvitedParticipant(userIdentifier.getName());
-    if (participant != null) {
-      participant.setStatus(Status.SETUP);
-      addParticipant(participant);
-      invitedParticipants.remove(participant);
-    }
-  }
-
   @Override
   public void removeParticipant(Participant participant) {
     if (participants.contains(participant)) {
@@ -134,7 +115,9 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE + this.name)) {
       for (Participant participant : getParticipants()) {
-        deliverParticipantMessage(participant, message);
+        if (participant.getStatus() == Status.ONLINE) {
+          deliverParticipantMessage(participant, message);
+        }
       }
     }
     else {
@@ -175,23 +158,6 @@ public class ConcreteConversation implements Conversation {
   public Participant findParticipant(String name) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
-      if (participant.getUserName() == UserIdentifier.NULL_USER)
-        continue;
-
-      if (participant.getUserName().matches(name)) {
-        thisParticipant = participant;
-        break;
-      }
-    }
-    return thisParticipant;
-  }
-
-  /*
-   * Find a specific invited participant by name
-   */
-  public Participant findInvitedParticipant(String name) {
-    Participant thisParticipant = null;
-    for (Participant participant : invitedParticipants) {
       if (participant.getUserName() == UserIdentifier.NULL_USER)
         continue;
 
@@ -268,14 +234,14 @@ public class ConcreteConversation implements Conversation {
   public void setDefaultConversation(boolean defaultConversation) {
     this.defaultConversation = defaultConversation;
   }
-  
+
   /**
    * {@inheritDoc}
    */
   public void setPrivate(boolean state) {
     this.isPrivate = state;
   }
-  
+
   /**
    * {@inheritDoc}
    */
