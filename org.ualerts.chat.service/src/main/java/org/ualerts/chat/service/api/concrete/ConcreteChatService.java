@@ -78,16 +78,19 @@ public class ConcreteChatService implements ChatService {
   @Override
   public void joinConversation(UserIdentifier userIdentifier, boolean isAdmin) {
     Conversation conversation = getConversation(userIdentifier);
-    // If the conversation isn't private or the user is invited, connect them
-    Participant participant = ((ConcreteConversation) conversation)
-        .findParticipant(userIdentifier.getName());
-    if (!conversation.isPrivate()
-        || (participant != null && participant.getStatus() == Status.INVITED)) {
-      ChatClient chatClient =
-          this.userService.findClient(userIdentifier.getName());
-      participant.setStatus(Status.ONLINE);
-      chatClient.setParticipant(participant);
-      participant.setAdmin(isAdmin);
+    if (conversation != null) {
+      // If the conversation isn't private or the user is invited, connect them
+      Participant participant =
+          conversation
+              .findParticipant(userIdentifier);
+      if (!conversation.isPrivate()
+          || (participant != null && participant.getStatus() == Status.INVITED)) {
+        ChatClient chatClient =
+            this.userService.findClient(userIdentifier.getName());
+        participant.setStatus(Status.ONLINE);
+        chatClient.setParticipant(participant);
+        participant.setAdmin(isAdmin);
+      }
     }
   }
 
@@ -137,9 +140,9 @@ public class ConcreteChatService implements ChatService {
         // If the conversation exists, I'm in it, and I'm an admin or convo is
         // public, send the invite
         Participant participantOriginal =
-            ((ConcreteConversation) conversation)
-                .findParticipant(chatClientContext.getChatClient()
-                    .getUserName());
+            conversation
+                .findParticipant(new UserIdentifier(chatClientContext.getChatClient()
+                    .getUserName(), null));
         if (participantOriginal != null
             && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
           Participant participant = new ConcreteParticipant();
@@ -181,4 +184,5 @@ public class ConcreteChatService implements ChatService {
   public void setChatClientContext(ChatClientContext chatClientContext) {
     this.chatClientContext = chatClientContext;
   }
+
 }
