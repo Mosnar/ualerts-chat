@@ -45,7 +45,7 @@ public interface ChatService {
    *        the Conversation
    * @param isAdmin boolean is user admin in conversation
    */
-  void joinConversation(UserIdentifier userIdentifier, boolean isAdmin);
+  void joinConversation(UserIdentifier userIdentifier);
 
   /**
    * Creates a conversation
@@ -54,7 +54,7 @@ public interface ChatService {
    * @param isPrivate
    */
   Conversation createConversation(UserIdentifier userIdentifier,
-      boolean isDefaultConversation, boolean isPrivate);
+      boolean isPrivate);
 
   /**
    * Invites a user to a conversation
