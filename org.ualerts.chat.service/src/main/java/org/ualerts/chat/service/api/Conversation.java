@@ -25,82 +25,67 @@ import java.util.Set;
  * Represents a conversation between chat participants
  * @author Billy Coleman
  * @author Ransom Roberson
- *
+ * 
  */
 public interface Conversation {
-	
-	/**
-	 * Add a chat participant to a conversation
-	 * @param chatClient
-	 */
-	void addParticipant(Participant participant);
 
-	/**
-	 * Remove a chat participant from a conversation
-	 * @param chatClient
-	 */
-	void removeParticipant(Participant participant);
-	
-	/**
-	 * Returns a Set of Participants associated with this Conversation
-	 * @return Set of Participant
-	 */
-	Set<Participant> getParticipants();
-	
-	/**
-	 * Deliver a message to chat participants participating
-	 * in this conversation
-	 * @param the message to be delivered
-	 */
-	void deliverMessage(Message message);
+  /**
+   * Add a chat participant to a conversation
+   * @param chatClient
+   */
+  void addParticipant(Participant participant);
 
-	/**
-	 * Indicates a valid user name.
-	 * A valid user name is one that has
-	 * not been assigned to a participant yet.
-	 * @return boolean indicator
-	 */
-	boolean isValidUserName(String userName);
-	
-	/**
-	 * Provide consistent DateTimeService
-	 * @param dateTimeService
-	 */
-	void setDateTimeService(DateTimeService dateTimeService);
-	
-	/**
-	 * Return domain name
-	 * @return the Conversation's Domain
-	 */
-	String getName();
-	
-	/**
-	 * Indicates whether a Conversation is
-	 * the default 'all' conversation
-	 * @return boolean indicating default 
-	 *         conversation
-	 */
-	boolean isDefaultConversation();
-	
-	/**
-	 * Set the default conversation indicator
-	 */
-	void setDefaultConversation(boolean defaultConversation);
-	
-	/**
-	 * Sets the private indicator
-	 */
-	void setPrivate(boolean state);
-	
-	/**
-	 * Attempts to find a participant in the conversation.
-	 * @param name name of participant
-	 * @return participant or null
-	 */
-	Participant findParticipant(UserIdentifier userIdentifier);
-	
-	/**
-	 * Gets the private indicator
-	 */
-	boolean isPrivate();
+  /**
+   * Remove a chat participant from a conversation
+   * @param chatClient
+   */
+  void removeParticipant(Participant participant);
+
+  /**
+   * Returns a Set of Participants associated with this Conversation
+   * @return Set of Participant
+   */
+  Set<Participant> getParticipants();
+
+  /**
+   * Deliver a message to chat participants participating in this conversation
+   * @param the message to be delivered
+   */
+  void deliverMessage(Message message);
+
+  /**
+   * Indicates a valid user name. A valid user name is one that has not been
+   * assigned to a participant yet.
+   * @return boolean indicator
+   */
+  boolean isValidUserName(String userName);
+
+  /**
+   * Provide consistent DateTimeService
+   * @param dateTimeService
+   */
+  void setDateTimeService(DateTimeService dateTimeService);
+
+  /**
+   * Return domain name
+   * @return the Conversation's Domain
+   */
+  String getName();
+
+  /**
+   * Sets the private indicator
+   */
+  void setPrivate(boolean state);
+
+  /**
+   * Attempts to find a participant in the conversation.
+   * @param name name of participant
+   * @return participant or null
+   */
+  Participant findParticipant(UserIdentifier userIdentifier);
+
+  /**
+   * Gets the private indicator
+   */
+  boolean isPrivate();
 }
