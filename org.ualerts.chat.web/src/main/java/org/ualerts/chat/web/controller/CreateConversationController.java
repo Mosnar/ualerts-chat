@@ -55,14 +55,19 @@ public class CreateConversationController {
   @RequestMapping(value = "/createNewConversation", method = RequestMethod.POST)
   @ResponseBody
   public String createConversation(
-      @RequestParam("conversationName") String conversationName,
-      @RequestParam("username") String username,
+      @RequestParam("fullyQualifiedName") String fullyQualifiedName,
       @RequestParam("privateFlag") boolean privateFlag) {
-    UserIdentifier userIdentifier =
-        new UserIdentifier(username, conversationName + "."
-            + userService.getDefaultDomain());
-    chatService.createConversation(userIdentifier, privateFlag);
-    return this.VALID;
+    
+    System.out.println("in createConversation: " + fullyQualifiedName);
+    UserIdentifier userIdentifier = new UserIdentifier(fullyQualifiedName);
+    Conversation conversation = chatService.getConversation(userIdentifier);
+    if (conversation == null) {
+      chatService.createConversation(userIdentifier, privateFlag);
+      return this.VALID;
+    }
+    else {
+      return this.INVALID;
+    }
   }
 
   @Autowired

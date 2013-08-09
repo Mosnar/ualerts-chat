@@ -121,7 +121,7 @@ PageController.prototype.handleNewConversationSubmit = function() {
 		
 		if ($.trim($newChatRoomName) != "") {
 			var fullyQualifiedName = self.username+ATCHAR+$newChatRoomName+"."+self.domain;
-			self.service.createNewConversation($newChatRoomName, fullyQualifiedName, $private, new Callback(self.newConversatio2,self));
+			self.service.createNewConversation($newChatRoomName, fullyQualifiedName, $private, new Callback(self.newConversation,self));
 		    $('#new-conversation').modal('hide');
 		    $('#new-conversation-field').val("");
 		};
