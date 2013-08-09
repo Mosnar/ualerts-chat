@@ -48,20 +48,25 @@ public class ConcreteConversation implements Conversation {
   private static final String BROADCAST_MESSAGE = "all@";
 
   private Set<Participant> participants = new HashSet<Participant>();
-  private Set<Participant> invitedParticipants = new HashSet<Participant>();
 
   private DateTimeService dateTimeService;
 
   private String name;
   private boolean defaultConversation;
+  private boolean isPrivate;
 
   @Override
   public void addParticipant(Participant participant) {
+    /*
+     * logger.info("Adding participant: " +
+     * participant.getUserName().getFullIdentifier() + " to conversation: " +
+     * name);
+     */
     if (participant == null)
       return;
 
     Participant searchParticipant =
-        findParticipant(participant.getUserName().getName());
+        findParticipant(participant.getUserName());
     if (searchParticipant == null) {
       this.participants.add(participant);
       participant.setConversation(this);
@@ -74,46 +79,25 @@ public class ConcreteConversation implements Conversation {
 
     // send a message to all participants announcing user joining
     participant.setStatus(Status.ONLINE);
-    if (defaultConversation) {
-      Message rosterMessage =
-          getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE
-              + this.name);
-      deliverMessage(rosterMessage);
-    }
+
+    Message rosterMessage =
+        getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE
+            + this.name);
+    deliverMessage(rosterMessage);
 
     // send a message to the newly joined user announcing the presence of the
     // other users
-    if (defaultConversation) {
-      Message replyMessage;
-      for (Participant thisParticipant : participants) {
-        if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
-          if (!thisParticipant.getUserName().matches(name)) {
-            replyMessage =
-                getRosterContentMessage(thisParticipant.getUserName()
-                    .getFullIdentifier(), fullyQualifiedName);
-            deliverMessage(replyMessage);
-          }
+
+    Message replyMessage;
+    for (Participant thisParticipant : participants) {
+      if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
+        if (!thisParticipant.getUserName().matches(name)) {
+          replyMessage =
+              getRosterContentMessage(thisParticipant.getUserName()
+                  .getFullIdentifier(), fullyQualifiedName);
+          deliverMessage(replyMessage);
         }
       }
-    }
-  }
-
-  public void addInvitedParticipant(Participant participant) {
-    if (participant == null)
-      return;
-    invitedParticipants.add(participant);
-  }
-
-  /**
-   * Activates an invited participant in the conversation
-   */
-  public void activateParticipant(UserIdentifier userIdentifier) {
-    Participant participant =
-        findInvitedParticipant(userIdentifier.getName());
-    if (participant != null) {
-      participant.setStatus(Status.SETUP);
-      addParticipant(participant);
-      invitedParticipants.remove(participant);
     }
   }
 
@@ -134,14 +118,15 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE + this.name)) {
       for (Participant participant : getParticipants()) {
-        deliverParticipantMessage(participant, message);
+          deliverParticipantMessage(participant, message);
       }
     }
     else {
 
-      Participant toParticipant = findParticipant(parseName(message.getTo()));
+      Participant toParticipant =
+          findParticipant(new UserIdentifier(message.getTo()));
       Participant fromParticipant =
-          findParticipant(parseName(message.getFrom()));
+          findParticipant(new UserIdentifier(message.getFrom()));
       deliverParticipantMessage(toParticipant, message);
       deliverParticipantMessage(fromParticipant, message);
     }
@@ -154,6 +139,10 @@ public class ConcreteConversation implements Conversation {
 
   protected void deliverParticipantMessage(Participant participant,
       Message message) {
+
+/*    logger.info("Delivering message to: " + message.getTo()
+        + " for participant: "
+        + participant.getUserName().getFullIdentifier());*/
     if (participant != null
         && participant.getUserName() != UserIdentifier.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
@@ -163,7 +152,7 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public boolean isValidUserName(String name) {
-    if (findParticipant(name) != null) {
+    if (findParticipant(new UserIdentifier(name, this.name)) != null) {
       return false;
     }
     return true;
@@ -172,30 +161,13 @@ public class ConcreteConversation implements Conversation {
   /*
    * Find a specific participant by name
    */
-  public Participant findParticipant(String name) {
+  public Participant findParticipant(UserIdentifier userId) {
     Participant thisParticipant = null;
     for (Participant participant : participants) {
       if (participant.getUserName() == UserIdentifier.NULL_USER)
         continue;
 
-      if (participant.getUserName().matches(name)) {
-        thisParticipant = participant;
-        break;
-      }
-    }
-    return thisParticipant;
-  }
-
-  /*
-   * Find a specific invited participant by name
-   */
-  public Participant findInvitedParticipant(String name) {
-    Participant thisParticipant = null;
-    for (Participant participant : invitedParticipants) {
-      if (participant.getUserName() == UserIdentifier.NULL_USER)
-        continue;
-
-      if (participant.getUserName().matches(name)) {
+      if (participant.getUserName().matches(userId.getName())) {
         thisParticipant = participant;
         break;
       }
@@ -256,17 +228,14 @@ public class ConcreteConversation implements Conversation {
   /**
    * {@inheritDoc}
    */
-  @Override
-  public boolean isDefaultConversation() {
-    return this.defaultConversation;
+  public void setPrivate(boolean state) {
+    this.isPrivate = state;
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
-  public void setDefaultConversation(boolean defaultConversation) {
-    this.defaultConversation = defaultConversation;
+  public boolean isPrivate() {
+    return this.isPrivate;
   }
-
 }

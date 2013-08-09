@@ -52,7 +52,6 @@ public class ConcreteConversationFactory implements ConversationFactory {
     ConcreteConversation conversation = new ConcreteConversation();
     conversation.setDateTimeService(this.dateTimeService);
     conversation.setName(userIdentifier.getDomain());
-    conversation.setDefaultConversation(defaultConversation);
     return conversation;
   }
 

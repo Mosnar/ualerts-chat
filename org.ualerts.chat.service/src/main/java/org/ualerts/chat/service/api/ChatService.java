@@ -21,33 +21,40 @@ package org.ualerts.chat.service.api;
 
 import org.omg.CORBA.UserException;
 
-
 /**
  * Provides a chat conversation
  * @author Billy Coleman
  * @author Ransom Roberson
- *
+ * 
  */
 public interface ChatService {
-  
+
   /**
    * Get a conversation whose name is the domain portion of the passed in
    * UserIdentifier. This returns null if the conversation does not exist.
-   * @param userIdentifier The full UserIdentifier to get the Conversation
-   *        whose name is that of the UserIdentifier's domain
+   * @param userIdentifier The full UserIdentifier to get the Conversation whose
+   *        name is that of the UserIdentifier's domain
    * @return a conversation
    */
   Conversation getConversation(UserIdentifier userIdentifier);
-  
+
   /**
-   * Join the user to a conversation.
-   * Create and join a new conversation if the conversation does not exist.
-   * @param userIdentifier The full userIdentifier of the Participant to join
-   *        to the Conversation
+   * Join the user to a conversation. Create and join a new conversation if the
+   * conversation does not exist.
+   * @param userIdentifier The full userIdentifier of the Participant to join to
+   *        the Conversation
+   * @param isAdmin boolean is user admin in conversation
    */
-  void joinConversation(UserIdentifier userIdentifier, boolean defaultConversation);
-  
-  
+  void joinConversation(UserIdentifier userIdentifier);
+
+  /**
+   * Creates a conversation
+   * @param userIdentifier identifier for conversation
+   * @param isPrivate
+   */
+  Conversation createConversation(UserIdentifier userIdentifier,
+      boolean privateConversation);
+
   /**
    * Invites a user to a conversation
    * @param userId of conversation to be invited to

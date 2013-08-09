@@ -76,21 +76,53 @@ public class ConcreteChatService implements ChatService {
    * {@inheritDoc}
    */
   @Override
-  public void joinConversation(UserIdentifier userIdentifier,
-      boolean defaultConversation) {
+  public void joinConversation(UserIdentifier userIdentifier) {
     Conversation conversation = getConversation(userIdentifier);
-    if (conversation == null) {
-      conversation = createConversation(userIdentifier, defaultConversation);
+    if (conversation != null) {
+      Participant participant = conversation.findParticipant(userIdentifier);
+      if (participant != null) {
+        return;
+      }
+      // If the conversation isn't private or the user is invited, connect them
+      if (!conversation.isPrivate() || canJoin(participant)) {
+        participant = generateParticipant(userIdentifier, false);
+        conversation.addParticipant(participant);
+      }
+    } else {
+      conversation = createConversation(userIdentifier, false);
+      conversation.setPrivate(false);
+      Participant participant = generateParticipant(userIdentifier, false);
+      conversation.addParticipant(participant);
     }
+  }
 
+  /**
+   * Creates a participant based on given parameters
+   * @param userIdentifier
+   * @param isAdmin
+   * @return Participant
+   */
+  protected Participant generateParticipant(UserIdentifier userIdentifier,
+      boolean isAdmin) {
+    Participant participant;
     ChatClient chatClient =
         this.userService.findClient(userIdentifier.getName());
-    Participant participant = new ConcreteParticipant();
-    participant.setUserName(userIdentifier);
-    participant.setConversation(conversation);
+
+    participant = new ConcreteParticipant();
     participant.setChatClient(chatClient);
-    conversation.addParticipant(participant);
-    chatClient.setParticipant(participant);
+    participant.setUserName(userIdentifier);
+    participant.setStatus(Status.ONLINE);
+    return participant;
+  }
+
+  /**
+   * Returns true if the user is allowed to join a conversation
+   * @param participant
+   * @return boolean
+   */
+  protected boolean canJoin(Participant participant) {
+    return (participant != null && (participant.getStatus() == Status.INVITED || participant
+        .isAdmin()));
   }
 
   /**
@@ -99,11 +131,17 @@ public class ConcreteChatService implements ChatService {
    * @return The created conversation
    */
   public Conversation createConversation(UserIdentifier userIdentifier,
-      boolean defaultConversation) {
-    Conversation conversation =
-        conversationFactory.newConversation(userIdentifier,
-            defaultConversation);
-    conversations.add(conversation);
+      boolean privateConversation) {
+    Conversation conversation = getConversation(userIdentifier);
+    if (conversation == null) {
+      // No conversation exists, make a new one
+      conversation =
+          conversationFactory.newConversation(userIdentifier,
+              true);
+      conversations.add(conversation);
+      conversation.setPrivate(privateConversation);
+    }
+    joinConversation(userIdentifier);
     return conversation;
   }
 
@@ -117,25 +155,27 @@ public class ConcreteChatService implements ChatService {
       Conversation conversation = getConversation(userIdentifier);
       // TODO: Do something if the conversation is null. Throw error?
       if (conversation != null) {
-        // If the conversation exists and I'm in it, send the invite
-        if (((ConcreteConversation) conversation)
-            .findParticipant(chatClientContext.getChatClient().getUserName()) != null) {
+        // If the conversation exists, I'm in it, and I'm an admin or convo is
+        // public, send the invite
+        Participant participantOriginal =
+            conversation.findParticipant(new UserIdentifier(chatClientContext
+                .getChatClient().getUserName(), userIdentifier.getDomain()));
+        if (participantOriginal != null
+            && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
           Participant participant = new ConcreteParticipant();
           participant.setStatus(Status.INVITED);
           participant.setChatClient(chatClient);
           participant.setUserName(userIdentifier);
-
+          conversation.addParticipant(participant);
+          
           InviteMessage invite = new InviteMessage();
           invite.setFrom(userIdentifier.getName());
           invite.setSubType(userIdentifier.getDomain());
-
-          UserIdentifier generalId =
-              new UserIdentifier(userIdentifier.getName(), "ualerts.org");
-          invite.setTo(generalId.getFullIdentifier());
+          invite.setTo(userIdentifier.getFullIdentifier());
           invite.setUserIdentifier(userIdentifier.getFullIdentifier());
           chatClient.deliverMessage(invite);
 
-          conversation.addInvitedParticipant(participant);
+          conversation.addParticipant(participant);
         }
       }
     }
@@ -159,4 +199,5 @@ public class ConcreteChatService implements ChatService {
   public void setChatClientContext(ChatClientContext chatClientContext) {
     this.chatClientContext = chatClientContext;
   }
+
 }

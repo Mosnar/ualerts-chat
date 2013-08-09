@@ -32,49 +32,46 @@ import org.ualerts.chat.service.api.UserService;
 
 /**
  * Controller used to create a new Conversation
- *
+ * 
  * @author Billy Coleman
  * @author Brandon Foster
  */
 @Controller
 public class CreateConversationController {
-  
+
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
-  
+
   private ChatService chatService;
   private UserService userService;
-  /**
-   * Create a new Conversation 
-   * @param the name of the new Conversation
-   * @return json String indicating result
-   */  
-  @RequestMapping (value = "/createNewConversation", method = RequestMethod.POST)
-  @ResponseBody
-  public String createConversation(@RequestParam("conversationName") String conversationName,
-      @RequestParam("username") String username,  @RequestParam("privateFlag") String privateFlag) {
 
-    UserIdentifier userIdentifier = 
-        new UserIdentifier(username, conversationName+"."+userService.getDefaultDomain());
-    Conversation conversation = chatService.getConversation(userIdentifier);
-    if (conversation == null) {
-      chatService.joinConversation(userIdentifier,false);
-      return this.VALID;
-    }
-    else {
-      return this.INVALID;
-    }
+  /**
+   * Create a new Conversation
+   * @param the name of the new Conversation
+   * @param the username of the user to connect
+   * @param privateFlag
+   * @return json String indicating result
+   */
+  @RequestMapping(value = "/createNewConversation", method = RequestMethod.POST)
+  @ResponseBody
+  public String createConversation(
+      @RequestParam("conversationName") String conversationName,
+      @RequestParam("username") String username,
+      @RequestParam("privateFlag") boolean privateFlag) {
+    UserIdentifier userIdentifier =
+        new UserIdentifier(username, conversationName + "."
+            + userService.getDefaultDomain());
+    chatService.createConversation(userIdentifier, privateFlag);
+    return this.VALID;
   }
-  
+
   @Autowired
   public void setUserService(UserService userService) {
     this.userService = userService;
   }
-  
+
   @Autowired
   public void setChatService(ChatService chatService) {
     this.chatService = chatService;
   }
 }
-
-
