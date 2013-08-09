@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.ChatClientContext;
@@ -67,7 +68,8 @@ public class ConcreteChatServiceTest {
     chatService.setUserService(userService);
   }
 
-  // @Test
+  @Ignore
+  @Test
   public void testJoinConversationNoConversation() {
     
     context.checking(new Expectations() {
@@ -89,7 +91,8 @@ public class ConcreteChatServiceTest {
     assertNotNull(chatService.getConversation(userIdentity));
   }
   
-  // @Test
+  @Ignore
+  @Test
   public void testJoinConversationWithConversation() {  
    
     context.checking(new Expectations() {
