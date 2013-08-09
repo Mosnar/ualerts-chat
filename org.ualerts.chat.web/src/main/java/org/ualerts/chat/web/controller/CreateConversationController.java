@@ -58,7 +58,6 @@ public class CreateConversationController {
       @RequestParam("fullyQualifiedName") String fullyQualifiedName,
       @RequestParam("privateFlag") boolean privateFlag) {
     
-    System.out.println("in createConversation: " + fullyQualifiedName);
     UserIdentifier userIdentifier = new UserIdentifier(fullyQualifiedName);
     Conversation conversation = chatService.getConversation(userIdentifier);
     if (conversation == null) {
