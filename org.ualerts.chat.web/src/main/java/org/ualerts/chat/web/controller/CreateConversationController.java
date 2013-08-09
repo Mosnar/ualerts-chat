@@ -57,12 +57,11 @@ public class CreateConversationController {
   public String createConversation(
       @RequestParam("conversationName") String conversationName,
       @RequestParam("username") String username,
-      @RequestParam("privateFlag") String privateFlag) {
-    boolean isPrivate = privateFlag.equals("true");
+      @RequestParam("privateFlag") boolean privateFlag) {
     UserIdentifier userIdentifier =
         new UserIdentifier(username, conversationName + "."
             + userService.getDefaultDomain());
-    chatService.createConversation(userIdentifier, false);
+    chatService.createConversation(userIdentifier, privateFlag);
     return this.VALID;
   }
 
