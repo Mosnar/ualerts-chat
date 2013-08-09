@@ -118,7 +118,7 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE + this.name)) {
       for (Participant participant : getParticipants()) {
-        deliverParticipantMessage(participant, message);
+          deliverParticipantMessage(participant, message);
       }
     }
     else {
@@ -223,6 +223,20 @@ public class ConcreteConversation implements Conversation {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void setPrivate(boolean state) {
+    this.isPrivate = state;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean isPrivate() {
+    return this.isPrivate;
   }
 
   /**
