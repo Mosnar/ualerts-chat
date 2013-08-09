@@ -79,22 +79,21 @@ public class ConcreteChatService implements ChatService {
   public void joinConversation(UserIdentifier userIdentifier) {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation != null) {
-      // If the conversation isn't private or the user is invited, connect them
       Participant participant = conversation.findParticipant(userIdentifier);
+      if (participant != null) {
+        return;
+      }
+      // If the conversation isn't private or the user is invited, connect them
       if (!conversation.isPrivate() || canJoin(participant)) {
-        ChatClient chatClient =
-            this.userService.findClient(userIdentifier.getName());
-        if (participant == null) {
-          participant = generateParticipant(userIdentifier, false);
-        }
+        participant = generateParticipant(userIdentifier, false);
+        conversation.addParticipant(participant);
       }
     } else {
-      Conversation conversationNew =
-          createConversation(userIdentifier, false);
-      conversationNew.setDefaultConversation(false);
-      conversationNew.setPrivate(false);
+      conversation = createConversation(userIdentifier, false);
+      conversation.setDefaultConversation(false);
+      conversation.setPrivate(false);
       Participant participant = generateParticipant(userIdentifier, false);
-      conversationNew.addParticipant(participant);
+      conversation.addParticipant(participant);
     }
   }
 
@@ -142,21 +141,10 @@ public class ConcreteChatService implements ChatService {
               true);
       conversations.add(conversation);
       conversation.setPrivate(isPrivate);
-
-      joinConversation(userIdentifier);
-      return conversation;
-    } else {
-      joinConversation(userIdentifier);
     }
+    joinConversation(userIdentifier);
     return conversation;
   }
-
-  /*
-   * public Conversation createConversation(UserIdentifier userIdentifier,
-   * boolean defaultConversation) { Conversation conversation =
-   * conversationFactory.newConversation(userIdentifier, defaultConversation);
-   * conversations.add(conversation); return conversation; }
-   */
 
   /**
    * 
@@ -172,7 +160,7 @@ public class ConcreteChatService implements ChatService {
         // public, send the invite
         Participant participantOriginal =
             conversation.findParticipant(new UserIdentifier(chatClientContext
-                .getChatClient().getUserName(), ""));
+                .getChatClient().getUserName(), userIdentifier.getDomain()));
         if (participantOriginal != null
             && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
           Participant participant = new ConcreteParticipant();

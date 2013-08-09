@@ -62,7 +62,7 @@ public class CreateConversationController {
     UserIdentifier userIdentifier =
         new UserIdentifier(username, conversationName + "."
             + userService.getDefaultDomain());
-    chatService.createConversation(userIdentifier, false, isPrivate);
+    chatService.createConversation(userIdentifier, false);
     return this.VALID;
   }
 
