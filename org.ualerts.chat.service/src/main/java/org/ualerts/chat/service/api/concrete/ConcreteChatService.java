@@ -90,7 +90,6 @@ public class ConcreteChatService implements ChatService {
       }
     } else {
       conversation = createConversation(userIdentifier, false);
-      conversation.setDefaultConversation(false);
       conversation.setPrivate(false);
       Participant participant = generateParticipant(userIdentifier, false);
       conversation.addParticipant(participant);
