@@ -131,7 +131,7 @@ public class ConcreteChatService implements ChatService {
    * @return The created conversation
    */
   public Conversation createConversation(UserIdentifier userIdentifier,
-      boolean isPrivate) {
+      boolean privateConversation) {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation == null) {
       // No conversation exists, make a new one
@@ -139,7 +139,7 @@ public class ConcreteChatService implements ChatService {
           conversationFactory.newConversation(userIdentifier,
               true);
       conversations.add(conversation);
-      conversation.setPrivate(isPrivate);
+      conversation.setPrivate(privateConversation);
     }
     joinConversation(userIdentifier);
     return conversation;
