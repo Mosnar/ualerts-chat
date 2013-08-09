@@ -50,11 +50,10 @@ public interface ChatService {
   /**
    * Creates a conversation
    * @param userIdentifier identifier for conversation
-   * @param isDefaultConversation
    * @param isPrivate
    */
   Conversation createConversation(UserIdentifier userIdentifier,
-      boolean isPrivate);
+      boolean privateConversation);
 
   /**
    * Invites a user to a conversation
