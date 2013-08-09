@@ -238,19 +238,4 @@ public class ConcreteConversation implements Conversation {
   public boolean isPrivate() {
     return this.isPrivate;
   }
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setPrivate(boolean state) {
-    this.isPrivate = state;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean isPrivate() {
-    return this.isPrivate;
-  }
-
 }
