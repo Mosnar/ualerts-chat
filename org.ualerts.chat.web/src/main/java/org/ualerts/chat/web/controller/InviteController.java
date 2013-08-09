@@ -20,6 +20,8 @@
 package org.ualerts.chat.web.controller;
 
 import org.omg.CORBA.UserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +41,8 @@ import org.ualerts.chat.service.api.UserService;
  */
 @Controller
 public class InviteController {
-
+  private static final Logger logger = LoggerFactory.getLogger(InviteController.class);
+  
   private final String VALID = "{\"result\":\"valid\"}";
   private final String INVALID = "{\"result\":\"invalid\"}";;
 
@@ -57,22 +60,23 @@ public class InviteController {
       @RequestParam("userIdentifier") String userIdentifier) {
     try {
       UserIdentifier userId = new UserIdentifier(userIdentifier);
-      
+
       Conversation conversation = chatService.getConversation(userId);
-      for(Participant participant : conversation.getParticipants()) {
-        if(participant.getUserName().getName().matches(userId.getName())) {
-          return "INVALID";
+      for (Participant participant : conversation.getParticipants()) {
+        if (participant.getUserName().getName().matches(userId.getName())) {
+          return INVALID;
         }
-      }   
-      
+      }
+
       chatService.inviteUser(userId);
       return VALID;
     }
     catch (IllegalArgumentException e) {
-      // User not found
+      //logger.error("IllegalArugmentException encountered", e);
       return INVALID;
     }
     catch (UserException e) {
+      //logger.error("UserException encountered", e);
       // User ID didn't have proper format. (user@domain) Only 1 "@" symbol!
       return INVALID;
     }
@@ -88,13 +92,9 @@ public class InviteController {
       @RequestParam("userIdentifier") String userIdentifier) {
     UserIdentifier userId = new UserIdentifier(userIdentifier);
     Conversation conversation = chatService.getConversation(userId);
-    if (conversation != null) {
-      chatService.joinConversation(userId, false);
-      return VALID;
-    }
-    else {
-      return INVALID;
-    }
+
+    chatService.joinConversation(userId);
+    return VALID;
   }
 
   @Autowired
