@@ -57,6 +57,11 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public void addParticipant(Participant participant) {
+    /*
+     * logger.info("Adding participant: " +
+     * participant.getUserName().getFullIdentifier() + " to conversation: " +
+     * name);
+     */
     if (participant == null)
       return;
 
@@ -74,25 +79,23 @@ public class ConcreteConversation implements Conversation {
 
     // send a message to all participants announcing user joining
     participant.setStatus(Status.ONLINE);
-    if (defaultConversation) {
-      Message rosterMessage =
-          getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE
-              + this.name);
-      deliverMessage(rosterMessage);
-    }
+
+    Message rosterMessage =
+        getRosterAddedMessage(fullyQualifiedName, BROADCAST_MESSAGE
+            + this.name);
+    deliverMessage(rosterMessage);
 
     // send a message to the newly joined user announcing the presence of the
     // other users
-    if (defaultConversation) {
-      Message replyMessage;
-      for (Participant thisParticipant : participants) {
-        if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
-          if (!thisParticipant.getUserName().matches(name)) {
-            replyMessage =
-                getRosterContentMessage(thisParticipant.getUserName()
-                    .getFullIdentifier(), fullyQualifiedName);
-            deliverMessage(replyMessage);
-          }
+
+    Message replyMessage;
+    for (Participant thisParticipant : participants) {
+      if (thisParticipant.getUserName() != UserIdentifier.NULL_USER) {
+        if (!thisParticipant.getUserName().matches(name)) {
+          replyMessage =
+              getRosterContentMessage(thisParticipant.getUserName()
+                  .getFullIdentifier(), fullyQualifiedName);
+          deliverMessage(replyMessage);
         }
       }
     }
@@ -115,14 +118,15 @@ public class ConcreteConversation implements Conversation {
   public void deliverMessage(Message message) {
     if (message.getTo().equalsIgnoreCase(BROADCAST_MESSAGE + this.name)) {
       for (Participant participant : getParticipants()) {
-          deliverParticipantMessage(participant, message);
+        deliverParticipantMessage(participant, message);
       }
     }
     else {
 
-      Participant toParticipant = findParticipant(new UserIdentifier(parseName(message.getTo()), ""));
+      Participant toParticipant =
+          findParticipant(new UserIdentifier(message.getTo()));
       Participant fromParticipant =
-          findParticipant(new UserIdentifier(parseName(message.getFrom()), ""));
+          findParticipant(new UserIdentifier(message.getFrom()));
       deliverParticipantMessage(toParticipant, message);
       deliverParticipantMessage(fromParticipant, message);
     }
@@ -135,6 +139,10 @@ public class ConcreteConversation implements Conversation {
 
   protected void deliverParticipantMessage(Participant participant,
       Message message) {
+
+/*    logger.info("Delivering message to: " + message.getTo()
+        + " for participant: "
+        + participant.getUserName().getFullIdentifier());*/
     if (participant != null
         && participant.getUserName() != UserIdentifier.NULL_USER
         && participant.getStatus() == Status.ONLINE) {
@@ -144,7 +152,7 @@ public class ConcreteConversation implements Conversation {
 
   @Override
   public boolean isValidUserName(String name) {
-    if (findParticipant(new UserIdentifier(name, "")) != null) {
+    if (findParticipant(new UserIdentifier(name, this.name)) != null) {
       return false;
     }
     return true;
@@ -215,22 +223,6 @@ public class ConcreteConversation implements Conversation {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean isDefaultConversation() {
-    return this.defaultConversation;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void setDefaultConversation(boolean defaultConversation) {
-    this.defaultConversation = defaultConversation;
   }
 
   /**
