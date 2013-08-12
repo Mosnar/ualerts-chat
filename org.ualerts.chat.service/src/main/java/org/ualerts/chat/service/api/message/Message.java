@@ -17,7 +17,7 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
 import java.util.Date;
 /**

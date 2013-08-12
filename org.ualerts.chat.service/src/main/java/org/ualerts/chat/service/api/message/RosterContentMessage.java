@@ -17,18 +17,17 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
 /**
- * Message describing a roster add activity
+ * Message describing a previously added participant.
  *
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class RosterAddedMessage extends RosterMessage {
-  
-  private final String SUBTYPE = "ADDED";
-  
+public class RosterContentMessage extends RosterMessage {
+
+  private final String SUBTYPE = "CONTENT";
   /**
    * {@inheritDoc}
    */

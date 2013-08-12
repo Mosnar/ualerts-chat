@@ -1,5 +1,5 @@
 /*
- * File created on Jul 3, 2013
+ * File created on Jun 28, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,23 +17,44 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
 /**
- * Message describing a roster remove activity
+ * Message indicating a participant's presence
+ * in a conversation
  *
- * @author Ransom Roberson
  * @author Billy Coleman
+ * @author Ransom Roberson
  */
-public class RosterRemovedMessage extends RosterMessage {
+public class PresenceMessage extends Message {
+  
+  private String text;
 
-  private final String SUBTYPE = "REMOVED";
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
   /**
    * {@inheritDoc}
    */
   @Override
   public String getSubType() {
-    return SUBTYPE;
+    // TODO Auto-generated method stub
+    return null;
   }
+  
 
 }

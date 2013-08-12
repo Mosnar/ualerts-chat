@@ -21,6 +21,8 @@ package org.ualerts.chat.service.api;
 
 import java.util.Set;
 
+import org.ualerts.chat.service.api.message.Message;
+
 /**
  * Represents a conversation between chat participants
  * @author Billy Coleman

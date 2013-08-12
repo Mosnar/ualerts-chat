@@ -34,7 +34,7 @@ import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.RosterMessage;
+import org.ualerts.chat.service.api.message.RosterMessage;
 import org.ualerts.chat.service.api.UserIdentifier;
 
 public class ConcreteConversationTest {

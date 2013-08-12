@@ -24,9 +24,9 @@ import javax.persistence.Enumerated;
 
 import org.ualerts.chat.service.api.ChatClient;
 import org.ualerts.chat.service.api.Conversation;
-import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.UserIdentifier;
+import org.ualerts.chat.service.api.message.Message;
 
 /**
  * Concrete implementation of a participant
