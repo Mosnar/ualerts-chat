@@ -1,5 +1,5 @@
 /*
-e * File created on Aug 12, 2013
+ * File created on Aug 12, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -20,11 +20,9 @@ e * File created on Aug 12, 2013
 package org.ualerts.chat.service.api.concrete;
 
 import org.springframework.stereotype.Service;
-import org.ualerts.chat.service.api.ChatClient;
-import org.ualerts.chat.service.api.Participant;
-import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.ParticipantFactory;
 import org.ualerts.chat.service.api.UserIdentifier;
+import org.ualerts.chat.service.api.message.InviteMessage;
+import org.ualerts.chat.service.api.message.MessageFactory;
 
 /**
  * DESCRIBE THE TYPE HERE.
@@ -32,18 +30,20 @@ import org.ualerts.chat.service.api.UserIdentifier;
  * @author Brandon Foster
  */
 @Service
-public class ConcreteParticipantFactory implements ParticipantFactory {
+public class ConcreteMessageFactory implements MessageFactory {
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public Participant newParticipant(Status status, ChatClient chatClient,
-      UserIdentifier userName) {
-    Participant participant = new ConcreteParticipant();
-    participant.setStatus(Status.INVITED);
-    participant.setChatClient(chatClient);
-    participant.setUserName(userName);
-    return participant;
+  public InviteMessage newInviteMessage(UserIdentifier userIdentifier) {
+    InviteMessage invite = new InviteMessage();
+    invite.setFrom(userIdentifier.getName());
+    invite.setSubType(userIdentifier.getDomain());
+    invite.setTo(userIdentifier.getFullIdentifier());
+    invite.setUserIdentifier(userIdentifier.getFullIdentifier());
+    return invite;
   }
+
+
 }

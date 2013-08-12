@@ -67,14 +67,14 @@ public class ConcreteConversation implements Conversation {
 
   
   @Override
-  public void addParticipant(Participant participant) {
+  public boolean addParticipant(Participant participant) {
     /*
      * logger.info("Adding participant: " +
      * participant.getUserName().getFullIdentifier() + " to conversation: " +
      * name);
      */
     if (participant == null || !canJoin(participant))
-      return;
+      return false;
 
     Participant searchParticipant =
         findParticipant(participant.getUserName());
@@ -110,6 +110,7 @@ public class ConcreteConversation implements Conversation {
         }
       }
     }
+    return true;
   }
 
   @Override

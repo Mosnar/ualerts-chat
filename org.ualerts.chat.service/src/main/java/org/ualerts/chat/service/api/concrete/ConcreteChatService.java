@@ -35,6 +35,7 @@ import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.ParticipantFactory;
 import org.ualerts.chat.service.api.message.InviteMessage;
+import org.ualerts.chat.service.api.message.MessageFactory;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserService;
 
@@ -48,6 +49,8 @@ import org.ualerts.chat.service.api.UserService;
 @Service
 public class ConcreteChatService implements ChatService {
 
+  private MessageFactory messageFactory;
+  private ParticipantFactory participantFactory;
   private Set<Conversation> conversations = new HashSet<Conversation>();
   private UserService userService;
   private ConversationFactory conversationFactory;
@@ -81,12 +84,13 @@ public class ConcreteChatService implements ChatService {
    */
   public Conversation createConversation(UserIdentifier userIdentifier,
       boolean privateConversation) {
-    return createAndJoinConversation(userIdentifier, privateConversation, true);
+    return createAndJoinConversation(userIdentifier, privateConversation,
+        true);
   }
 
   /**
    * Method used to create a conversation for the provided UserIdentifier, if
-   * one does not already exist.  Once a Conversation is obtained, the provided
+   * one does not already exist. Once a Conversation is obtained, the provided
    * UserIdentifier is added to the list of Participants in the Conversation.
    * 
    * If the Conversation is created, the privateConversation flag is used to
@@ -99,17 +103,19 @@ public class ConcreteChatService implements ChatService {
    * 
    * @param userIdentifier The identifier for the user to join
    * @param privateConversation If a new conversation is needed, should it be
-   * private?
+   *        private?
    * @param isAdmin Should the new participant be an admin (also see method doc)
    * @return The newly created or updated Conversation
    */
-  private Conversation createAndJoinConversation(UserIdentifier userIdentifier,
-      boolean privateConversation, boolean isAdmin) {
+  private Conversation createAndJoinConversation(
+      UserIdentifier userIdentifier, boolean privateConversation,
+      boolean isAdmin) {
     Conversation conversation = getConversation(userIdentifier);
     if (conversation == null) {
       conversation = conversationFactory.newConversation(userIdentifier);
       conversation.setPrivate(privateConversation);
-    } else {
+    }
+    else {
       isAdmin = false;
     }
     Participant participant = generateParticipant(userIdentifier, isAdmin);
@@ -142,34 +148,30 @@ public class ConcreteChatService implements ChatService {
    */
   public void inviteUser(UserIdentifier userIdentifier) throws UserException {
     ChatClient chatClient = userService.findClient(userIdentifier.getName());
-    if (chatClient != null) {
-      Conversation conversation = getConversation(userIdentifier);
-      // TODO: Do something if the conversation is null. Throw error?
-      if (conversation != null) {
-        // If the conversation exists, I'm in it, and I'm an admin or convo is
-        // public, send the invite
-        Participant participantOriginal =
-            conversation.findParticipant(new UserIdentifier(chatClientContext
-                .getChatClient().getUserName(), userIdentifier.getDomain()));
-        if (participantOriginal != null
-            && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
-          ParticipantFactory participantFactory = new ConcreteParticipantFactory();
-          Participant participant = participantFactory.newParticipant(Status.INVITED, chatClient, userIdentifier);
-          conversation.addParticipant(participant);
-          
-          InviteMessage invite = new InviteMessage();
-          invite.setFrom(userIdentifier.getName());
-          invite.setSubType(userIdentifier.getDomain());
-          invite.setTo(userIdentifier.getFullIdentifier());
-          invite.setUserIdentifier(userIdentifier.getFullIdentifier());
-          chatClient.deliverMessage(invite);
-
-          conversation.addParticipant(participant);
-        }
-      }
-    }
-    else {
+    if (chatClient == null) {
       throw new UnknownUserException();
+    }
+    Conversation conversation = getConversation(userIdentifier);
+    if (conversation == null) { // TODO Should we do something else here?
+      return;
+    }
+    // If the conversation exists, I'm in it, and I'm an admin or convo is
+    // public, send the invite
+    Participant myParticipant =
+        conversation.findParticipant(new UserIdentifier(chatClientContext
+            .getChatClient().getUserName(), userIdentifier.getDomain()));
+    if (myParticipant == null
+        || (!myParticipant.isAdmin() && conversation.isPrivate())) {
+      throw new RuntimeException("User not authorized to send invite");
+    }
+    
+    Participant participant =
+        participantFactory.newParticipant(Status.INVITED, chatClient,
+            userIdentifier);
+    if (conversation.addParticipant(participant)) {
+      InviteMessage invite =
+          messageFactory.newInviteMessage(userIdentifier);
+      chatClient.deliverMessage(invite);
     }
   }
 
@@ -196,5 +198,22 @@ public class ConcreteChatService implements ChatService {
   protected void setConversations(Set<Conversation> conversations) {
     this.conversations = conversations;
   }
-  
+
+  /**
+   * Sets the {@code messageFactory} property.
+   * @param messageFactory the value to set
+   */
+  @Autowired
+  public void setMessageFactory(MessageFactory messageFactory) {
+    this.messageFactory = messageFactory;
+  }
+
+  /**
+   * Sets the {@code participantFactory} property.
+   * @param participantFactory the value to set
+   */
+  @Autowired
+  public void setParticipantFactory(ParticipantFactory participantFactory) {
+    this.participantFactory = participantFactory;
+  }
 }

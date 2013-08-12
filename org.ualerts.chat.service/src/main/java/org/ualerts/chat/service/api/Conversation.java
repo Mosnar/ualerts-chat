@@ -35,7 +35,7 @@ public interface Conversation {
    * Add a chat participant to a conversation
    * @param chatClient
    */
-  void addParticipant(Participant participant);
+  boolean addParticipant(Participant participant);
 
   /**
    * Remove a chat participant from a conversation
