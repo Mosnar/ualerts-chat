@@ -33,6 +33,7 @@ import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
+import org.ualerts.chat.service.api.ParticipantFactory;
 import org.ualerts.chat.service.api.message.InviteMessage;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserService;
@@ -152,10 +153,8 @@ public class ConcreteChatService implements ChatService {
                 .getChatClient().getUserName(), userIdentifier.getDomain()));
         if (participantOriginal != null
             && (participantOriginal.isAdmin() || !conversation.isPrivate())) {
-          Participant participant = new ConcreteParticipant();
-          participant.setStatus(Status.INVITED);
-          participant.setChatClient(chatClient);
-          participant.setUserName(userIdentifier);
+          ParticipantFactory participantFactory = new ConcreteParticipantFactory();
+          Participant participant = participantFactory.newParticipant(Status.INVITED, chatClient, userIdentifier);
           conversation.addParticipant(participant);
           
           InviteMessage invite = new InviteMessage();
