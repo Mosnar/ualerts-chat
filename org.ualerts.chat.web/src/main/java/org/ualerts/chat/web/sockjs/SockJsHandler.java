@@ -28,13 +28,13 @@ import org.springframework.web.socket.adapter.TextWebSocketHandlerAdapter;
 import org.springframework.web.util.HtmlUtils;
 import org.ualerts.chat.service.api.ChatClientContext;
 import org.ualerts.chat.service.api.ChatService;
-import org.ualerts.chat.service.api.ChatTextMessage;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.concrete.ConcreteParticipant;
+import org.ualerts.chat.service.api.message.ChatTextMessage;
 
 /**
  * socksjs message handler
