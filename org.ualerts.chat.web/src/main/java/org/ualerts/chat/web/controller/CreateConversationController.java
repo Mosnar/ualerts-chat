@@ -47,9 +47,8 @@ public class CreateConversationController {
 
   /**
    * Create a new Conversation
-   * @param the name of the new Conversation
-   * @param the username of the user to connect
-   * @param privateFlag
+   * @param fullyQualifiedName the fully qualified name of the user to connect
+   * @param privateFlag indicating conversation type
    * @return json String indicating result
    */
   @RequestMapping(value = "/createNewConversation", method = RequestMethod.POST)
