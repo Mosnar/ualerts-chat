@@ -143,7 +143,7 @@ public class ConcreteChatService implements ChatService {
   }
 
   /**
-   * 
+   * ds
    * {@inheritDoc}
    */
   public void inviteUser(UserIdentifier userIdentifier) throws UserException {
@@ -160,8 +160,7 @@ public class ConcreteChatService implements ChatService {
     Participant myParticipant =
         conversation.findParticipant(new UserIdentifier(chatClientContext
             .getChatClient().getUserName(), userIdentifier.getDomain()));
-    if (myParticipant == null
-        || (!myParticipant.isAdmin() && conversation.isPrivate())) {
+    if (!isAuthorized(myParticipant, conversation)) {
       throw new RuntimeException("User not authorized to send invite");
     }
     
@@ -173,6 +172,11 @@ public class ConcreteChatService implements ChatService {
           messageFactory.newInviteMessage(userIdentifier);
       chatClient.deliverMessage(invite);
     }
+  }
+  
+  protected boolean isAuthorized(Participant participant, Conversation conversation) {
+    return (participant != null
+        && (participant.isAdmin() || !conversation.isPrivate()));
   }
 
   @Autowired
