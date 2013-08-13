@@ -29,7 +29,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		var inviteElement = "";
 		
 		if (self.roomType == "newConversation") {
-			inviteElement = '<i id="invite-button" class="icon-plus-sign pull-right"></i>';
+			inviteElement = '<i class="icon-plus-sign pull-right invite-button"></i>';
 		}
 
 		self.$uiDom = $(
@@ -108,7 +108,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 		onMessageSend(self);
 		}
 	
-	$('#invite-button').click(function() {
+	this.$uiDom.find('.invite-button').click(function() {
 		$('#group-domain').text(self.domain);
 		$('#invite').modal('show');		
 	});

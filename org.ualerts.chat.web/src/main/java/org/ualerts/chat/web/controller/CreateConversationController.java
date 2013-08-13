@@ -47,22 +47,25 @@ public class CreateConversationController {
 
   /**
    * Create a new Conversation
-   * @param the name of the new Conversation
-   * @param the username of the user to connect
-   * @param privateFlag
+   * @param fullyQualifiedName the fully qualified name of the user to connect
+   * @param privateFlag indicating conversation type
    * @return json String indicating result
    */
   @RequestMapping(value = "/createNewConversation", method = RequestMethod.POST)
   @ResponseBody
   public String createConversation(
-      @RequestParam("conversationName") String conversationName,
-      @RequestParam("username") String username,
+      @RequestParam("fullyQualifiedName") String fullyQualifiedName,
       @RequestParam("privateFlag") boolean privateFlag) {
-    UserIdentifier userIdentifier =
-        new UserIdentifier(username, conversationName + "."
-            + userService.getDefaultDomain());
-    chatService.createConversation(userIdentifier, privateFlag);
-    return this.VALID;
+    
+    UserIdentifier userIdentifier = new UserIdentifier(fullyQualifiedName);
+    Conversation conversation = chatService.getConversation(userIdentifier);
+    if (conversation == null) {
+      chatService.createConversation(userIdentifier, privateFlag);
+      return this.VALID;
+    }
+    else {
+      return this.INVALID;
+    }
   }
 
   @Autowired

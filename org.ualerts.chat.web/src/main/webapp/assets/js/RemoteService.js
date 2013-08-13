@@ -92,24 +92,24 @@ RemoteService.prototype.checkUsername = function(username, callback) {
 /**
  * Send a POST request for the service to create a participant
  */
-RemoteService.prototype.login = function(pageControllerReference,callback) {
+RemoteService.prototype.login = function(callback) {
     $.ajax({
         type: "POST",
         url: window.location.href + "login",
         data: {}
     }).done(function(data) {
-        callback(pageControllerReference,data);
+        callback.execute(data);
     });
 };
 
-RemoteService.prototype.createChatRoom = function(chatRoomName, username,pageControllerReference,callback,privateFlag) {
+RemoteService.prototype.createNewConversation = function(newChatRoomName, fullyQualifiedName, privateFlag, callback) {
 	$.ajax({
 		type: "POST",
 		url: window.location.href + "createNewConversation",
-		data: {conversationName: chatRoomName, username: username, privateFlag: privateFlag}
+		data: {fullyQualifiedName: fullyQualifiedName, privateFlag: privateFlag}
 	}).done(function(jsonObj) {
 		 if (JSON.parse(jsonObj).result == "valid" ){
-			 callback(pageControllerReference,chatRoomName);
+			 callback.execute(newChatRoomName);
 		 };		
 	});
 };

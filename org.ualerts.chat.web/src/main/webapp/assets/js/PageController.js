@@ -13,6 +13,7 @@ function PageController(remoteService, chatRoomService) {
 
 var ATCHAR = '@';
 var ALL_ATCHAR = 'all@';
+
 /**
  * Set up the chat.
  */
@@ -89,7 +90,7 @@ PageController.prototype.handleNameSubmit = function() {
         	setUpUi();
         }
         
-        self.service.login(self,self.parseUserIdentifier);
+        self.service.login(new Callback(self.loginUser,self));
         
         $('#conversation-modal').show();
     });
@@ -97,8 +98,8 @@ PageController.prototype.handleNameSubmit = function() {
     this.service.connect();
 };
 
-PageController.prototype.parseUserIdentifier = function(self,fullyQualifiedName) {
-
+PageController.prototype.loginUser = function(fullyQualifiedName) {
+	var self = this;
 	var idx = fullyQualifiedName.indexOf(ATCHAR);
 	if (idx != -1) {
 		var domain = fullyQualifiedName.substring(idx + 1);
@@ -119,19 +120,20 @@ PageController.prototype.handleNewConversationSubmit = function() {
 		$newChatRoomName = self.htmlEncode($newChatRoomName);
 		
 		if ($.trim($newChatRoomName) != "") {
-			self.service.createChatRoom($newChatRoomName,self.username,self,self.newConversation,$private);
+			var fullyQualifiedName = self.username+ATCHAR+$newChatRoomName+"."+self.domain;
+			self.service.createNewConversation($newChatRoomName, fullyQualifiedName, $private, new Callback(self.newConversation,self));
 		    $('#new-conversation').modal('hide');
 		    $('#new-conversation-field').val("");
 		};
 	});
 };
 
-PageController.prototype.newConversation = function(self, newChatRoomName) {
+PageController.prototype.newConversation = function(newChatRoomName) {
+	var self = this;
 	var allChat = ALL_ATCHAR+newChatRoomName+"."+self.domain;
-	var fullyQualifiedName = self.username+ATCHAR+newChatRoomName+"."+self.domain;
-	self.chatRoomService.createChatRoomViewController(allChat,'newConversation');
-	
+	self.chatRoomService.createChatRoomViewController(allChat,'newConversation');	
 };
+
 
 PageController.prototype.handleConversationInviteSubmit = function() {
 	
@@ -291,23 +293,25 @@ PageController.prototype.onMessage = function(message) {
 		return dateString;
 	}
     
-    if (message.type == "ROSTER") {
-    	switch(message.subType) {
-    	case "ADDED":
-    		$chatbox.append('<p>' + '(' + buildDateString() + ') ' + this.getName(message.from) + ' has entered the chat.<p>');
-    		this.addToRoster(message.from);
-    		break;
-    	case "REMOVED":
-    		this.chatRoomService.removeChatRoomByName(message.from);
-    		$('#connected-users tbody tr td').each(function() {
-    			if ($.trim($(this).text()) == message.from) {
-    				$(this).parent().remove();
-    			}
-    		});
-    		break;
-    	case "CONTENT":
-    		this.addToRoster(message.from);
-    	}
+    if(this.getDomain(message.to) == this.domain) { 
+	    if (message.type == "ROSTER") {
+	    	switch(message.subType) {
+	    	case "ADDED":
+	    		$chatbox.append('<p>' + '(' + buildDateString() + ') ' + this.getName(message.from) + ' has entered the chat.<p>');
+	    		this.addToRoster(message.from);
+	    		break;
+	    	case "REMOVED":
+	    		this.chatRoomService.removeChatRoomByName(message.from);
+	    		$('#connected-users tbody tr td').each(function() {
+	    			if ($.trim($(this).text()) == message.from) {
+	    				$(this).parent().remove();
+	    			}
+	    		});
+	    		break;
+	    	case "CONTENT":
+	    		this.addToRoster(message.from);
+	    	}
+	    }
     }
 };
 
@@ -356,4 +360,9 @@ PageController.prototype.handleValidity = function(jsonObj, storedUsername) {
 PageController.prototype.getName = function(user){
 	var idx = user.indexOf(ATCHAR);
 	return user.substring(0,idx);
+};
+
+PageController.prototype.getDomain = function(user){
+	var idx = user.indexOf(ATCHAR);
+	return user.substring(idx+1);
 };
