@@ -34,7 +34,7 @@ import org.ualerts.chat.service.api.ConcreteDateTimeService;
 import org.ualerts.chat.service.api.DateTimeService;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.RosterMessage;
+import org.ualerts.chat.service.api.message.RosterMessage;
 import org.ualerts.chat.service.api.UserIdentifier;
 
 public class ConcreteConversationTest {
@@ -97,7 +97,6 @@ public class ConcreteConversationTest {
     final Participant participant = context.mock(Participant.class, "one");
     final Participant participant2 = context.mock(Participant.class, "two");
     final ChatClient chatClient = context.mock(ChatClient.class);
-    conversation.setDefaultConversation(true);
     context.checking(new Expectations() {
       {
         // Participant 1
@@ -163,7 +162,6 @@ public class ConcreteConversationTest {
     final Participant participant = context.mock(Participant.class, "one");
     final Participant participant2 = context.mock(Participant.class, "two");
     final ChatClient chatClient = context.mock(ChatClient.class);
-    conversation.setDefaultConversation(true);
     context.checking(new Expectations() {
       {
         // Participant 1
@@ -244,7 +242,6 @@ public class ConcreteConversationTest {
   public void testIsValidUserNameFalse() {
     final Participant participant = context.mock(Participant.class);
     final ChatClient chatClient = context.mock(ChatClient.class);
-    conversation.setDefaultConversation(true);
     context.checking(new Expectations() {
       {
         oneOf(participant).setConversation(conversation);

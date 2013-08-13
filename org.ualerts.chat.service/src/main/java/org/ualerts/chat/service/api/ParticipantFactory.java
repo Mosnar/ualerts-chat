@@ -1,5 +1,5 @@
 /*
- * File created on Jul 3, 2013
+ * File created on Aug 12, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -19,22 +19,13 @@
 
 package org.ualerts.chat.service.api;
 
-/**
- * Message describing a roster add activity
- *
- * @author Billy Coleman
- * @author Ransom Roberson
- */
-public class RosterAddedMessage extends RosterMessage {
-  
-  private final String SUBTYPE = "ADDED";
-  
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String getSubType() {
-    return SUBTYPE;
-  }
+import org.ualerts.chat.service.api.Participant.Status;
 
+/**
+ * DESCRIBE THE TYPE HERE.
+ *
+ * @author Brandon Foster
+ */
+public interface ParticipantFactory {
+  public Participant newParticipant(Status status, ChatClient chatClient, UserIdentifier userName);
 }

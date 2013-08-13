@@ -19,6 +19,8 @@
 
 package org.ualerts.chat.service.api;
 
+import org.ualerts.chat.service.api.message.Message;
+
 /**
  * Representing a participant of a conversation
  *

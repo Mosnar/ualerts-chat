@@ -1,5 +1,5 @@
 /*
- * File created on Jun 28, 2013
+ * File created on Jun 17, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,34 +17,28 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
-/**
- * Message indicating a participant's presence
- * in a conversation
- *
- * @author Billy Coleman
- * @author Ransom Roberson
- */
-public class PresenceMessage extends Message {
+public class ChatTextMessage extends Message {
+
+  private static final String TYPE = "chat";
   
-  private String text;
+	private String text;
 
-  public String getText() {
-    return text;
-  }
+	public String getText() {
+		return text;
+	}
 
-  public void setText(String text) {
-    this.text = text;
-  }
+	public void setText(String text) {
+		this.text = text;
+	}
 
   /**
    * {@inheritDoc}
    */
   @Override
   public String getType() {
-    // TODO Auto-generated method stub
-    return null;
+    return TYPE;
   }
 
   /**
@@ -52,9 +46,9 @@ public class PresenceMessage extends Message {
    */
   @Override
   public String getSubType() {
-    // TODO Auto-generated method stub
-    return null;
+    return "";
   }
-  
+	
+	
 
 }

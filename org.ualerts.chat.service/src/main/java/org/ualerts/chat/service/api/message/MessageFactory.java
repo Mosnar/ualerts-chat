@@ -1,5 +1,5 @@
 /*
- * File created on Jun 17, 2013
+ * File created on Aug 12, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,38 +17,15 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
-public class ChatTextMessage extends Message {
+import org.ualerts.chat.service.api.UserIdentifier;
 
-  private static final String TYPE = "chat";
-  
-	private String text;
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String getType() {
-    return TYPE;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String getSubType() {
-    return "";
-  }
-	
-	
-
+/**
+ * DESCRIBE THE TYPE HERE.
+ *
+ * @author Brandon Foster
+ */
+public interface MessageFactory {
+  public InviteMessage newInviteMessage(UserIdentifier userIdentifier);
 }

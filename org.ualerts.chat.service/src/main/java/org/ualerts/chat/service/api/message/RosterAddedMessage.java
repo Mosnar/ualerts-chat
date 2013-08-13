@@ -1,5 +1,5 @@
 /*
- * File created on Aug 5, 2013
+ * File created on Jul 3, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,34 +17,24 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
 /**
- * This message type is used for notifying users of conversation invitations
+ * Message describing a roster add activity
  *
+ * @author Billy Coleman
  * @author Ransom Roberson
  */
-public class InviteMessage extends Message {
-  private static final String TYPE = "INVITE";
-  private String userIdentifier;
+public class RosterAddedMessage extends RosterMessage {
+  
+  private final String SUBTYPE = "ADDED";
+  
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public String getType() {
-    return TYPE;
+  public String getSubType() {
+    return SUBTYPE;
   }
-  
-  /**
-   * Returns the generated UserIdentifier for the invited user & converesation
-   * @return full string user identifier (name@domain)
-   */
-  public String getUserIdentifier() {
-    return userIdentifier;
-  }
-  
-  /**
-   * Sets the user identifier string
-   * @param userId string user identifier
-   */
-  public void setUserIdentifier(String userId) {
-    this.userIdentifier = userId;
-  }
+
 }

@@ -21,6 +21,8 @@ package org.ualerts.chat.service.api;
 
 import java.util.Set;
 
+import org.ualerts.chat.service.api.message.Message;
+
 /**
  * Represents a conversation between chat participants
  * @author Billy Coleman
@@ -33,7 +35,7 @@ public interface Conversation {
    * Add a chat participant to a conversation
    * @param chatClient
    */
-  void addParticipant(Participant participant);
+  boolean addParticipant(Participant participant);
 
   /**
    * Remove a chat participant from a conversation

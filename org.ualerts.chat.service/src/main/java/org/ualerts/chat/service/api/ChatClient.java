@@ -21,6 +21,8 @@ package org.ualerts.chat.service.api;
 
 import java.util.List;
 
+import org.ualerts.chat.service.api.message.Message;
+
 
 /**
  * Representing a member of a Conversation

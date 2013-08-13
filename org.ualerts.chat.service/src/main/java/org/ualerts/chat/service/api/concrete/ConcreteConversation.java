@@ -26,12 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ualerts.chat.service.api.Conversation;
 import org.ualerts.chat.service.api.DateTimeService;
-import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
-import org.ualerts.chat.service.api.RosterAddedMessage;
-import org.ualerts.chat.service.api.RosterContentMessage;
-import org.ualerts.chat.service.api.RosterRemovedMessage;
+import org.ualerts.chat.service.api.message.Message;
+import org.ualerts.chat.service.api.message.RosterAddedMessage;
+import org.ualerts.chat.service.api.message.RosterContentMessage;
+import org.ualerts.chat.service.api.message.RosterRemovedMessage;
 import org.ualerts.chat.service.api.UserIdentifier;
 
 /**
@@ -52,18 +52,29 @@ public class ConcreteConversation implements Conversation {
   private DateTimeService dateTimeService;
 
   private String name;
-  private boolean defaultConversation;
   private boolean isPrivate;
 
+  
+  /**
+   * Returns true if the user is allowed to join a conversation
+   * @param participant
+   * @return boolean
+   */
+  protected boolean canJoin(Participant participant) {
+    return (!isPrivate || (participant.getStatus() == Status.INVITED || participant
+        .isAdmin()));
+  }
+
+  
   @Override
-  public void addParticipant(Participant participant) {
+  public boolean addParticipant(Participant participant) {
     /*
      * logger.info("Adding participant: " +
      * participant.getUserName().getFullIdentifier() + " to conversation: " +
      * name);
      */
-    if (participant == null)
-      return;
+    if (participant == null || !canJoin(participant))
+      return false;
 
     Participant searchParticipant =
         findParticipant(participant.getUserName());
@@ -99,6 +110,7 @@ public class ConcreteConversation implements Conversation {
         }
       }
     }
+    return true;
   }
 
   @Override

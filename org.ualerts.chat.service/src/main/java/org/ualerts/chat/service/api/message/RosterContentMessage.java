@@ -1,5 +1,5 @@
 /*
- * File created on Jul 29, 2013
+ * File created on Jul 3, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,14 +17,23 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
 /**
- * Provider of Conversations
+ * Message describing a previously added participant.
  *
+ * @author Billy Coleman
  * @author Ransom Roberson
- * @author Brandon Foster
  */
-public interface ConversationFactory {
-  public Conversation newConversation(UserIdentifier userIdentifier);
+public class RosterContentMessage extends RosterMessage {
+
+  private final String SUBTYPE = "CONTENT";
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getSubType() {
+    return SUBTYPE;
+  }
+
 }

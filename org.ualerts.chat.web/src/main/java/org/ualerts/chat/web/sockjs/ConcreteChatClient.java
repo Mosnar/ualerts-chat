@@ -24,8 +24,8 @@ import java.io.IOException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.ualerts.chat.service.api.Message;
 import org.ualerts.chat.service.api.Participant;
+import org.ualerts.chat.service.api.message.Message;
 
 class ConcreteChatClient implements SockJsChatClient {
 

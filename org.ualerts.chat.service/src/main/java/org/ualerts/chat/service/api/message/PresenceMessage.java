@@ -1,5 +1,5 @@
 /*
- * File created on Jun 27, 2013
+ * File created on Jun 28, 2013
  *
  * Copyright 2008-2013 Virginia Polytechnic Institute and State University
  *
@@ -17,42 +17,44 @@
  *
  */
 
-package org.ualerts.chat.service.api;
+package org.ualerts.chat.service.api.message;
 
 /**
- * Message describing a roster activity
+ * Message indicating a participant's presence
+ * in a conversation
  *
  * @author Billy Coleman
  * @author Ransom Roberson
  */
-public abstract class RosterMessage extends Message {
+public class PresenceMessage extends Message {
+  
+  private String text;
 
-  private final String TYPE = "ROSTER";
-  
-  private String userName;
-  
-  /**
-   * Access the user name associated with this RosterMessage
-   * @return the user name 
-   */
-  public String getUserName() {
-    return userName;
+  public String getText() {
+    return text;
   }
 
-  /**
-   * Set the user name associated with this RosterMessage
-   * @param userName
-   */
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setText(String text) {
+    this.text = text;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public final String getType() {
-   return TYPE;
+  public String getType() {
+    // TODO Auto-generated method stub
+    return null;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getSubType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
 
 }
