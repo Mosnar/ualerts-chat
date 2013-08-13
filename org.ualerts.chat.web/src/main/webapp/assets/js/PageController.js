@@ -13,7 +13,7 @@ function PageController(remoteService, chatRoomService) {
 
 var ATCHAR = '@';
 var ALL_ATCHAR = 'all@';
-var DEFAULT_DOMAIN = "ualerts.org";
+
 /**
  * Set up the chat.
  */
@@ -293,7 +293,7 @@ PageController.prototype.onMessage = function(message) {
 		return dateString;
 	}
     
-    if(this.getDomain(message.to) == DEFAULT_DOMAIN) { 
+    if(this.getDomain(message.to) == this.domain) { 
 	    if (message.type == "ROSTER") {
 	    	switch(message.subType) {
 	    	case "ADDED":
