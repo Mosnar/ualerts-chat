@@ -24,6 +24,8 @@ import java.util.Set;
 
 import org.omg.CORBA.UnknownUserException;
 import org.omg.CORBA.UserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ualerts.chat.service.api.ChatClient;
@@ -34,10 +36,10 @@ import org.ualerts.chat.service.api.ConversationFactory;
 import org.ualerts.chat.service.api.Participant;
 import org.ualerts.chat.service.api.Participant.Status;
 import org.ualerts.chat.service.api.ParticipantFactory;
-import org.ualerts.chat.service.api.message.InviteMessage;
-import org.ualerts.chat.service.api.message.MessageFactory;
 import org.ualerts.chat.service.api.UserIdentifier;
 import org.ualerts.chat.service.api.UserService;
+import org.ualerts.chat.service.api.message.InviteMessage;
+import org.ualerts.chat.service.api.message.MessageFactory;
 
 /**
  * Provides a Conversation
@@ -49,6 +51,8 @@ import org.ualerts.chat.service.api.UserService;
 @Service
 public class ConcreteChatService implements ChatService {
 
+  //private static final Logger logger = LoggerFactory.getLogger(ConcreteChatService.class);
+  
   private MessageFactory messageFactory;
   private ParticipantFactory participantFactory;
   private Set<Conversation> conversations = new HashSet<Conversation>();
@@ -114,6 +118,7 @@ public class ConcreteChatService implements ChatService {
     if (conversation == null) {
       conversation = conversationFactory.newConversation(userIdentifier);
       conversation.setPrivate(privateConversation);
+      this.conversations.add(conversation);
     }
     else {
       isAdmin = false;
@@ -134,7 +139,6 @@ public class ConcreteChatService implements ChatService {
     Participant participant;
     ChatClient chatClient =
         this.userService.findClient(userIdentifier.getName());
-
     participant = new ConcreteParticipant();
     participant.setChatClient(chatClient);
     participant.setUserName(userIdentifier);

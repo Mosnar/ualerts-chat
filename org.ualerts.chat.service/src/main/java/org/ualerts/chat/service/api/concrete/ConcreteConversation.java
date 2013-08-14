@@ -43,8 +43,8 @@ import org.ualerts.chat.service.api.UserIdentifier;
 
 public class ConcreteConversation implements Conversation {
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(ConcreteConversation.class);
+//  private static final Logger logger = LoggerFactory
+//      .getLogger(ConcreteConversation.class);
   private static final String BROADCAST_MESSAGE = "all@";
 
   private Set<Participant> participants = new HashSet<Participant>();
@@ -68,14 +68,14 @@ public class ConcreteConversation implements Conversation {
   
   @Override
   public boolean addParticipant(Participant participant) {
-    /*
-     * logger.info("Adding participant: " +
-     * participant.getUserName().getFullIdentifier() + " to conversation: " +
-     * name);
-     */
+    
+//    logger.info("Adding participant: " +
+//      participant.getUserName().getFullIdentifier() + " to conversation: " +
+//      name);
+    
     if (participant == null || !canJoin(participant))
       return false;
-
+    
     Participant searchParticipant =
         findParticipant(participant.getUserName());
     if (searchParticipant == null) {
