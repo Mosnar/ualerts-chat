@@ -293,7 +293,7 @@ PageController.prototype.onMessage = function(message) {
 		return dateString;
 	}
     
-    if(this.getDomain(message.to) == this.domain) { 
+	if(this.getDomain(message.to) == this.domain || this.domain == "") { 
 	    if (message.type == "ROSTER") {
 	    	switch(message.subType) {
 	    	case "ADDED":
