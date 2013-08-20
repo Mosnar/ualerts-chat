@@ -43,7 +43,7 @@ ChatRoomViewControllerManager.prototype.redraw = function() {
 	
 	this.hiddenChatRoomViewController.clear();
 	for (var i = this.chatRoomList.length - 1; i >= 0; i--) {		
-		if(count < maxNum) {
+		if (count < maxNum) {
 			this.chatRoomList[i].show();
 			this.hiddenChatRoomViewController.removeElement(this.chatRoomList[i].name, this.chatRoomList[i].uniqueId);
 			count++;

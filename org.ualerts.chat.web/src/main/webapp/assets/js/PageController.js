@@ -293,7 +293,7 @@ PageController.prototype.onMessage = function(message) {
 		return dateString;
 	}
     
-	if(this.getDomain(message.to) == this.domain || this.domain == "") { 
+	if (this.getDomain(message.to) == this.domain || this.domain == "") { 
 	    if (message.type == "ROSTER") {
 	    	switch(message.subType) {
 	    	case "ADDED":
@@ -316,7 +316,7 @@ PageController.prototype.onMessage = function(message) {
 };
 
 PageController.prototype.onInvite = function(message) {
-	if(message.type != "INVITE"){
+	if (message.type != "INVITE"){
 		return;
 	}
 	$('#invite-group-domain').text(message.subType);

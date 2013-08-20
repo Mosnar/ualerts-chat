@@ -15,9 +15,10 @@ function RemoteService() {
  *                 which has an execute method
  */
 RemoteService.prototype.addListener = function(callback) {
-	if (typeof callback != "object" || typeof callback.execute != "function")
+	if (typeof callback != "object" || typeof callback.execute != "function") {
 		console.log('The callback ' + callback + ' is not an object of the Callback class');
-	  this.listeners.push(callback);
+	}
+	this.listeners.push(callback);
 };
 
 /**

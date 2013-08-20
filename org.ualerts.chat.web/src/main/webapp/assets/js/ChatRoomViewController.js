@@ -66,7 +66,7 @@ function ChatRoomViewController(chatRoomName, username, remoteService, uniqueId,
 	
 	function parseUserName(name){
 		var idx = name.indexOf('@');
-		if(idx != -1) {
+		if (idx != -1) {
 			return name.substring(0,idx);
 		}
 		else{
@@ -156,8 +156,7 @@ ChatRoomViewController.prototype.displayChatMessage = function(message) {
 		}
 
 	}
-
-
+	
 	$chatbox.append('<p>' + '(' + buildDateString() + ')' + ' ' +
 			getDisplayName(message.from) + ': ' + MessageUtils.prepareMessage(message.text) + '</p>');
 	$chatbox.scrollTop($chatbox[0].scrollHeight);
